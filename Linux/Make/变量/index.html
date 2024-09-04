@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="变量 makefile 中支持程序设计语言中的变量的概念 makefile 中的变量只代表文本数据(字符串) makefile 中的变量名规则： 变量名可以包含字符，数字，下划线 不能包含 “:”, “#”, “&#x3D;”, 或 “ “ 变量名大小写敏感     所以 makefile 中的变量不需要声明类型； 在 makefile 中使用变量前可以不去定义它，但是这样将会得到一个空值  变量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="变量">
+<meta property="og:url" content="https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="变量 makefile 中支持程序设计语言中的变量的概念 makefile 中的变量只代表文本数据(字符串) makefile 中的变量名规则： 变量名可以包含字符，数字，下划线 不能包含 “:”, “#”, “&#x3D;”, 或 “ “ 变量名大小写敏感     所以 makefile 中的变量不需要声明类型； 在 makefile 中使用变量前可以不去定义它，但是这样将会得到一个空值  变量">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/bianliangshiyong.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/jiandanfuzhi.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/diguifuzhi.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/tiaojianfuzhi.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/zhuijiafuzhi.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/guizezhongmoshitihuan.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/bianliangzhiqtyy.png">
+<meta property="article:published_time" content="2024-08-02T12:42:00.000Z">
+<meta property="article:modified_time" content="2024-08-31T14:11:50.600Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="make">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/Linux/make/bianliangshiyong.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>变量</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/%E6%B5%AE%E7%82%B9%E6%95%B0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/Linux/Make/%E4%BC%AA%E7%9B%AE%E6%A0%87/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&text=变量"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&is_video=false&description=变量"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=变量&body=Check out this article: https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&name=变量&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&t=变量"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">变量的定义和使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#makefile-%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E8%B5%8B%E5%80%BC%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">makefile 中变量的赋值方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">1.3.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">预定义变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8F%98%E9%87%8F"><span class="toc-number">2.1.</span> <span class="toc-text">自动变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">特殊变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93-1"><span class="toc-number">2.3.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">变量高级用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%80%BC%E7%9A%84%E6%9B%BF%E6%8D%A2"><span class="toc-number">3.1.</span> <span class="toc-text">变量值的替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E6%A8%A1%E5%BC%8F%E6%9B%BF%E6%8D%A2"><span class="toc-number">3.2.</span> <span class="toc-text">变量的模式替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E5%88%99%E4%B8%AD%E7%9A%84%E6%A8%A1%E5%BC%8F%E6%9B%BF%E6%8D%A2"><span class="toc-number">3.3.</span> <span class="toc-text">规则中的模式替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%80%BC%E7%9A%84%E5%B5%8C%E5%A5%97%E5%BC%95%E7%94%A8"><span class="toc-number">3.4.</span> <span class="toc-text">变量值的嵌套引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%98%E9%87%8F"><span class="toc-number">3.5.</span> <span class="toc-text">命令行变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#override-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">3.6.</span> <span class="toc-text">override 关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#define-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">3.7.</span> <span class="toc-text">define 关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">3.8.</span> <span class="toc-text">环境变量(全局变量)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E5%8F%98%E9%87%8F-%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="toc-number">3.9.</span> <span class="toc-text">目标变量(局部变量)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E5%8F%98%E9%87%8F"><span class="toc-number">3.10.</span> <span class="toc-text">模式变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93-2"><span class="toc-number">3.11.</span> <span class="toc-text">小结</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        变量
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-02T12:42:00.000Z" class="dt-published" itemprop="datePublished">2024-08-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Linux/">Linux</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/make/" rel="tag">make</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
+<li>makefile 中支持程序设计语言中的<strong>变量的概念</strong></li>
+<li>makefile 中的变量<strong>只代表文本数据</strong>(字符串)</li>
+<li>makefile 中的变量名规则：<ul>
+<li>变量名可以包含字符，数字，下划线</li>
+<li>不能包含 “:”, “#”, “&#x3D;”, 或 “ “</li>
+<li>变量名大小写敏感</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>所以 makefile 中的变量不需要声明类型；</p>
+<p>在 makefile 中使用变量前可以不去定义它，但是这样将会得到一个空值</p>
+</blockquote>
+<h3 id="变量的定义和使用"><a href="#变量的定义和使用" class="headerlink" title="变量的定义和使用"></a>变量的定义和使用</h3><p><img src="/public/image/Linux/make/bianliangshiyong.png" alt="bianliangshiyong"></p>
+<h3 id="makefile-中变量的赋值方式"><a href="#makefile-中变量的赋值方式" class="headerlink" title="makefile 中变量的赋值方式"></a>makefile 中变量的赋值方式</h3><ul>
+<li>简单赋值（:&#x3D;）</li>
+<li>递归赋值（&#x3D;）</li>
+<li>条件赋值（?&#x3D;）</li>
+<li>追加赋值（+&#x3D;）</li>
+</ul>
+<p><strong>:&#x3D; 简单赋值</strong></p>
+<p><strong>只对当前语句的变量有效</strong></p>
+<p><img src="/public/image/Linux/make/jiandanfuzhi.png" alt="jiandanfuzhi"></p>
+<p><strong>&#x3D; 递归赋值</strong></p>
+<p><strong>赋值可能影响多个其他变量</strong></p>
+<p><strong>所有与目标变量相关的其他变量都将受到影响</strong></p>
+<p><img src="/public/image/Linux/make/diguifuzhi.png" alt="diguifuzhi"></p>
+<p><strong>?&#x3D; 条件赋值</strong></p>
+<p><strong>如果变量未定义，使用赋值符号中的值定义变量</strong></p>
+<p><strong>如果变量已经定义，则赋值无效</strong></p>
+<p><img src="/public/image/Linux/make/tiaojianfuzhi.png" alt="tiaojianfuzhi.png"></p>
+<p><strong>+&#x3D; 追加赋值</strong></p>
+<p><strong>原变量值后加上一个新值</strong></p>
+<p>原变量值与新值之间由<strong>空格</strong>隔开</p>
+<p><img src="/public/image/Linux/make/zhuijiafuzhi.png" alt="zhuijiafuzhi.png"></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>makefile 中支持变量的定义和使用</p>
+<p>makefile 中存在四种变量的赋值方式</p>
+<ul>
+<li>简单赋值（:&#x3D;）</li>
+<li>递归赋值（&#x3D;）</li>
+<li>条件赋值（?&#x3D;）</li>
+<li>追加赋值（+&#x3D;）</li>
+</ul>
+<h2 id="预定义变量"><a href="#预定义变量" class="headerlink" title="预定义变量"></a>预定义变量</h2><ul>
+<li><strong>自动变量</strong><ul>
+<li>$@，$^，$&lt;</li>
+</ul>
+</li>
+<li><strong>特殊变量</strong><ul>
+<li>$(MAKE)， $(MAKECMDGOALS)， $(MAKEFILE_LIST)</li>
+<li>$(MAKE_VERSION)，$(CURDIR)，$(.VARIABLES)</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h3 id="自动变量"><a href="#自动变量" class="headerlink" title="自动变量"></a>自动变量</h3><ul>
+<li><p>$@</p>
+<ul>
+<li>当前规则中，触发命令被执行的<strong>目标</strong>(即当前规则中的目标);</li>
+</ul>
+</li>
+<li><p>$^</p>
+<ul>
+<li>当前规则(目标)中的<strong>所有依赖</strong></li>
+</ul>
+</li>
+<li><p>$&lt;</p>
+<ul>
+<li>当前规则中的<strong>第一个依赖</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all first second third</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: first second third</span></span><br><span class="line">	@echo <span class="string">&quot;\$<span class="variable">$@</span> =&gt; <span class="variable">$@</span>&quot;</span>	<span class="comment"># $@ =&gt; all</span></span><br><span class="line">	@echo <span class="string">&quot;$<span class="variable">$^</span> =&gt; <span class="variable">$^</span>&quot;</span>	<span class="comment"># $^ =&gt; first second third</span></span><br><span class="line">	@echo <span class="string">&quot;$<span class="variable">$&lt;</span> =&gt; <span class="variable">$&lt;</span>&quot;</span>	<span class="comment"># $&lt; =&gt; first</span></span><br><span class="line"><span class="section">first:</span></span><br><span class="line"><span class="section">second:</span></span><br><span class="line"><span class="section">third:</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>“$” 对于 makefile 有特殊含义，输出 “$” 时需要加上一个 “$” 进行转义；</p>
+<p>“$@” 对于 Bash shell 有特殊的含义，输出时需要加上 “\“ 进行转义； </p>
+</blockquote>
+<h3 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h3><ul>
+<li>$(MAKE)<ul>
+<li>当前 make 解释器的文件名</li>
+</ul>
+</li>
+<li>$(MAKECMDGOALS)<ul>
+<li>命令行中指定的目标名(make 的命令行参数)</li>
+</ul>
+</li>
+<li>$(MAKEFILE_LIST)<ul>
+<li>make 所需要处理的 makefile 文件列表</li>
+<li>当前 makefile 的文件名总是位于列表的最后</li>
+<li>文件名之间以空格进行分隔</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all first second third</span></span><br><span class="line"></span><br><span class="line">all out: first second third		<span class="comment"># 执行 make</span></span><br><span class="line">	@echo <span class="string">&quot;<span class="variable">$(AMKE)</span>&quot;</span>				<span class="comment"># make</span></span><br><span class="line">	@echo <span class="string">&quot;<span class="variable">$(MAKECMDGOALS)</span>&quot;</span>		<span class="comment"># </span></span><br><span class="line">	@echo <span class="string">&quot;<span class="variable">$(MAKEFILE_LIST)</span>&quot;</span>	<span class="comment">#  makefile (前面有个空格)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>$(MAKE_VERSION)<ul>
+<li>当前 make 解释器的版本</li>
+</ul>
+</li>
+<li>$(CURDIR)<ul>
+<li>当前 make 解释器的工作目录</li>
+</ul>
+</li>
+<li>$(.VARIABLES)<ul>
+<li>所有已经定义的变量名列表(预定义变量和自定义变量)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: test1 test2</span></span><br><span class="line"></span><br><span class="line"><span class="section">test1: 						# 执行 make</span></span><br><span class="line">	@echo <span class="string">&quot;<span class="variable">$(AMKE_VERSION)</span>&quot;</span>	<span class="comment"># 3.81</span></span><br><span class="line">	@echo <span class="string">&quot;<span class="variable">$(CURDIR)</span>&quot;</span>		<span class="comment"># /home/kay</span></span><br><span class="line">	@echo <span class="string">&quot;$(.VSRLABLES)&quot;</span>	<span class="comment">#  (...太多了)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>maekefile 提供了预定义变量供开发者使用</li>
+<li>预定义变量的使用能够使得 makefile 的开发更高效</li>
+<li>自动变量是 makefile 中最常见的元素</li>
+<li>使用 $(.VSRLABLES) 能够获取所有的特殊变量</li>
+</ul>
+<h2 id="变量高级用法"><a href="#变量高级用法" class="headerlink" title="变量高级用法"></a>变量高级用法</h2><h3 id="变量值的替换"><a href="#变量值的替换" class="headerlink" title="变量值的替换"></a>变量值的替换</h3><ul>
+<li>使用指定字符（串）替换变量值中的后缀字符（串）</li>
+<li>语法格式：$(var:a&#x3D;b) 或 ${var:a&#x3D;b}<ul>
+<li>替换表达式中不能有任何的空格</li>
+<li>make 中支持使用${}对变量进行取值</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">src:= a.cc b.cc c.cc	<span class="comment"># 可以理解为编译语言中的字符串类型 &quot;a.cc b.cc c.cc&quot;</span></span><br><span class="line">obj:= $(src:cc=o)	<span class="comment"># 将src中所有的cc替换为o</span></span><br><span class="line"></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">	@echo <span class="string">&quot;obj =&gt; <span class="variable">$(obj)</span>&quot;</span>	<span class="comment"># a.o b.o c.o</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="变量的模式替换"><a href="#变量的模式替换" class="headerlink" title="变量的模式替换"></a>变量的模式替换</h3><ul>
+<li>使用 % 保留变量值中的指定字符，替换其他字符</li>
+<li>语法格式：$(var:a%b&#x3D;x%b) 或 ${var:a%b&#x3D;x&amp;b}<ul>
+<li>替换表达式中不能有任何的空格</li>
+<li>make 中支持使用${}对变量进行取值</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">src:= a1b.c a2b.c a3b.c</span><br><span class="line">obj:= $(src:a%b.c=x%y)	<span class="comment"># 将src中a替换为x，b替换为y，其余的保持不变</span></span><br><span class="line"></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">	@echo <span class="string">&quot;obj =&gt; <span class="variable">$(obj)</span>&quot;</span>	<span class="comment"># x1y x2y x3y</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="规则中的模式替换"><a href="#规则中的模式替换" class="headerlink" title="规则中的模式替换"></a>规则中的模式替换</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="section">target: target-pattern: prereq-patern</span></span><br><span class="line">	command1</span><br><span class="line">	command2</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<p>作用：通过 target-pattern 从 target 中匹配子目标；再通过 prereq-patern 从子目标生成依赖；进而构成完整的规则。</p>
+<p><img src="/public/image/Linux/make/guizezhongmoshitihuan.png" alt="guizezhongmoshitihuan"></p>
+<blockquote>
+<p>此处，%.o 从 OBJS 中匹配以 .o 结尾的文件，这是就先找到了 func.o 这个文件名；%.o : %.c 表示对于每一个 .o 文件他都依赖于一个同名的 .c 文件(即文件名除了扩展名外完全相同,)；基于以上规则第一个 </p>
+<p>func.o : func.c</p>
+<p>​	gcc -o $@ -c $^</p>
+<p>就被构建出来了，main.o 也是同理。</p>
+</blockquote>
+<h3 id="变量值的嵌套引用"><a href="#变量值的嵌套引用" class="headerlink" title="变量值的嵌套引用"></a>变量值的嵌套引用</h3><ul>
+<li>一个变量名之中可以<strong>包含对其它变量的引用</strong></li>
+<li>嵌套引用的本质是<strong>使用一个变量表示另外一个变量</strong></li>
+</ul>
+<p><img src="/public/image/Linux/make/bianliangzhiqtyy.png" alt="bianliangzhiqtyy"></p>
+<h3 id="命令行变量"><a href="#命令行变量" class="headerlink" title="命令行变量"></a>命令行变量</h3><ul>
+<li>运行 make 时可以在命令行定义变量，命令行中输入的默认覆盖 makefile 中定义的变量</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">hm := hello makefile</span><br><span class="line"><span class="section">test: </span></span><br><span class="line">	@echo <span class="string">&quot;hm =&gt; <span class="variable">$(hm)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令行输入	make hm=cmd</span></span><br><span class="line"><span class="comment"># 命令行输出	hm =&gt; cmd</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在实际开发中，可用于零时改变某个变量的值，以得到一个特殊的可执行编译程序(测试程序)</p>
+</blockquote>
+<h3 id="override-关键字"><a href="#override-关键字" class="headerlink" title="override 关键字"></a>override 关键字</h3><ul>
+<li>用于指示 makefile 中定义的变量不能被覆盖</li>
+<li><strong>变量的定义和赋值都需要使用 override 关键字</strong></li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="keyword">override</span> var := test</span><br><span class="line"><span class="section">test:</span></span><br><span class="line">	@echo <span class="string">&quot;var =&gt; <span class="variable">$(var)</span>&quot;</span></span><br><span class="line"><span class="comment"># 命令行输入	make var=cmd</span></span><br><span class="line"><span class="comment"># 命令行输出	hvarm =&gt; test</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>override 关键字仅对后续在 Makefile 中定义的变量生效，如果在 Makefile 中先定义了变量，然后在其后使用 override 关键字尝试覆盖它，那么这个 override 指令将不会有任何效果；</p>
+<p>在 Makefile 中，即使一个变量被 override 修饰，它仍然可以在 Makefile 的后续部分进行二次赋值；</p>
+<p>override 主要影响的是命令行参数（通过 make VAR&#x3D;value 传递的）和通过 -e 选项传递给 make 的环境变量，让其不可被覆盖命令行变量覆盖；</p>
+</blockquote>
+<h3 id="define-关键字"><a href="#define-关键字" class="headerlink" title="define 关键字"></a>define 关键字</h3><ul>
+<li>用于在 makefile 中定义多行变量</li>
+<li>多行变量的定义从变量名开始到 endef 结束</li>
+<li>可使用 override 关键字防止变量被覆盖</li>
+<li>define 定义的变量等价于使用 &#x3D; 定义的变量</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="keyword">define</span> foo</span><br><span class="line">I&#x27;m fool!</span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># foo =&gt; I&#x27;m fool!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="keyword">define</span> cmd</span><br><span class="line">	@echo <span class="string">&quot;run cmd ls ...&quot;</span></span><br><span class="line">	@ls</span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时 cmd 的值就是两条命令，当值为命令的时候，前面一定要加[Tab]键</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="环境变量-全局变量"><a href="#环境变量-全局变量" class="headerlink" title="环境变量(全局变量)"></a>环境变量(全局变量)</h3><p>也是操作系统中的环境变量</p>
+<ul>
+<li>makefile 中能够直接使用操作系统中的环境变量<ul>
+<li>当定义的变量与系统环境变量同名时，环境变量将被覆盖</li>
+<li>运行 make 时指定 “-e” 选项，优先使用环境变量</li>
+</ul>
+</li>
+</ul>
+<p><strong>为什么要在 makefile 中使用环境变量?</strong></p>
+<ul>
+<li>优势<ul>
+<li>环境变量可以在所有 makefile 中使用</li>
+</ul>
+</li>
+<li>劣势<ul>
+<li>过多的依赖于环境变量会导致移植性变差</li>
+</ul>
+</li>
+</ul>
+<p><strong>变量在不同 makefile 之间的传递方式</strong></p>
+<ul>
+<li>直接使用外部定义的环境变量（操作系统的环境变量）进行传递<ul>
+<li>存在操作系统之间移植性的问题</li>
+</ul>
+</li>
+<li>使用 export 定义变量进行传递（定义临时环境变量）<ul>
+<li>因为变量都是在各自 makefile 文件中进行定义，所以不存在移植性的问题</li>
+</ul>
+</li>
+<li>定义 make 命令行变量进行传递（推荐）</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例1</span></span><br><span class="line">JAVA_HOME := java home</span><br><span class="line"><span class="section">tset:</span></span><br><span class="line">	@echo <span class="string">&quot;JAVA_HOME =&gt; <span class="variable">$(JAVA_HOME)</span>&quot;</span></span><br><span class="line">	</span><br><span class="line"><span class="comment"># make</span></span><br><span class="line"><span class="comment"># JAVA_HOME =&gt; java home</span></span><br><span class="line"><span class="comment"># echo $JAVA_HOME	系统环境变量中的 JAVA_HOME</span></span><br><span class="line"><span class="comment"># /home/kay/...</span></span><br><span class="line"><span class="comment"># make -e</span></span><br><span class="line"><span class="comment"># JAVA_HOME =&gt; /home/kay/...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例2</span></span><br><span class="line"><span class="comment"># makefile.1</span></span><br><span class="line">JAVA_HOME := java home</span><br><span class="line">ver := kay</span><br><span class="line"><span class="section">tset:</span></span><br><span class="line">	@echo <span class="string">&quot;JAVA_HOME =&gt; <span class="variable">$(JAVA_HOME)</span>&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;make another file ...&quot;</span></span><br><span class="line">	@(MAKE) -f makefile.2</span><br><span class="line"></span><br><span class="line"><span class="comment"># makefile.2</span></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">	@echo <span class="string">&quot;JAVA_HOME =&gt; <span class="variable">$(JAVA_HOME)</span>&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;var =&gt; <span class="variable">$(var)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># make</span></span><br><span class="line"><span class="comment"># JAVA_HOME =&gt; java home</span></span><br><span class="line"><span class="comment"># make another file ...</span></span><br><span class="line"><span class="comment"># 正在进入目录 &#x27;/home/xxx&#x27;</span></span><br><span class="line"><span class="comment"># JAVA_HOME =&gt; java home</span></span><br><span class="line"><span class="comment"># var =&gt;</span></span><br><span class="line"><span class="comment"># 正在离开目录 &#x27;/home/xxx&#x27;	</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此处 makefile.2 中输出的 JAVA_HOME 为何还是 makefile.1 中的值呢？</p>
+<p>因为 JAVA_HOME 为系统的环境变量，当我们子啊 makefile.1 中改写了 JAVA_HOME 之后，它的生命周期在整个 make 环境中都是有效的；</p>
+<p>为什么在 makefile.2 中 var 是无效的呢？</p>
+<p>因为 var 是在 makefile.1 中定义的变量，他的生命周期或者说作用域只在 makefile.1 这个文件中有效；</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="comment"># makefile.1</span></span><br><span class="line">JAVA_HOME := java home</span><br><span class="line"><span class="keyword">export</span> ver := kay</span><br><span class="line">new := hello</span><br><span class="line"><span class="section">tset:</span></span><br><span class="line">	@echo <span class="string">&quot;JAVA_HOME =&gt; <span class="variable">$(JAVA_HOME)</span>&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;make another file ...&quot;</span></span><br><span class="line">	@(MAKE) -f makefile.2</span><br><span class="line">	@(MAKE) -f makefile.2 new:=<span class="variable">$(new)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># makefile.2</span></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">	@echo <span class="string">&quot;JAVA_HOME =&gt; <span class="variable">$(JAVA_HOME)</span>&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;var =&gt; <span class="variable">$(var)</span>&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;new =&gt; <span class="variable">$(new)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># make</span></span><br><span class="line"><span class="comment"># JAVA_HOME =&gt; java home</span></span><br><span class="line"><span class="comment"># make another file ...</span></span><br><span class="line"><span class="comment"># 正在进入目录 &#x27;/home/xxx&#x27;</span></span><br><span class="line"><span class="comment"># JAVA_HOME =&gt; java home</span></span><br><span class="line"><span class="comment"># var =&gt; kay</span></span><br><span class="line"><span class="comment"># new =&gt; hello</span></span><br><span class="line"><span class="comment"># 正在离开目录 &#x27;/home/xxx&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用 export 定义的变量可以进行传递，这个变量将在该 makefile 及其所有通过它直接或间接调用（如使用 -f 参数指定或通过 include 指令包含）的子 makefile 中可用；</p>
+<p>使用命令行也可以将变量进行传递，作用域和 exprot 类似；</p>
+</blockquote>
+<h3 id="目标变量-局部变量"><a href="#目标变量-局部变量" class="headerlink" title="目标变量(局部变量)"></a>目标变量(局部变量)</h3><ul>
+<li>作用域只在指定目标及连带规则中<ul>
+<li>target : name <assignment> value</li>
+<li>target : override name <assignment> value</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">var := kay.wang	<span class="comment"># 在当前整个 makefile 中可用</span></span><br><span class="line">test : var := tset-var	<span class="comment"># 只在 tset 这个目标及其连带规则中可用</span></span><br><span class="line"></span><br><span class="line"><span class="section">test: another</span></span><br><span class="line">	@echo <span class="string">&quot;test:&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;var =&gt; <span class="variable">$(var)</span>&quot;</span></span><br><span class="line"><span class="section">another:</span></span><br><span class="line">	@echo <span class="string">&quot;another:&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;var =&gt; <span class="variable">$(var)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 test 和 another 中 tset-var 是可用的</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="模式变量"><a href="#模式变量" class="headerlink" title="模式变量"></a>模式变量</h3><ul>
+<li>模式变量是<strong>目标变量的扩展</strong></li>
+<li>作用域只在<strong>符合模式的</strong>目标及连带规则中<ul>
+<li>target : name <assignment> value</li>
+<li>target : override name <assignment> value</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">new := kay.wang	<span class="comment"># 在当前整个 makefile 中可用</span></span><br><span class="line">%e : <span class="keyword">override</span> new := test-new	<span class="comment"># 只在符合 %e 这个模式的目标及其连带规则中可用</span></span><br><span class="line"></span><br><span class="line"><span class="section">rule:</span></span><br><span class="line">	@echo <span class="string">&quot;rule:&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;new =&gt; <span class="variable">$(new)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>全局变量：makefile 外部定义的环境变量</li>
+<li>文件变量：makefile 中定义的变量</li>
+<li>局部变量：制定目标的变量</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">变量的定义和使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#makefile-%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E8%B5%8B%E5%80%BC%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">makefile 中变量的赋值方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">1.3.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">预定义变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8F%98%E9%87%8F"><span class="toc-number">2.1.</span> <span class="toc-text">自动变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">特殊变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93-1"><span class="toc-number">2.3.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">变量高级用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%80%BC%E7%9A%84%E6%9B%BF%E6%8D%A2"><span class="toc-number">3.1.</span> <span class="toc-text">变量值的替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E6%A8%A1%E5%BC%8F%E6%9B%BF%E6%8D%A2"><span class="toc-number">3.2.</span> <span class="toc-text">变量的模式替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E5%88%99%E4%B8%AD%E7%9A%84%E6%A8%A1%E5%BC%8F%E6%9B%BF%E6%8D%A2"><span class="toc-number">3.3.</span> <span class="toc-text">规则中的模式替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%80%BC%E7%9A%84%E5%B5%8C%E5%A5%97%E5%BC%95%E7%94%A8"><span class="toc-number">3.4.</span> <span class="toc-text">变量值的嵌套引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%98%E9%87%8F"><span class="toc-number">3.5.</span> <span class="toc-text">命令行变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#override-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">3.6.</span> <span class="toc-text">override 关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#define-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">3.7.</span> <span class="toc-text">define 关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">3.8.</span> <span class="toc-text">环境变量(全局变量)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E5%8F%98%E9%87%8F-%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="toc-number">3.9.</span> <span class="toc-text">目标变量(局部变量)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E5%8F%98%E9%87%8F"><span class="toc-number">3.10.</span> <span class="toc-text">模式变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93-2"><span class="toc-number">3.11.</span> <span class="toc-text">小结</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&text=变量"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&is_video=false&description=变量"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=变量&body=Check out this article: https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&title=变量"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&name=变量&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Linux/Make/%E5%8F%98%E9%87%8F/&t=变量"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

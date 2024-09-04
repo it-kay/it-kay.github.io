@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="makefile 中支持函数的概念  make 解释器提供了一系列的函数供 makefile 调用 在 makefile 中支持自定义函数实现，并调用执行 通过 define 关键字实现自定义函数  自定义函数语法  $(0) 表示这个函数的第 0 个参数；即这个函数的名字 $(1) 表示i这个函数的第 1 个参数；即 func2 调用时候，后面跟着的第一个参数  深入理解自定义函数  自定义函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数">
+<meta property="og:url" content="https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="makefile 中支持函数的概念  make 解释器提供了一系列的函数供 makefile 调用 在 makefile 中支持自定义函数实现，并调用执行 通过 define 关键字实现自定义函数  自定义函数语法  $(0) 表示这个函数的第 0 个参数；即这个函数的名字 $(1) 表示i这个函数的第 1 个参数；即 func2 调用时候，后面跟着的第一个参数  深入理解自定义函数  自定义函数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/zidingyihanshuyufa.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/yudingyihanshudiaoyong.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/guizezhongdemoshitihuan.png">
+<meta property="article:published_time" content="2024-08-04T05:27:00.000Z">
+<meta property="article:modified_time" content="2024-08-31T14:11:50.600Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="make">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/Linux/make/zidingyihanshuyufa.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>函数</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/%E5%B8%B8%E9%87%8F/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&text=函数"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&is_video=false&description=函数"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=函数&body=Check out this article: https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&name=函数&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&t=函数"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">自定义函数语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">预定义函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E4%B8%8E%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%BC%E5%90%88%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">变量与函数的综合示例</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        函数
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-04T05:27:00.000Z" class="dt-published" itemprop="datePublished">2024-08-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Linux/">Linux</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/make/" rel="tag">make</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>makefile 中支持函数的概念</p>
+<ul>
+<li>make 解释器提供了一系列的函数供 makefile 调用</li>
+<li>在 makefile 中支持自定义函数实现，并调用执行</li>
+<li>通过 define 关键字实现自定义函数</li>
+</ul>
+<h2 id="自定义函数语法"><a href="#自定义函数语法" class="headerlink" title="自定义函数语法"></a>自定义函数语法</h2><p><img src="/public/image/Linux/make/zidingyihanshuyufa.png" alt="zidingyihanshuyufa"></p>
+<blockquote>
+<p>$(0) 表示这个函数的第 0 个参数；即这个函数的名字</p>
+<p>$(1) 表示i这个函数的第 1 个参数；即 func2 调用时候，后面跟着的第一个参数</p>
+</blockquote>
+<p><strong>深入理解自定义函数</strong></p>
+<ul>
+<li>自定义函数是<strong>一个多行变量</strong>，无法直接调用</li>
+<li>自定义函数是<strong>一种过程调用</strong>，没有任何返回值</li>
+<li>自定义函数<strong>用于定义命令集合</strong>，并应用于规则中</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">.PHONY : test</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> func1</span><br><span class="line">	@echo <span class="string">&quot;My name is $(0)&quot;</span></span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> func2</span><br><span class="line">	@echo <span class="string">&quot;My name is $(0)&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;Param 1 =&gt; $(1)&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;Param 2 =&gt; $(2)&quot;</span></span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line">var := <span class="variable">$(<span class="built_in">call</span> func1)</span></span><br><span class="line">new := <span class="variable">$(func1)</span></span><br><span class="line"></span><br><span class="line">test :</span><br><span class="line">	@echo <span class="string">&quot;new =&gt; <span class="variable">$(new)</span>&quot;</span>	<span class="comment"># new =&gt; @echo &quot;My name is&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;var =&gt; <span class="variable">$(var)</span>&quot;</span>	<span class="comment"># var =&gt; @echo &quot;My name is func1&quot;</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> func1)</span>  <span class="comment"># My name is func1</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> func2, D.T.Software, delphi_tang)</span></span><br><span class="line">	<span class="comment"># My name is func2</span></span><br><span class="line">	<span class="comment"># Param 1 =&gt; D.T.Software</span></span><br><span class="line">	<span class="comment"># Param 2 =&gt; delphi_tang</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>为什么 new &#x3D;&gt; @echo “My name is、var &#x3D;&gt; @echo “My name is func1？</p>
+<p>是因为define 关键字是用来定义多行变量的，只不过 call 关键字将它(func1、func2)当作了一个自定义函数进行使用；当这个使用不在规则中的时候，make 解释器就将他当成了一个变量来进行使用，所以输出的是命令的内容；</p>
+<p>而为什么 var 多了一个 func1 呢？是因为 call 关键字将实参替换到函数体当中对应的位置；</p>
+<p>由上述执行结果可以看出</p>
+<p>define 关键字是用来定义多行变量的，只不过在 call 关键字的作用下被当作了一个自定义函数进行使用；只不过这个使用是有限制的，只有在规则中才可以进行使用。</p>
+</blockquote>
+<h2 id="预定义函数"><a href="#预定义函数" class="headerlink" title="预定义函数"></a>预定义函数</h2><p><strong>make 解释器中的预定义函数</strong></p>
+<ul>
+<li>make 的函数提供了<strong>处理文件名，变量和命令</strong>的函数</li>
+<li>可以在需要的地方<strong>调用函数来处理指定的参数</strong></li>
+<li>函数在<strong>调用的地方被替换为处理结果</strong></li>
+</ul>
+<p><strong>预定义函数的调用</strong></p>
+<p><img src="/public/image/Linux/make/yudingyihanshudiaoyong.png" alt="yudingyihanshudiaoyong"></p>
+<p><strong>为什么自定义函数与预定义函数的调用形式完全不同？</strong></p>
+<ul>
+<li>makefile 中<strong>不支持</strong>真正意义上的自定义函数，自定义函数的<strong>本质是多行变量</strong></li>
+<li>预定义的 call 函数在调用时将参数传递给多行变量</li>
+<li>自定义函数是 call 函数的实参，并在 call 中被执行</li>
+</ul>
+<blockquote>
+<p>call 函数就是将参数传递给多行变量，是用来处理参数值的；</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例1</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: test</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> func1</span><br><span class="line">	@echo <span class="string">&quot;My name is $(0)&quot;</span></span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line">func2 := @echo <span class="string">&quot;My name is $(0)&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> func1)</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> func2)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># make</span></span><br><span class="line"><span class="comment"># My name is func1</span></span><br><span class="line"><span class="comment"># My name is </span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>func1 是个多行变量，使用时 call 将参数传递给了多行变量；</p>
+<p>func2 是个普通变量，call 无法处理普通变量，所以这里 $(0) 是空值；</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例2</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: test</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> func1</span><br><span class="line">	@echo <span class="string">&quot;My name is $(0)&quot;</span></span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> func2</span><br><span class="line">	@echo <span class="string">&quot;My name is $(0)&quot;</span></span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line">var1 := <span class="variable">$(<span class="built_in">call</span> func1)</span></span><br><span class="line">var2 := <span class="variable">$(<span class="built_in">call</span> func2)</span></span><br><span class="line">var3 := <span class="variable">$(<span class="built_in">abspath</span> ./)</span></span><br><span class="line">var4 := <span class="variable">$(<span class="built_in">abspath</span> tst.app)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">	@echo <span class="string">&quot;var1 =&gt; <span class="variable">$(var1)</span>&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;var2 =&gt; <span class="variable">$(var2)</span>&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;var3 =&gt; <span class="variable">$(var3)</span>&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;var4 =&gt; <span class="variable">$(var4)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># make</span></span><br><span class="line"><span class="comment"># var1 =&gt; 	@echo &quot;My name is func1&quot; </span></span><br><span class="line"><span class="comment"># var2 =&gt; 	@echo &quot;My name is func2&quot; </span></span><br><span class="line"><span class="comment"># var3 =&gt; /hom/kay</span></span><br><span class="line"><span class="comment"># var4 =&gt; /hom/kay/tst.app</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>make 解释器<strong>提供了一系列的函数</strong>供 makefile 调用</li>
+<li>自定义函数是<strong>一个多行变量，无法直接调用</strong></li>
+<li>自定义函数用于<strong>定义命令集合</strong>，并应用于规则中</li>
+<li>预定义的 call 函数在调用时将参数传递给多行变量</li>
+<li><strong>自定义函数是 call 函数的实参</strong>，并在 call 中被执行</li>
+</ul>
+<h2 id="变量与函数的综合示例"><a href="#变量与函数的综合示例" class="headerlink" title="变量与函数的综合示例"></a>变量与函数的综合示例</h2><p><strong>实战需求</strong></p>
+<ul>
+<li>自动生成 target 文件夹存放可执行文件</li>
+<li>自动生成 objs 文件夹存放编译生成的目标文件（*.o）</li>
+<li>支持调试版本的编译选项</li>
+<li>考虑代码的扩展性</li>
+</ul>
+<p><strong>工具原料</strong></p>
+<ul>
+<li>$(wildcard_pattern)<ul>
+<li>获取当前工作目录中满足 _pattern 的文件或者目录列表</li>
+</ul>
+</li>
+<li>$(addprefix _prefix,_names)<ul>
+<li>给名字列表 _names 中每一个名字增加前缀 _prefix</li>
+</ul>
+</li>
+</ul>
+<p><strong>技巧</strong></p>
+<ol>
+<li>自动获取当前目录下的源文件列表（函数调用）<ul>
+<li>SRCS :&#x3D; $(wildcard *.c)</li>
+</ul>
+</li>
+<li>根据源文件列表生成目标文件列表（文件的值替换）<ul>
+<li>OBJS :&#x3D; $(SRCS:.c&#x3D;.o)</li>
+</ul>
+</li>
+<li>对每一个目标文件列表加上路径前缀（函数调用）<ul>
+<li>OBJS :&#x3D; $(addprefix path&#x2F;, $(OBJS))</li>
+</ul>
+</li>
+</ol>
+<p><strong>规则中的模式替换（目录结构）</strong></p>
+<p><img src="/public/image/Linux/make/guizezhongdemoshitihuan.png" alt="guizezhongdemoshitihuan"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">自定义函数语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">预定义函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E4%B8%8E%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%BC%E5%90%88%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">变量与函数的综合示例</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&text=函数"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&is_video=false&description=函数"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=函数&body=Check out this article: https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&name=函数&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Linux/Make/%E5%87%BD%E6%95%B0/&t=函数"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

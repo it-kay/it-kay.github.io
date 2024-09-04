@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="make 与 makefile介绍make：是一个工具程序，通过读取”makefile”文件以实现自动化构建软件。  解析源程序之间的依赖关系 根据依赖关系自动维护编译工作 执行宿主操作系统中的各种命令  众多编译辅助工具中的王者 makefile：是一个配置文件，一个描述文件。  定义一系列规则来指定源文件编译的先后顺序 拥有特定的语法规则，支持函数定义和函数调用 能够直接集成操作系统中的各种命">
+<meta property="og:type" content="article">
+<meta property="og:title" content="make 和 makefile">
+<meta property="og:url" content="https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="make 与 makefile介绍make：是一个工具程序，通过读取”makefile”文件以实现自动化构建软件。  解析源程序之间的依赖关系 根据依赖关系自动维护编译工作 执行宿主操作系统中的各种命令  众多编译辅助工具中的王者 makefile：是一个配置文件，一个描述文件。  定义一系列规则来指定源文件编译的先后顺序 拥有特定的语法规则，支持函数定义和函数调用 能够直接集成操作系统中的各种命">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/erzheguanxi.png">
+<meta property="article:published_time" content="2024-08-01T12:12:00.000Z">
+<meta property="article:modified_time" content="2024-08-31T14:11:50.596Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="make">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/Linux/make/erzheguanxi.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>make 和 makefile</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/Linux/Make/%E4%BC%AA%E7%9B%AE%E6%A0%87/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/OS/OS%E5%9F%BA%E7%A1%80/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&text=make 和 makefile"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&is_video=false&description=make 和 makefile"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=make 和 makefile&body=Check out this article: https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&name=make 和 makefile&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&t=make 和 makefile"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#make-%E4%B8%8E-makefile%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">make 与 makefile介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#makefile-%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">makefile 的结构</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        make 和 makefile
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-01T12:12:00.000Z" class="dt-published" itemprop="datePublished">2024-08-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Linux/">Linux</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/make/" rel="tag">make</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="make-与-makefile介绍"><a href="#make-与-makefile介绍" class="headerlink" title="make 与 makefile介绍"></a>make 与 makefile介绍</h2><p>make：是一个工具程序，通过读取”makefile”文件以实现自动化构建软件。</p>
+<ul>
+<li><strong>解析源程序之间的依赖关系</strong></li>
+<li>根据依赖关系<strong>自动维护</strong>编译工作</li>
+<li>执行宿主操作系统中的各种命令</li>
+</ul>
+<p><strong>众多编译辅助工具中的王者</strong></p>
+<p>makefile：是一个配置文件，一个描述文件。</p>
+<ul>
+<li><strong>定义一系列规则</strong>来指定源文件编译的先后顺序</li>
+<li><strong>拥有特定的语法规则</strong>，支持函数定义和函数调用</li>
+<li>能够<strong>直接集成</strong>操作系统中的各种命令</li>
+</ul>
+<p><strong>二者关系</strong>：makefile 中的描述用于指导 make 程序如何完成工作；make 根据 makefile 中的规则执行命令，最后完成编译输出。</p>
+<p><img src="/public/image/Linux/make/erzheguanxi.png" alt="erzheguanxi"></p>
+<p>简单示例</p>
+<p>make 程序的使用示例：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以 hello 关键字作为目标查找 mf.txt 文件，并执行 hello 处的命令。</span></span><br><span class="line">make -f mf.txt hello</span><br><span class="line"></span><br><span class="line"><span class="comment"># 简写</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在当前目录下以 hello 关键字为目标查找 makefile 或 Makefile 文件，并执行 hello 处的命令。</span></span><br><span class="line">make hello</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在当前目录下查找 makefile 或 Makefile 文件中最顶层目标，并执行最顶层目标的命令。</span></span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>小结</p>
+<ul>
+<li>make 只是一个<strong>特殊功能的</strong>应用程序</li>
+<li>make 用于根据指定的目标<strong>执行相应的命令</strong></li>
+<li>makefile 用于<strong>定义目标</strong>和实现目标所需的命令</li>
+<li>makefile 有特定的语法规则，支持函数定义和调用</li>
+</ul>
+<h2 id="makefile-的结构"><a href="#makefile-的结构" class="headerlink" title="makefile 的结构"></a>makefile 的结构</h2><p><strong>makefile 的意义</strong></p>
+<ul>
+<li><p>makefile 用于定义源文件之间的依赖关系</p>
+</li>
+<li><p>makefile 说明如何编译各个源文件并生成可执行文件</p>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># makefile语法</span></span><br><span class="line"><span class="comment"># 第一种写法</span></span><br><span class="line"><span class="section">target(目标文件): 文件1 文件2(依赖文件列表); command(命令) </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二种写法</span></span><br><span class="line"><span class="section">target(目标文件): 文件1 文件2(依赖文件列表) </span></span><br><span class="line">`\t`command</span><br></pre></td></tr></table></figure>
+
+<p>注意事项</p>
+<p>target 可以包含多个目标</p>
+<ul>
+<li>使用空格对多个目标进行分割</li>
+</ul>
+<p>依赖 可以包含多个依赖</p>
+<ul>
+<li>使用空格对多个依赖进行分割</li>
+</ul>
+<p>[Tab]键：<code>\t</code></p>
+<ul>
+<li>每一个命令必须以[Tab]字符开始</li>
+<li>[Tab]字符告诉 make 此行是一个命令行</li>
+</ul>
+<p>续航符: \</p>
+<ul>
+<li>可以将内容分开写到下一行，提高可读性</li>
+</ul>
+<p><strong>makefile的依赖示例</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: test</span></span><br><span class="line">	echo <span class="string">&quot;make all&quot;</span></span><br><span class="line"><span class="section">test: </span></span><br><span class="line">	echo <span class="string">&quot;make test&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出： 可使用 @ 进行无回写设置</span></span><br><span class="line"><span class="comment"># echo &quot;make test&quot;</span></span><br><span class="line"><span class="comment"># make test</span></span><br><span class="line"><span class="comment"># echo &quot;make all&quot;</span></span><br><span class="line"><span class="comment"># make all</span></span><br></pre></td></tr></table></figure>
+
+<p>依赖规则</p>
+<ul>
+<li>当<strong>目标对应的文件不存在时</strong>，执行对应命令</li>
+<li><strong>当依赖在时间上比目标更新时</strong>，执行对应命令(要理解下)</li>
+<li><strong>当依赖关系连续发生时</strong>，对比依赖链上的每一个目标</li>
+</ul>
+<p>小技巧</p>
+<ul>
+<li>makefile 中可以在命令前加上 @ 符，作用为命令无回显。</li>
+<li>工程开发中可以将最终可执行文件名和all同时作为 makefile 中第一条规则的目标</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">案例：</span><br><span class="line">hello.out all: main.o func.o</span><br><span class="line">	gcc -o hello.out main.o func.o</span><br><span class="line"><span class="section">main.o: main.c</span></span><br><span class="line">	gcc -o main.o, -c main.c</span><br><span class="line"><span class="section">func.o: func.c</span></span><br><span class="line">	gcc -o func.o -c func.c</span><br></pre></td></tr></table></figure>
+
+<p>小结</p>
+<ul>
+<li><p>makefile 用于定义源文件间的<strong>依赖关系</strong></p>
+</li>
+<li><p>makefile 说明<strong>如何编译各个源文件</strong>并生成可执行文件</p>
+</li>
+<li><p>makefile 中的目标之间存在<strong>连续依赖关系</strong></p>
+</li>
+<li><p><strong>依赖存在</strong>并且<strong>命令执行成功</strong>是目标完成的充要条件</p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#make-%E4%B8%8E-makefile%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">make 与 makefile介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#makefile-%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">makefile 的结构</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&text=make 和 makefile"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&is_video=false&description=make 和 makefile"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=make 和 makefile&body=Check out this article: https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&title=make 和 makefile"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&name=make 和 makefile&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Linux/Make/make%20%E5%92%8C%20makefile/&t=make 和 makefile"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

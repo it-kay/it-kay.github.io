@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="应用程序的运行  用户双击 App 这一操作会被 os 所感知到；os 会根据文件名，将对应的 App 加载到内存中；加载到内存之后便会寻找去 main() 函数并将其调用；当 main() 函数运行完成之后 return 会向操作系统返回一个值；  123456789101112131415#include&lt;stdio.h&gt;#include&lt;stdlib.h&gt;int ma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数">
+<meta property="og:url" content="https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="应用程序的运行  用户双击 App 这一操作会被 os 所感知到；os 会根据文件名，将对应的 App 加载到内存中；加载到内存之后便会寻找去 main() 函数并将其调用；当 main() 函数运行完成之后 return 会向操作系统返回一个值；  123456789101112131415#include&lt;stdio.h&gt;#include&lt;stdlib.h&gt;int ma">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/yinyongcxu%E7%9A%84yunxing.png">
+<meta property="article:published_time" content="2024-09-02T10:14:00.000Z">
+<meta property="article:modified_time" content="2024-09-04T11:18:05.560Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="C语言基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/yinyongcxu%E7%9A%84yunxing.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>函数</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%AE%8F/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/Keil/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&text=函数"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&is_video=false&description=函数"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=函数&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&name=函数&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&t=函数"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text">应用程序的运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">函数定义与函数调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void"><span class="toc-number">3.</span> <span class="toc-text">void</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">数组作为参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92"><span class="toc-number">5.</span> <span class="toc-text">递归</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        函数
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-02T10:14:00.000Z" class="dt-published" itemprop="datePublished">2024-09-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" rel="tag">C语言基础</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="应用程序的运行"><a href="#应用程序的运行" class="headerlink" title="应用程序的运行"></a>应用程序的运行</h2><p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/yinyongcxu%E7%9A%84yunxing.png" alt="yinyongcxu的yunxing"></p>
+<blockquote>
+<p>用户双击 App 这一操作会被 os 所感知到；os 会根据文件名，将对应的 App 加载到内存中；加载到内存之后便会寻找去 main() 函数并将其调用；当 main() 函数运行完成之后 return 会向操作系统返回一个值；</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello\n&quot;</span>);</span><br><span class="line">    system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;Word\n&quot;</span>);</span><br><span class="line">    system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">122</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Hello</span></span><br><span class="line"><span class="comment">// Press any key to continue . . .</span></span><br><span class="line"><span class="comment">// Word</span></span><br><span class="line"><span class="comment">// Press any key to continue . . .</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 C 语言中，system 函数是用来执行外部命令的，如 Linux 下的 ls 等等</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Word\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">122</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">C:\Users\kay\Desktop\workspace&gt;a.exe</span></span><br><span class="line"><span class="comment">Hello</span></span><br><span class="line"><span class="comment">Word</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">C:\Users\kay\Desktop\workspace&gt;echo %ERRORLEVEL%</span></span><br><span class="line"><span class="comment">122</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>powershell 下可以通过 %ERRORLEVEL% 环境变量来获取上一个执行命令的退出状态。这是我们看上当前返回的数值确实是 return 中返回的数值，这则可证明：在 C 语言程序中，main 函数是程序的入口点，当程序执行完毕时，它会通过 return 语句返回一个值给操作系统。这个返回值通常用于表示程序的执行状态或结果。</p>
+</blockquote>
+<h2 id="函数定义与函数调用"><a href="#函数定义与函数调用" class="headerlink" title="函数定义与函数调用"></a>函数定义与函数调用</h2><ul>
+<li>函数在被调用前必须完整定义</li>
+<li>函数可以先被声明，再被定义<ul>
+<li>声明时，必须给出函数三要素（函数名，参数列表，返回值类型）</li>
+<li>定义时，必须完整给出函数体定义</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(i % <span class="number">7</span> == <span class="number">0</span> || i % <span class="number">9</span> == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum);</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;1到n之间所有能被7或者被9整除的数字的和: %d&quot;</span>, sum);  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;第一题：键入长度 n&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    sum(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时在 main 函数中使用 sum 函数并不需要显示的进行函数声明；</p>
+<p>因为在同一个源文件中，如果函数的定义（即函数体）出现在对该函数的调用之前，那么编译器在编译到调用点时已经知道函数的存在和签名，因此不需要额外的函数声明。</p>
+<p>当 C 文件被加载到内存中时候，他会从上往下去找 main 函数，再找到 main 函数之前他会先加载到 sum 函数，所以在 main 函数中进行使用时无需再次进行声明；</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;第一题：键入长度 n&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    <span class="type">void</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> n)</span>; <span class="comment">//	void sum(int);</span></span><br><span class="line">    sum(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(i % <span class="number">7</span> == <span class="number">0</span> || i % <span class="number">9</span> == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum);</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;1到n之间所有能被7或者被9整除的数字的和: %d&quot;</span>, sum);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在同一个源文件中，如果你的函数调用出现在函数定义之前，你也需要在使用函数之前提供函数的声明，以便编译器知道函数的存在、返回类型以及它接受的参数。</p>
+</blockquote>
+<blockquote>
+<p>声明时 void sum(int); 与 void sum(int a); 二者的区别</p>
+<p>在C语言中，函数声明的<code>void sum(int);</code>和<code>void sum(int a);</code>在大多数情况下被视为等价的，二者并无区别；但它们在上下文和用途上略有不同，主要区别在于它们是如何被解释的。</p>
+<p>void sum(int);</p>
+<p>这是C语言中标准的函数声明方式。它声明了一个名为<code>sum</code>的函数，该函数接受一个<code>int</code>类型的参数，但在这个声明中并没有为这个参数命名。这种声明方式通常用于头文件中，或者在你只想声明函数的存在而不关心参数具体名称时。由于参数没有具体名称，这个声明不会为参数分配存储空间或进行任何操作，它仅仅是告诉编译器<code>sum</code>是一个函数，接受一个<code>int</code>类型的参数，并返回一个<code>void</code>（即不返回任何值）。</p>
+<p>void sum(int a); </p>
+<p>它同样声明了一个名为<code>sum</code>的函数，该函数接受一个<code>int</code>类型的参数，并将其命名为<code>a</code>。然而，这种命名方式主要出现在函数定义中，即你实际编写函数体时。在函数声明中（特别是头文件中），虽然可以这样做，但它实际上并不为外部代码提供关于参数名称的任何有用信息，因为外部代码调用这个函数时不会使用到参数名<code>a</code>。此外，如果这个函数声明出现在多个地方（如头文件中），而每个声明中参数的名称不同，这可能会引起混淆，尽管从技术上讲这是合法的;<code>a</code>仅仅是一个占位符，用于说明函数接收一个<code>int</code>类型的参数。它本身并不在栈上分配空间或执行任何操作。</p>
+</blockquote>
+<h2 id="void"><a href="#void" class="headerlink" title="void"></a>void</h2><p>在 C 语言如果想要定义无参函数则需要以下定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">sum</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br><span class="line">==========================================================</span><br><span class="line"><span class="type">void</span> sum() &#123;	<span class="comment">// 这种定义表示可接受任意类型、任意多个的参数</span></span><br><span class="line">       </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 下面这三种这种调用在编译时不会进行报错</span></span><br><span class="line">    sum(<span class="number">1</span>);</span><br><span class="line">    sum();</span><br><span class="line">    sum(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数组作为参数"><a href="#数组作为参数" class="headerlink" title="数组作为参数"></a>数组作为参数</h2><ul>
+<li>可以在定义函数时使用数组形参（如：int f(int a [5])）<ul>
+<li>数组形参需要使用<strong>同类型数组</strong>作为参数</li>
+<li>在 C 语言中，<strong>数组作为函数参数传递时大小信息丢失</strong></li>
+<li>在函数内部修改数组形参，将影响数组实参</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">demo</span><span class="params">(<span class="type">int</span> a[<span class="number">3</span>])</span> &#123;	<span class="comment">// 也可以写成 int a[]</span></span><br><span class="line">    <span class="type">int</span> len = <span class="built_in">strlen</span>(a); <span class="comment">// &#x27;strlen&#x27; makes pointer from integer without a cast [-Wint-conversion]</span></span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">50</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> arry1[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">    <span class="type">int</span> arry2[<span class="number">10</span>] = &#123;<span class="number">1</span>, <span class="number">20</span>, <span class="number">30</span>&#125;;</span><br><span class="line">    <span class="comment">// 此处并不会报错，因为数组作为函数参数传递时大小信息丢失，他不关心数组参数的个数；</span></span><br><span class="line">    <span class="comment">// 对于数组参数来说，是将数组本身传递到了函数内部；</span></span><br><span class="line">    demo(arry1);</span><br><span class="line">    demo(arry2);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;arry1[0] = %d\n&quot;</span>, arry1[<span class="number">0</span>]); <span class="comment">// arry1[0] = 50</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;arry2[0] = %d&quot;</span>, arry2[<span class="number">0</span>]); <span class="comment">// arry2[0] = 50</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用数组参数时如何获取<strong>数组的大小</strong>信息? 将数组的大小也作为参数，传递给函数;</p>
+<h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><p><strong>递归函数</strong></p>
+<ul>
+<li>函数体中存在<strong>自我调用的函数</strong></li>
+<li>递归函数<strong>必须有递归出口</strong>（边界条件）</li>
+<li>函数的无限递归将导致程序崩溃</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text">应用程序的运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">函数定义与函数调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void"><span class="toc-number">3.</span> <span class="toc-text">void</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">数组作为参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92"><span class="toc-number">5.</span> <span class="toc-text">递归</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&text=函数"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&is_video=false&description=函数"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=函数&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&title=函数"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&name=函数&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%87%BD%E6%95%B0/&t=函数"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

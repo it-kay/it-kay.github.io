@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="数值类型整数类型    类型 最小值 最大值 大小(bytes) 对齐(bytes)    u8 0 28-1 1 1   u16 0 216-1 2 2   u32 0 232-1 4 4   u64 0 264-1 8 8   u128 0 2128-1 16 16      类型 最小值 最大值 大小(bytes) 对齐(bytes)align(bytes)    i8 -(27) 27-1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust数据内存布局">
+<meta property="og:url" content="https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="数值类型整数类型    类型 最小值 最大值 大小(bytes) 对齐(bytes)    u8 0 28-1 1 1   u16 0 216-1 2 2   u32 0 232-1 4 4   u64 0 264-1 8 8   u128 0 2128-1 16 16      类型 最小值 最大值 大小(bytes) 对齐(bytes)align(bytes)    i8 -(27) 27-1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-06-21T10:42:02.000Z">
+<meta property="article:modified_time" content="2024-08-31T14:11:50.604Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="Rust">
+<meta property="article:tag" content="Rust-基础">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Rust数据内存布局</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/Rust/basic/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%9C%9F%E8%AE%A1%E7%AE%97/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&text=Rust数据内存布局"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&is_video=false&description=Rust数据内存布局"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Rust数据内存布局&body=Check out this article: https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&name=Rust数据内存布局&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&t=Rust数据内存布局"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">数值类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#array"><span class="toc-number">2.</span> <span class="toc-text">array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#str"><span class="toc-number">3.</span> <span class="toc-text">str</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#struct"><span class="toc-number">4.</span> <span class="toc-text">struct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tuple"><span class="toc-number">5.</span> <span class="toc-text">tuple</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#closure"><span class="toc-number">6.</span> <span class="toc-text">closure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#union"><span class="toc-number">7.</span> <span class="toc-text">union</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#enum"><span class="toc-number">8.</span> <span class="toc-text">enum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#trait"><span class="toc-number">9.</span> <span class="toc-text">trait</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dynamically-Sized-Types-DST"><span class="toc-number">10.</span> <span class="toc-text">Dynamically Sized Types(DST)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%B6%E5%A4%A7%E5%B0%8F%E7%B1%BB%E5%9E%8B-ZST-Zero-Sized-Type"><span class="toc-number">11.</span> <span class="toc-text">零大小类型(ZST, Zero Sized Type)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E7%B1%BB%E5%9E%8B-Empty-Types"><span class="toc-number">12.</span> <span class="toc-text">空类型(Empty Types)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%B8%83%E5%B1%80"><span class="toc-number">13.</span> <span class="toc-text">数据布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">14.</span> <span class="toc-text"></span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Rust数据内存布局
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-21T10:42:02.000Z" class="dt-published" itemprop="datePublished">2024-06-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Rust/">Rust</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Rust/" rel="tag">Rust</a>, <a class="p-category" href="/tags/Rust-%E5%9F%BA%E7%A1%80/" rel="tag">Rust-基础</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h2><p><strong>整数类型</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>最小值</th>
+<th>最大值</th>
+<th>大小(bytes)</th>
+<th>对齐(bytes)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>u8</code></td>
+<td>0</td>
+<td>28-1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>u16</code></td>
+<td>0</td>
+<td>216-1</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>u32</code></td>
+<td>0</td>
+<td>232-1</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>u64</code></td>
+<td>0</td>
+<td>264-1</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>u128</code></td>
+<td>0</td>
+<td>2128-1</td>
+<td>16</td>
+<td>16</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>最小值</th>
+<th>最大值</th>
+<th>大小(bytes)</th>
+<th>对齐(bytes)align(bytes)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>i8</code></td>
+<td>-(27)</td>
+<td>27-1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>i16</code></td>
+<td>-(215)</td>
+<td>215-1</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>i32</code></td>
+<td>-(231)</td>
+<td>231-1</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>i64</code></td>
+<td>-(263)</td>
+<td>263-1</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>i128</code></td>
+<td>-(2127)</td>
+<td>2127-1</td>
+<td>16</td>
+<td>16</td>
+</tr>
+</tbody></table>
+<p><strong>浮点数</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>大小(bytes)</th>
+<th>对齐(bytes)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>f32</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>f64</td>
+<td>8</td>
+<td>8</td>
+</tr>
+</tbody></table>
+<p>f64 在 x86 系统上对齐到 4 bytes。</p>
+<p><strong>usized &amp; isized</strong></p>
+<p>usize 无符号整形，isize 有符号整形。 在 64 位系统上，长度为 8 bytes，在 32 位系统上长度为 4 bytes。</p>
+<p><strong>bool</strong></p>
+<p>bool 类型，取值为 true 或 false，长度和对齐长度都是 1 byte。</p>
+<h2 id="array"><a href="#array" class="headerlink" title="array"></a>array</h2><p>数组的内存布局为系统类型元组的有序组合。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">A</span>: [<span class="type">i32</span>; <span class="number">3</span>] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, std::mem::size_of::&lt;[<span class="type">i32</span>; <span class="number">3</span>]&gt;()); <span class="comment">// 大小: 12</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, std::mem::align_of::&lt;[<span class="type">i32</span>; <span class="number">3</span>]&gt;()); <span class="comment">// 对齐: 4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="str"><a href="#str" class="headerlink" title="str"></a>str</h2><p><strong>char 类型</strong></p>
+<p>char 表示：一个 32 位长度字符，Unicode 标量值 <a target="_blank" rel="noopener" href="http://www.unicode.org/glossary/#unicode_scalar_value">Unicode Scalar Value</a> 范围为 in the 0x0000 - 0xD7FF 或者是 0xE000 - 0x10FFFF。</p>
+<p><strong>str 类型</strong></p>
+<p>str 与 [u8] 一样表示一个 u8 的 slice。Rust 中标准库中对 str 有个假设：符合 UTF-8 编码。内存布局与 [u8] 相同。</p>
+<blockquote>
+<p>[u8]是一个字节切片的类型，而不是一个固定大小的数组。切片是对数组的引用或数组部分的一个动态视图，允许你访问一个连续的内存区域，就像访问一个数组一样，但切片本身并不拥有其引用的数据。</p>
+<p><code>[u8; N]</code>：这是一个固定大小的字节数组，其中 <code>N</code> 是数组的长度。例如，<code>[u8; 4]</code> 是一个包含四个 <code>u8</code> 元素的数组。</p>
+<p>二者要注意不要搞混了</p>
+</blockquote>
+<p><strong>slice</strong></p>
+<p>slice 是 DST 类型，是类型 T 序列的一种视图。 slice 的使用必须要通过指针，&amp;[T] 是一个胖指针，保存指向<code>数据的地址</code>和<code>元素个数</code>。 <code>slice 的内存布局与其指向的 array 部分相同</code>。</p>
+<p><strong>&amp;str 与 String 的区别</strong></p>
+<p>下面给出 &amp;str String 的内存结构比对：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// String</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">my_name</span> = <span class="string">&quot;Pascal&quot;</span>.<span class="title function_ invoke__">to_string</span>();</span><br><span class="line">my_name.<span class="title function_ invoke__">push_str</span>( <span class="string">&quot; Precht&quot;</span>);</span><br><span class="line"><span class="comment">// str</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">last_name</span> = &amp;my_name[<span class="number">7</span>..];</span><br></pre></td></tr></table></figure>
+
+<p>String</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">                     buffer</span><br><span class="line">                   /   capacity</span><br><span class="line">                 /   /  length</span><br><span class="line">               /   /   /</span><br><span class="line">            +–––+–––+–––+</span><br><span class="line">stack frame │ • │ 8 │ 6 │ &lt;- my_name: String</span><br><span class="line">            +–│–+–––+–––+</span><br><span class="line">              │</span><br><span class="line">            [–│–––––––– capacity –––––––––––]</span><br><span class="line">              │</span><br><span class="line">            +–V–+–––+–––+–––+–––+–––+–––+–––+</span><br><span class="line">       heap │ P │ a │ s │ c │ a │ l │   │   │</span><br><span class="line">            +–––+–––+–––+–––+–––+–––+–––+–––+</span><br><span class="line"></span><br><span class="line">            [––––––– length ––––––––]</span><br></pre></td></tr></table></figure>
+
+<p>String vs &amp;str</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">         my_name: <span class="type">String</span>   last_name: &amp;<span class="type">str</span></span><br><span class="line">            [––––––––––––]    [–––––––]</span><br><span class="line">            +–––+––––+––––+–––+–––+–––+</span><br><span class="line">stack frame │ • │ <span class="number">16</span> │ <span class="number">13</span> │   │ • │ <span class="number">6</span> │  <span class="comment">// &amp;str 没有 capacity</span></span><br><span class="line">            +–│–+––––+––––+–––+–│–+–––+</span><br><span class="line">              │                 │</span><br><span class="line">              │                 +–––––––––+</span><br><span class="line">              │                           │</span><br><span class="line">              │                           │</span><br><span class="line">              │                         [–│––––––– <span class="type">str</span> –––––––––]</span><br><span class="line">            +–V–+–––+–––+–––+–––+–––+–––+–V–+–––+–––+–––+–––+–––+–––+–––+–––+</span><br><span class="line">       heap │ P │ a │ s │ c │ a │ l │   │ P │ r │ e │ c │ h │ t │   │   │   │</span><br><span class="line">            +–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+</span><br><span class="line"></span><br><span class="line">			[––––––––––––––––––––––––––– my_name –––––––––––––––––––––––––––]</span><br><span class="line">										[–––––––––––– last_name ––––––––––––]</span><br></pre></td></tr></table></figure>
+
+<h2 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h2><p>结构体是带命名的复合类型，有以下几种</p>
+<p><strong>具名结构体</strong></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    a: <span class="type">u8</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>元组结构体</strong></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Position</span>(<span class="type">i32</span>, <span class="type">i32</span>, <span class="type">i32</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>单元结构体</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct Gamma;</span><br></pre></td></tr></table></figure>
+
+<p><strong>内存布局</strong></p>
+<blockquote>
+<p>数据对齐</p>
+<p>数据对齐是指将数据存储在内存中时，按照特定的规则将数据放置在内存地址上的一种方式。</p>
+<p>数据对齐的主要目的是为了提高数据读取效率。当CPU访问正确对齐的数据时，它的运行效率最高。若数据没有对齐，CPU在读取或写入数据时可能需要进行多次操作，这会降低CPU的效率，增加系统的开销。</p>
+<p>编译器优化 -&gt; 字段重排</p>
+<p>Rust编译器在优化结构体时，可能会进行字段重排（field reordering），这是为了优化内存访问、提高数据缓存的效率，以及确保数据满足平台的内存对齐要求。</p>
+<p>Rust编译器的字段重排是一种优化技术，旨在提高程序的性能和内存使用效率。</p>
+</blockquote>
+<p>Rust 中结构体的对齐属性等于<code>它所有成员中最大的那个</code>。Rust 会在必要的位置填充空白数据，以保证每一个成员都正确地对齐，同时<code>整个类型的尺寸是对齐属性的整数倍</code>。例如：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    a: <span class="type">u8</span>, <span class="comment">// 1B</span></span><br><span class="line">    b: <span class="type">u32</span>, <span class="comment">// 4B</span></span><br><span class="line">    c: <span class="type">u16</span>, <span class="comment">// 2B</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印下变量地址，可以根据结果看到对齐属性为 4, 结构大小为 8 byte 。</span></span><br><span class="line"><span class="comment">// 1 + 4 + 2 = 7</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = A &#123;</span><br><span class="line">        a: <span class="number">1</span>,</span><br><span class="line">        b: <span class="number">2</span>,</span><br><span class="line">        c: <span class="number">3</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;0x&#123;:X&#125; 0x&#123;:X&#125; 0x&#123;:X&#125;&quot;</span>, &amp;a.a <span class="keyword">as</span> *<span class="keyword">const</span> <span class="type">u8</span> <span class="keyword">as</span> <span class="type">usize</span>, &amp;a.b <span class="keyword">as</span> *<span class="keyword">const</span> <span class="type">u32</span> <span class="keyword">as</span> <span class="type">usize</span> , &amp;a.c <span class="keyword">as</span> *<span class="keyword">const</span> <span class="type">u16</span> <span class="keyword">as</span> <span class="type">usize</span> );</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, std::mem::size_of::&lt;A&gt;());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">0x327EFBF35E</span> <span class="number">0x327EFBF358</span> <span class="number">0x327EFBF35C</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// rust编译器会进行内存重排，并填充所需大小(这里是1B)</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    b: <span class="type">u32</span>,</span><br><span class="line">    c: <span class="type">u16</span>,</span><br><span class="line">    a: <span class="type">u8</span>,</span><br><span class="line">    _pad: [<span class="type">u8</span>; <span class="number">1</span>],</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// foo1字段顺序：data2(0), count(4), data1(6) </span></span><br><span class="line"><span class="comment">// foo1字段顺序：data1(8), count(c), data2(e) </span></span><br><span class="line"><span class="comment">// 可以看到编译器会改变 Foo&lt;T, U&gt; 中成员顺序。</span></span><br><span class="line"><span class="comment">// 内存优化原则要求不同的范型可以有不同的成员顺序。 如果不优化的可能会造成如下情况，造成大量内存开销：</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Foo</span>&lt;<span class="type">u16</span>, <span class="type">u32</span>&gt; &#123;</span><br><span class="line">    count: <span class="type">u16</span>,</span><br><span class="line">    data1: <span class="type">u16</span>,</span><br><span class="line">    data2: <span class="type">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Foo</span>&lt;<span class="type">u32</span>, <span class="type">u16</span>&gt; &#123;</span><br><span class="line">    count: <span class="type">u16</span>,</span><br><span class="line">    _pad1: <span class="type">u16</span>,</span><br><span class="line">    data1: <span class="type">u32</span>,</span><br><span class="line">    data2: <span class="type">u16</span>,</span><br><span class="line">    _pad2: <span class="type">u16</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="tuple"><a href="#tuple" class="headerlink" title="tuple"></a>tuple</h2><p>元组是匿名的复合类型，有以下几种 tuple：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">() (unit)</span><br><span class="line">(<span class="type">f64</span>, <span class="type">f64</span>)</span><br><span class="line">(<span class="type">String</span>, <span class="type">i32</span>)</span><br><span class="line">(<span class="type">i32</span>, <span class="type">String</span>) (different <span class="keyword">type</span> <span class="title class_">from</span> the previous example)</span><br><span class="line">(<span class="type">i32</span>, <span class="type">f64</span>, <span class="type">Vec</span>&lt;<span class="type">String</span>&gt;, <span class="type">Option</span>&lt;<span class="type">bool</span>&gt;)</span><br></pre></td></tr></table></figure>
+
+<p>tuple 的结构和 Struct 一致，只是元素是通过 index 进行访问的。</p>
+<h2 id="closure"><a href="#closure" class="headerlink" title="closure"></a>closure</h2><p>闭包相当于一个捕获变量的结构体，实现了<code>FnOnce</code>或<code>FnMut</code>或<code>Fn</code>。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">f</span>&lt;F : <span class="title function_ invoke__">FnOnce</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span>&gt; (g: F) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">g</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;foo&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">t</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;bar&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">f</span>(|| &#123;</span><br><span class="line">    s += &amp;t;</span><br><span class="line">    s</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// Prints &quot;foobar&quot;.</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="union"><a href="#union" class="headerlink" title="union"></a>union</h2><h2 id="enum"><a href="#enum" class="headerlink" title="enum"></a>enum</h2><h2 id="trait"><a href="#trait" class="headerlink" title="trait"></a>trait</h2><h2 id="Dynamically-Sized-Types-DST"><a href="#Dynamically-Sized-Types-DST" class="headerlink" title="Dynamically Sized Types(DST)"></a>Dynamically Sized Types(DST)</h2><h2 id="零大小类型-ZST-Zero-Sized-Type"><a href="#零大小类型-ZST-Zero-Sized-Type" class="headerlink" title="零大小类型(ZST, Zero Sized Type)"></a>零大小类型(ZST, Zero Sized Type)</h2><h2 id="空类型-Empty-Types"><a href="#空类型-Empty-Types" class="headerlink" title="空类型(Empty Types)"></a>空类型(Empty Types)</h2><h2 id="数据布局"><a href="#数据布局" class="headerlink" title="数据布局"></a>数据布局</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">数值类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#array"><span class="toc-number">2.</span> <span class="toc-text">array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#str"><span class="toc-number">3.</span> <span class="toc-text">str</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#struct"><span class="toc-number">4.</span> <span class="toc-text">struct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tuple"><span class="toc-number">5.</span> <span class="toc-text">tuple</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#closure"><span class="toc-number">6.</span> <span class="toc-text">closure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#union"><span class="toc-number">7.</span> <span class="toc-text">union</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#enum"><span class="toc-number">8.</span> <span class="toc-text">enum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#trait"><span class="toc-number">9.</span> <span class="toc-text">trait</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dynamically-Sized-Types-DST"><span class="toc-number">10.</span> <span class="toc-text">Dynamically Sized Types(DST)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%B6%E5%A4%A7%E5%B0%8F%E7%B1%BB%E5%9E%8B-ZST-Zero-Sized-Type"><span class="toc-number">11.</span> <span class="toc-text">零大小类型(ZST, Zero Sized Type)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E7%B1%BB%E5%9E%8B-Empty-Types"><span class="toc-number">12.</span> <span class="toc-text">空类型(Empty Types)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%B8%83%E5%B1%80"><span class="toc-number">13.</span> <span class="toc-text">数据布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">14.</span> <span class="toc-text"></span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&text=Rust数据内存布局"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&is_video=false&description=Rust数据内存布局"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Rust数据内存布局&body=Check out this article: https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&title=Rust数据内存布局"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&name=Rust数据内存布局&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Rust/basic/Rust%E6%95%B0%E6%8D%AE%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80/&t=Rust数据内存布局"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

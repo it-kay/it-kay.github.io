@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Rust 编译过程  直接使用源代码非常不方便且容易出错。因此在我们做任何其他事情之前，我们将原始源代码转换为 AST。即使这样做也涉及大量工作，包括词法分析、解析、 宏扩展、名称解析、条件编译、功能门控 AST的检查和验证。 值得注意的是，这些任务之间并不总是有明确的顺序。例如，宏扩展依赖于名称解析来解析宏和 imports。解析需要宏扩展，而这反过来又可能需要分析宏的输出。 步骤说明：  Ru">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust编译过程">
+<meta property="og:url" content="https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="Rust 编译过程  直接使用源代码非常不方便且容易出错。因此在我们做任何其他事情之前，我们将原始源代码转换为 AST。即使这样做也涉及大量工作，包括词法分析、解析、 宏扩展、名称解析、条件编译、功能门控 AST的检查和验证。 值得注意的是，这些任务之间并不总是有明确的顺序。例如，宏扩展依赖于名称解析来解析宏和 imports。解析需要宏扩展，而这反过来又可能需要分析宏的输出。 步骤说明：  Ru">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Rust/basic/rust-complie-process.png">
+<meta property="article:published_time" content="2024-06-18T13:41:02.000Z">
+<meta property="article:modified_time" content="2024-08-31T14:11:50.604Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="Rust">
+<meta property="article:tag" content="Rust-基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/Rust/basic/rust-complie-process.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Rust编译过程</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%9C%9F%E8%AE%A1%E7%AE%97/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/game/rust/Bevy/bevy%E5%9F%BA%E7%A1%80/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&text=Rust编译过程"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&is_video=false&description=Rust编译过程"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Rust编译过程&body=Check out this article: https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&name=Rust编译过程&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&t=Rust编译过程"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Rust编译过程
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-18T13:41:02.000Z" class="dt-published" itemprop="datePublished">2024-06-18</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Rust/">Rust</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Rust/" rel="tag">Rust</a>, <a class="p-category" href="/tags/Rust-%E5%9F%BA%E7%A1%80/" rel="tag">Rust-基础</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Rust 编译过程</strong></p>
+<p><img src="/public/image/Rust/basic/rust-complie-process.png" alt="rust-complie-process"></p>
+<p>直接使用源代码非常不方便且容易出错。因此在我们做任何其他事情之前，我们将原始源代码转换为 AST。即使这样做也涉及大量工作，包括词法分析、解析、 宏扩展、名称解析、条件编译、功能门控 AST的检查和验证。</p>
+<p>值得注意的是，这些任务之间并不总是有明确的顺序。例如，宏扩展依赖于名称解析来解析宏和 imports。解析需要宏扩展，而这反过来又可能需要分析宏的输出。</p>
+<p><strong>步骤说明</strong>：</p>
+<ol>
+<li><p>Rust 源码(Unicode字符)作为 <em>UTF-8</em> 编码序列输入到编译器，编译器的 Lexing 会获取字符编码并将他们转换为<code>token Steam</code>，然后解析 token Stream 将它们转换为结构化的编译器更容易使用的表单，通常称为<code>抽象语法树</code>(AST)  。</p>
+<p>请注意，在解析为 AST 时 ，Rust编译器会对其进行<em>词法分析</em>包括但不限于宏扩展、名称解析、#[test]实现、panic实现、AST验证、Feature 检查、检索 Lang 项目等。</p>
+</li>
+<li><p>AST 降低到  <em>HIR</em>(高级中间表示) </p>
+<p>HIR 是抽象语法树 (AST) 对编译器更友好的表示形式，很多 Rust 语法糖在这一阶段，已经被脱糖（desugared）处理。比如 <code>for</code> 循环和<code>while(let)</code>在这个阶段会被转为<code>loop</code>，<code>if let</code> 被转为<code>match</code>，普遍<code>impl Trait</code>转换为泛型参数，存在<code>impl Trait</code>转换为虚拟声明<code>existential type</code>等等。</p>
+<p>对于编译器来说，所有的版次也就是Edition版本，在到达中间语言层次的时候已经消除了版次差异。</p>
+</li>
+<li><p>HIR 降低到 <em>THIR</em>(类型化高级中间表示)</p>
+<p>THIR 是 rustc 在类型检查后生成的另一种IR，它用于MIR建设、详尽性检查和不安全检查。是一个在在 HIR 的基础上进一步添加了类型信息的版本。</p>
+</li>
+<li><p>THIR 降级为 <em>MIR</em>(中级中间表示)</p>
+<p>它是 Rust 的一种彻底简化的形式，用于 某些对流量敏感的安全检查——特别是借用检查器！– 也用于优化和代码生成。</p>
+</li>
+</ol>
+<blockquote>
+<p>Rust 源码(Unicode字符)作为 <em>UTF-8</em> 编码序列输入到编译器，通过分词把词法结构处理为词条流，词条流经过语法解析形成<code>抽象语法树</code>，抽象语法树降级（简化）为<code>高级中间语言</code>（<em>HIR</em>），高级中间语言被用于编译器对代码进行类型检查方法查找等工作，高级中间语言继续降级（简化）为<code>中级中间语言</code>（<em>MIR</em>），中级中间语言被用于借用检查、优化、代码生成（宏、泛型、单态化）等工作，中级中间语言（MIR）优化为<code>LLVM中间语言</code>，最后交给LLVM编译器生成机器码。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://rustc-dev-guide.rust-lang.org/the-parser.html">Rust 编译器开发指南</a></p>
+<p><a target="_blank" rel="noopener" href="https://rustmagazine.github.io/rust_magazine_2021/chapter_1/rustc_part1.html">Rust编译器专题 | 图解 Rust 编译器与语言设计 Part 1 - Rust精选</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&text=Rust编译过程"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&is_video=false&description=Rust编译过程"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Rust编译过程&body=Check out this article: https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&title=Rust编译过程"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&name=Rust编译过程&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/&t=Rust编译过程"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

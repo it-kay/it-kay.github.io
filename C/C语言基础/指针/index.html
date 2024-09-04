@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="指针：一种特殊的变量指针是 C 语言中的变量  因为是变量，所以用于保存具体值 特殊之处，指针保存的值是内存中的地址 内存地址是什么？ 内存是计算机中的存储部件，每个存储单元都有固定唯一的编号 内存中存储单元的编号即内存地址    内存示例 获取地址 C 语言中通过 &amp; 操作符获取程序元素的地址 &amp; 可获取变量，数组，函数的起始地址 内存地址的本质是一个无符号整数（4 &#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="指针">
+<meta property="og:url" content="https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="指针：一种特殊的变量指针是 C 语言中的变量  因为是变量，所以用于保存具体值 特殊之处，指针保存的值是内存中的地址 内存地址是什么？ 内存是计算机中的存储部件，每个存储单元都有固定唯一的编号 内存中存储单元的编号即内存地址    内存示例 获取地址 C 语言中通过 &amp; 操作符获取程序元素的地址 &amp; 可获取变量，数组，函数的起始地址 内存地址的本质是一个无符号整数（4 &#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/neicunshili.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/erweishuzuzhizhen.png">
+<meta property="article:published_time" content="2024-09-03T08:10:00.000Z">
+<meta property="article:modified_time" content="2024-09-04T11:18:05.568Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="C语言基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/neicunshili.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>指针</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%AE%8F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&text=指针"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&is_video=false&description=指针"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=指针&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&name=指针&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&t=指针"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%EF%BC%9A%E4%B8%80%E7%A7%8D%E7%89%B9%E6%AE%8A%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">指针：一种特殊的变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">内存示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%9C%B0%E5%9D%80"><span class="toc-number">3.</span> <span class="toc-text">获取地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%AE%9A%E4%B9%89%E7%9A%84%E8%A7%84%E5%AE%9A"><span class="toc-number">5.</span> <span class="toc-text">指针定义的规定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E6%95%B0%E7%BB%84"><span class="toc-number">6.</span> <span class="toc-text">指针与数组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84"><span class="toc-number">6.1.</span> <span class="toc-text">深入理解指针数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F"><span class="toc-number">6.2.</span> <span class="toc-text">字符串常量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E7%A7%BB%E5%8A%A8"><span class="toc-number">7.</span> <span class="toc-text">指针移动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">指针与函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88"><span class="toc-number">8.1.</span> <span class="toc-text">函数指针</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%95%B0%E7%BB%84%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E6%97%B6%EF%BC%8C%E6%97%A0%E6%B3%95%E6%8B%BF%E5%88%B0%E9%95%BF%E5%BA%A6%E4%BF%A1%E6%81%AF"><span class="toc-number">9.</span> <span class="toc-text">为什么数组作为参数时，无法拿到长度信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E5%A0%86%E7%A9%BA%E9%97%B4"><span class="toc-number">10.</span> <span class="toc-text">指针与堆空间</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E7%A9%BA%E9%97%B4%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">10.1.</span> <span class="toc-text">堆空间的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%A7%E6%8C%87%E9%92%88"><span class="toc-number">11.</span> <span class="toc-text">多级指针</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        指针
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-03T08:10:00.000Z" class="dt-published" itemprop="datePublished">2024-09-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" rel="tag">C语言基础</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="指针：一种特殊的变量"><a href="#指针：一种特殊的变量" class="headerlink" title="指针：一种特殊的变量"></a>指针：一种特殊的变量</h2><p><strong>指针是 C 语言中的变量</strong></p>
+<ul>
+<li>因为是变量，所以用于保存具体值</li>
+<li>特殊之处，指针保存的值是内存中的地址</li>
+<li>内存地址是什么？<ul>
+<li>内存是计算机中的存储部件，每个存储单元都有固定唯一的编号</li>
+<li>内存中存储单元的编号即内存地址</li>
+</ul>
+</li>
+</ul>
+<h2 id="内存示例"><a href="#内存示例" class="headerlink" title="内存示例"></a>内存示例</h2><p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/neicunshili.png" alt="neicunshili"></p>
+<h2 id="获取地址"><a href="#获取地址" class="headerlink" title="获取地址"></a>获取地址</h2><ul>
+<li>C 语言中通过 &amp; 操作符获取程序元素的地址</li>
+<li>&amp; 可获取变量，数组，函数的起始地址</li>
+<li>内存地址的本质是一个无符号整数（4 &#x2F; 8 个字节）</li>
+</ul>
+<blockquote>
+<p>注意：只有通过 内存地址 + 长度 才能确定一个变量中保存的值</p>
+</blockquote>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p><strong>指针定义语法：type * pointer;</strong></p>
+<ul>
+<li>type-数据类型，决定访问内存时的长度</li>
+<li>*-标志，意味着定义一个指针变量</li>
+<li>point-变量名，遵循 C 语言命名规则</li>
+</ul>
+<p><em><em>指针内存访问：</em> pointer</em>*</p>
+<ul>
+<li>指针访问操作符（*）作用于指针变量即可访问内存数据（解引用）</li>
+<li>指针的类型决定通过地址访问内存时的长度范围</li>
+<li>指针的类型统一占用 4 字节或 8 字节<ul>
+<li>sizeof(type *) &#x3D;&#x3D; 4 or sizeof(type *) &#x3D;&#x3D; 8</li>
+</ul>
+</li>
+</ul>
+<h2 id="指针定义的规定"><a href="#指针定义的规定" class="headerlink" title="指针定义的规定"></a>指针定义的规定</h2><ul>
+<li>Type * 类型的指针只能保存 Type 类型变量的地址</li>
+<li>禁止不同类型的指针相互赋值</li>
+<li>禁止将普通数值当作地址赋值给指针</li>
+</ul>
+<blockquote>
+<p>指针保存的地址必须是有效地址</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">10</span>;</span><br><span class="line">    <span class="type">float</span> f = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* pi = &amp;f; <span class="comment">// warning</span></span><br><span class="line">    <span class="type">float</span>* pf = &amp;f;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pi = %p, pf = %p\n&quot;</span>, pi, pf);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*pi = %d, *pf = %f\n&quot;</span>, *pi, *pf);</span><br><span class="line"></span><br><span class="line">    pi = i; <span class="comment">//  warning</span></span><br><span class="line"></span><br><span class="line">    *pi = <span class="number">1000</span>; <span class="comment">// OOPS 程序会崩溃掉</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pi = %p, *pi = %d\n&quot;</span>, pi, *pi);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">pi = 00000026B29FF7E4, pf = 00000026B29FF7E4</span></span><br><span class="line"><span class="comment">*pi = 1092616192, *pf = 10.000000</span></span><br><span class="line"><span class="comment">崩溃了</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>进行指针赋值时，一定要注意类型的区别，不如会造成各种奇快的错误，这些错误编译器可能并不会进行提示或者警告；</p>
+</blockquote>
+<h2 id="指针与数组"><a href="#指针与数组" class="headerlink" title="指针与数组"></a>指针与数组</h2><ul>
+<li>数组名可以看作一个指针，代表数组中 0 元素的地址</li>
+<li>当指针指向数组元素时，可进行指针运算（指针移动）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line"><span class="type">int</span>* p = a;</span><br><span class="line">p = p + <span class="number">1</span> <span class="comment">//指向数组中第二个元素</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="深入理解指针数组"><a href="#深入理解指针数组" class="headerlink" title="深入理解指针数组"></a>深入理解指针数组</h3><ul>
+<li>&amp;a 与 a 在数值上是相同的，但是意义上不同(int a[] &#x3D; {1, 2, 3, 4, 5};)</li>
+<li>&amp;a 代表数组地址，类型为：int (*) [5]</li>
+<li>a 代表数组 0 号元素地址，类型为：int *</li>
+<li>指向数组的指针：int (*pName) [5] &#x3D; &a;</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">    <span class="type">int</span> (*pa) [<span class="number">5</span>] = &amp;a; <span class="comment">// int (*pa) [] = &amp;a;</span></span><br><span class="line">    <span class="type">int</span>* p = a;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%p, %p\n&quot;</span>, pa, p); <span class="comment">//00000061F43FFDA0, 00000061F43FFDA0</span></span><br><span class="line">    </span><br><span class="line">    pa = p <span class="comment">// WARNING 类型不一致不能相互赋值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>数组名不是指针，只是代表了 0 号元素的地址，因此，可以当作指针使用</p>
+<p>int* p &#x3D; a; 是一个声明，其中 p 是一个指向整数的指针。由于数组名 a 在这个上下文中会衰减为指向其首元素（即 a[0]）的指针，因此这个赋值是合法的，并且 p 现在存储了 &#96;a[0] 的地址。</p>
+</blockquote>
+<h3 id="字符串常量"><a href="#字符串常量" class="headerlink" title="字符串常量"></a>字符串常量</h3><ul>
+<li>C 语言中的<strong>字符串常量</strong>是 char * 类型，一种指针类型</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, <span class="string">&quot;kay.wang&quot;</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, <span class="string">&quot;kay.wang&quot;</span>);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">00007FF67FE74000</span></span><br><span class="line"><span class="comment">00007FF67FE74000</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="指针移动"><a href="#指针移动" class="headerlink" title="指针移动"></a>指针移动</h2><p>*<em>int v &#x3D; <em>p++</em></em></p>
+<ul>
+<li>指针访问操作符（*）和自增运算操作符（++）优先级相同</li>
+<li>所以，先从 p 指向内存中取值，然后 p 在进行移动<ul>
+<li>int v &#x3D; *p; p++;</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span>* s = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;first = %c\n&quot;</span>, *<span class="string">&quot;D.T.software&quot;</span>);</span><br><span class="line">    s = <span class="string">&quot;D.T.software&quot;</span>;</span><br><span class="line">    <span class="keyword">while</span> (*s) <span class="comment">// 字符串转为 char 数组后最有一个元素为 \0 也就是 0 元素</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, *s++);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">first = D</span></span><br><span class="line"><span class="comment">D.T.software</span></span><br><span class="line"><span class="comment">*/</span>    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="指针与函数"><a href="#指针与函数" class="headerlink" title="指针与函数"></a>指针与函数</h2><ul>
+<li>函数的本质是一段内存中的代码（占用一片连续内存）</li>
+<li>函数拥有类型，函数类型由<strong>返回类型</strong>和<strong>参数类型列表</strong>组成</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">函数声明</th>
+<th align="center">类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">int sum(int n);</td>
+<td align="center">int(int)</td>
+</tr>
+<tr>
+<td align="center">void swap(int* pa, int* pb);</td>
+<td align="center">void(int*, int*)</td>
+</tr>
+<tr>
+<td align="center">void g(void);</td>
+<td align="center">void(v0id)</td>
+</tr>
+</tbody></table>
+<ul>
+<li>函数名就是函数体代码的起始地址（函数入口地址）</li>
+<li>通过函数名调用函数，本质为指定具体地址的跳转执行（跳转到指定地址处执行）</li>
+<li>因此，可定义指针，保存函数入口地址</li>
+</ul>
+<h3 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h3><p>(Type func(Type1 a, Type2 b))</p>
+<ul>
+<li>函数名即函数入口地址，类型为 Type (*) (type1, type2)</li>
+<li>对于 func 函数，&amp;func 与 func 数值相同，意义相同</li>
+<li>指向函数的指针：Type (*pFunc)  （Type1, Type2) &#x3D; func<ul>
+<li>对于函数来说，函数名就是地址，所以加不加 &amp; 都是一样的，可以直接写 func</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123; <span class="keyword">return</span> a + b;&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">mul</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123; <span class="keyword">return</span> a * b;&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> (*pFunc)(<span class="type">int</span>, <span class="type">int</span>) = add;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pFunc(<span class="number">1</span>, <span class="number">2</span>));    <span class="comment">// 3</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, (*pFunc)(<span class="number">3</span>, <span class="number">4</span>)); <span class="comment">// 7</span></span><br><span class="line"></span><br><span class="line">    pFunc = &amp;mul;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pFunc(<span class="number">1</span>, <span class="number">2</span>));    <span class="comment">// 2</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, (*pFunc)(<span class="number">3</span>, <span class="number">4</span>)); <span class="comment">// 12</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>将函数指针作为参数</strong></p>
+<ul>
+<li>函数指针本质还是指针（变量，保存内存地址）</li>
+<li>可定义函数指针参数，<strong>使用相同的代码实现不同的功能</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">calculate</span><span class="params">(<span class="type">int</span> a[], <span class="type">int</span> len, <span class="type">int</span>(*cal) (<span class="type">int</span>, <span class="type">int</span>))</span> &#123;</span><br><span class="line">    <span class="type">int</span> ret = a[<span class="number">0</span>];</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">        ret = cal(ret, a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ul>
+<li>函数指针只是单纯的保存函数的入口地址</li>
+<li>因此，<ul>
+<li>只能通过函数指针调用目标函数</li>
+<li>不能进行指针移动（指针运算）</li>
+</ul>
+</li>
+</ul>
+<h2 id="为什么数组作为参数时，无法拿到长度信息"><a href="#为什么数组作为参数时，无法拿到长度信息" class="headerlink" title="为什么数组作为参数时，无法拿到长度信息"></a>为什么数组作为参数时，无法拿到长度信息</h2><p>当数组作为参数时，函数的数组形参退化为指针！，因此，不包含数组实参的长度信息；</p>
+<p>使用数组名调用时，传递的是 0 号元素的地址；</p>
+<p>void func (int a[]) &lt;–&gt; void func(int* a)</p>
+<p>void func (int a[1]) &lt;–&gt;</p>
+<p>void func (int a[10]) &lt;–&gt;</p>
+<p>void func (int a[100]) &lt;–&gt;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">demo</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> len)</span> &#123;</span><br><span class="line">    <span class="type">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;demo: sizeof(arr) = %d\n&quot;</span>, <span class="keyword">sizeof</span>(arr));    <span class="comment">// 32位系统为 4 64位系统为 8</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (i &lt; len)</span><br><span class="line">    &#123;</span><br><span class="line">        ret += *arr++;</span><br><span class="line">        i ++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// int v = *a++; // Error</span></span><br><span class="line">    </span><br><span class="line">    demo(a, <span class="number">5</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>为什么 int v &#x3D; *a++; 而 demo 函数中却可以呢，因为当数组作为参数时，函数的数组形参退化为指针！</p>
+<p>让我们详细分析一下：</p>
+<ol>
+<li><strong>数组名的性质</strong>：数组名在 C 语言中是一个常量表达式，表示数组的首元素地址。尽管它经常被当作指针来使用，但它本身并不是指针变量。你不能改变一个数组名来指向数组的下一个元素或另一个数组。</li>
+<li><strong>++ 操作符的用途</strong>：<code>++</code> 操作符用于将变量的值增加 1。对于整数类型，它简单地增加变量的值；对于指针，它增加指针所指向地址的偏移量（通常是增加指针指向类型的大小）。然而，这两种情况都要求操作数是一个可修改的左值。</li>
+<li><strong>数组名不是左值</strong>：在 C 语言中，左值是指可以出现在赋值语句左边的表达式，意味着它可以被赋值。数组名虽然在某种程度上可以表示地址，但它并不是一个可修改的左值。你不能将一个新的值赋给数组名来改变它的地址。</li>
+<li><strong>类型不匹配</strong>：即使我们忽略了数组名不是左值的事实，<code>a++</code> 在类型上也是不合法的。因为 <code>a</code>（在表达式中）被视为指向其首元素的指针，但 <code>a++</code> 的结果（即递增后的值）将不再是一个数组类型，而是一个指向下一个元素的指针。然而，由于 <code>a</code> 本身不是左值，这种递增操作在语法上就是不允许的。</li>
+</ol>
+<p>综上所述，<code>int</code> 类型的数组 <code>a</code> 不能执行 <code>a++</code> 这样的操作，因为数组名不是一个可修改的左值，而且 <code>++</code> 操作符不适用于数组名。如果你想要遍历数组中的元素，你应该使用指针或数组索引来访问每个元素。例如：</p>
+</blockquote>
+<h2 id="指针与堆空间"><a href="#指针与堆空间" class="headerlink" title="指针与堆空间"></a>指针与堆空间</h2><p><strong>堆空间的本质</strong></p>
+<ul>
+<li>备用的”内存仓库”，以字节为单位预留的可用内存</li>
+<li>程序可在需要时，从”仓库“中申请使用内存(动态的借用)</li>
+<li>当不需要再使用申请的内存时，需要及时归还（动态的归还）</li>
+</ul>
+<p><strong>void</strong>*</p>
+<ul>
+<li>void 类型是<strong>基础类型</strong>，对应的指针类型为 void*</li>
+<li>void* 是指针类型，其指针变量能够保存地址（可以保存任意类型的内存地址,也可以转化为其他任意类型的指针）</li>
+<li>通过 void* 的指针<strong>无法获取内存长中的数据</strong>（无长度信息）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> c = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">1</span>;</span><br><span class="line">    <span class="type">float</span> f= <span class="number">2.0f</span>;</span><br><span class="line">    <span class="type">double</span> d = <span class="number">3.0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">void</span>* p = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    p = &amp;c;</span><br><span class="line">    p = &amp;i;</span><br><span class="line">    p = &amp;f;</span><br><span class="line">    p = &amp;d;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// printf(&quot;%f\n&quot;, *p); // Error</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="堆空间的使用"><a href="#堆空间的使用" class="headerlink" title="堆空间的使用"></a>堆空间的使用</h3><ul>
+<li>工具箱：stdlib.h</li>
+<li>申请：void* malloc(unsigned bytes)</li>
+<li>归还：void free(void* p)</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从堆空间中申请 4 个字节用来当作 int 类型的变量使用</span></span><br><span class="line">    <span class="type">int</span>* p = <span class="built_in">malloc</span>(<span class="number">4</span>);</span><br><span class="line">    <span class="comment">// 判断是否申请到了堆空间</span></span><br><span class="line">    <span class="keyword">if</span>(p != <span class="literal">NULL</span>) &#123; <span class="comment">// 如果申请失败 p 为 0； 即：空值</span></span><br><span class="line">        *p = <span class="number">100</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, *p); <span class="comment">// 100</span></span><br><span class="line">        <span class="built_in">free</span>(p);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="多级指针"><a href="#多级指针" class="headerlink" title="多级指针"></a>多级指针</h2><p>用于保存指向指针的指针</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Type v;</span><br><span class="line">Type* pv = &amp;v;</span><br><span class="line">Type** ppv = &amp;pv;</span><br><span class="line">Type*** pppv = &amp;ppv;</span><br><span class="line">==========================</span><br><span class="line"> <span class="comment">/* </span></span><br><span class="line"><span class="comment"> 多级数组的指针该如何表示</span></span><br><span class="line"><span class="comment"> C 语言中没有多级数组，所谓二级数组，就是一维数组的数组，即：数组中的元素是一维数组！！;以此类推</span></span><br><span class="line"><span class="comment"> /*</span></span><br></pre></td></tr></table></figure>
+
+<p>因此：</p>
+<p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/erweishuzuzhizhen.png" alt="erweishuzuzhizhen"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%EF%BC%9A%E4%B8%80%E7%A7%8D%E7%89%B9%E6%AE%8A%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">指针：一种特殊的变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">内存示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%9C%B0%E5%9D%80"><span class="toc-number">3.</span> <span class="toc-text">获取地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%AE%9A%E4%B9%89%E7%9A%84%E8%A7%84%E5%AE%9A"><span class="toc-number">5.</span> <span class="toc-text">指针定义的规定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E6%95%B0%E7%BB%84"><span class="toc-number">6.</span> <span class="toc-text">指针与数组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84"><span class="toc-number">6.1.</span> <span class="toc-text">深入理解指针数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F"><span class="toc-number">6.2.</span> <span class="toc-text">字符串常量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E7%A7%BB%E5%8A%A8"><span class="toc-number">7.</span> <span class="toc-text">指针移动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">指针与函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88"><span class="toc-number">8.1.</span> <span class="toc-text">函数指针</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%95%B0%E7%BB%84%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E6%97%B6%EF%BC%8C%E6%97%A0%E6%B3%95%E6%8B%BF%E5%88%B0%E9%95%BF%E5%BA%A6%E4%BF%A1%E6%81%AF"><span class="toc-number">9.</span> <span class="toc-text">为什么数组作为参数时，无法拿到长度信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E5%A0%86%E7%A9%BA%E9%97%B4"><span class="toc-number">10.</span> <span class="toc-text">指针与堆空间</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E7%A9%BA%E9%97%B4%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">10.1.</span> <span class="toc-text">堆空间的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%A7%E6%8C%87%E9%92%88"><span class="toc-number">11.</span> <span class="toc-text">多级指针</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&text=指针"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&is_video=false&description=指针"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=指针&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&title=指针"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&name=指针&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/&t=指针"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

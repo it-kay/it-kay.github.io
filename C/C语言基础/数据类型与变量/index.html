@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="打印语句1234567#include&lt;stdio.h&gt;int main() &#123;    printf(&quot;%d\n&quot;, 2);		&#x2F;&#x2F; 2    printf(&quot;%f\n&quot;, 2);		&#x2F;&#x2F; 0.000000    printf(&quot;%d\n&quot;, &#x27;2;);	&#x2F;&#x2F; 50&#125;   这里使用了%f来输出一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据类型与变量">
+<meta property="og:url" content="https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="打印语句1234567#include&lt;stdio.h&gt;int main() &#123;    printf(&quot;%d\n&quot;, 2);		&#x2F;&#x2F; 2    printf(&quot;%f\n&quot;, 2);		&#x2F;&#x2F; 0.000000    printf(&quot;%d\n&quot;, &#x27;2;);	&#x2F;&#x2F; 50&#125;   这里使用了%f来输出一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/jiegoutiyongfa.png">
+<meta property="article:published_time" content="2024-08-17T13:28:00.000Z">
+<meta property="article:modified_time" content="2024-09-04T11:18:05.568Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="C语言基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/jiegoutiyongfa.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>数据类型与变量</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E4%BD%8D%E8%BF%90%E7%AE%97/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/Linux/Ubuntu/MySQL/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&text=数据类型与变量"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&is_video=false&description=数据类型与变量"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=数据类型与变量&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&name=数据类型与变量&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&t=数据类型与变量"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8D%B0%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.</span> <span class="toc-text">打印语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E9%9D%A2%E9%87%8F%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">字面量的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B5%8B%E5%80%BC"><span class="toc-number">3.</span> <span class="toc-text">变量之间的赋值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#signed-%E4%B8%8E-unsigned"><span class="toc-number">4.</span> <span class="toc-text">signed 与 unsigned</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sizeof%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">5.</span> <span class="toc-text">sizeof关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#long"><span class="toc-number">6.</span> <span class="toc-text">long</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-number">7.</span> <span class="toc-text">浮点数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">8.</span> <span class="toc-text">变量的作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E5%8F%98%E9%87%8F%E7%9A%84%E7%89%A9%E7%90%86%E5%AD%98%E5%82%A8%E5%8C%BA%E5%9F%9F"><span class="toc-number">9.</span> <span class="toc-text">不同变量的物理存储区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">10.</span> <span class="toc-text">静态变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%91%A8%E6%9C%9F"><span class="toc-number">11.</span> <span class="toc-text">变量的声明周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">12.</span> <span class="toc-text">自定义数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#typedef"><span class="toc-number">12.1.</span> <span class="toc-text">typedef</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#struct"><span class="toc-number">12.2.</span> <span class="toc-text">struct</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%8D%E5%9F%9F"><span class="toc-number">12.2.1.</span> <span class="toc-text">位域</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        数据类型与变量
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-17T13:28:00.000Z" class="dt-published" itemprop="datePublished">2024-08-17</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" rel="tag">C语言基础</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="打印语句"><a href="#打印语句" class="headerlink" title="打印语句"></a>打印语句</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="number">2</span>);		<span class="comment">// 2</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, <span class="number">2</span>);		<span class="comment">// 0.000000</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="string">&#x27;2;);	// 50</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里使用了%f来输出一个浮点数，但传入的是一个整数  2。在大多数实现中，整数会被隐式转换为浮点数（即 2.000000）；但是，由于 <code>printf</code> 的行为可能依赖于具体的编译器和运行时环境，有时可能看到不同的输出（比如由于浮点数表示的精度问题）。</p>
+<p>字符 ‘2’ 的 ASCII 值是 50</p>
+</blockquote>
+<h2 id="字面量的类型"><a href="#字面量的类型" class="headerlink" title="字面量的类型"></a>字面量的类型</h2><p>程序中的数值（字面量）也有类型：默认类型或者指定类型</p>
+<ul>
+<li>默认类型：2 为 int，0.2 为 double， ‘c’ 为 char</li>
+<li>指定类型：0.2f 为 float（后缀 f 表示 float）</li>
+</ul>
+<blockquote>
+<p>C 语言是类型严格的语言，字面量也有类型，使用字面量时需要考虑类型；</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">short</span> s = <span class="number">2</span>; <span class="comment">// 字面量 2 的类型被转换为 short</span></span><br><span class="line"><span class="type">double</span> d = <span class="number">2</span>; <span class="comment">// 字面量 2 的类型会被转为 double</span></span><br><span class="line"></span><br><span class="line"><span class="type">long</span> n = <span class="number">-1l</span>; <span class="comment">// 表示该字面量为 lang 类型</span></span><br><span class="line"><span class="type">long</span> <span class="type">long</span> nl = <span class="number">2147483648u</span>; <span class="comment">// 表示该字面量为无符号类型</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="变量之间的赋值"><a href="#变量之间的赋值" class="headerlink" title="变量之间的赋值"></a>变量之间的赋值</h2><ul>
+<li><p>大类型赋值给小类型时：可能会发生<strong>溢出</strong></p>
+<ul>
+<li>当数值在小类型范围内 -&gt; 赋值成功</li>
+<li>当数值超过小类型的范围 -&gt; 发生溢出</li>
+</ul>
+</li>
+<li><p>小类型可以安全的赋值给大类型</p>
+</li>
+<li><p>浮点类型赋值给整形，会发生<strong>截断</strong>（小数部分丢失）</p>
+</li>
+<li><p>整数赋值给浮点类型，能够完成（会在后面补 0）</p>
+</li>
+</ul>
+<h2 id="signed-与-unsigned"><a href="#signed-与-unsigned" class="headerlink" title="signed 与 unsigned"></a>signed 与 unsigned</h2><p><strong>有符号与无符号</strong></p>
+<ul>
+<li>signed int<ul>
+<li>范围：-2147483648 ～ 2147483647</li>
+</ul>
+</li>
+<li>unsigned int<ul>
+<li>范围：0 ～ 4294967295</li>
+</ul>
+</li>
+</ul>
+<p><strong>扩展</strong></p>
+<ul>
+<li>signed 和 unsigned 可与 char 和 short 组合使用<ul>
+<li>signed char，unsigned char</li>
+<li>signed short，unsigned short</li>
+</ul>
+</li>
+<li>程序中可能出现的关于 int 的缩写<ul>
+<li>signed &lt;-&gt; signed int</li>
+<li>unsigned &lt;-&gt; unsigned int</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>打印无符号整形时候要使用 %u 而不是%d，%d 会依旧按照有符号进行操作；</p>
+</blockquote>
+<p><strong>类型本身是不会占用内存的，只有变量才会占用内存</strong></p>
+<h2 id="sizeof关键字"><a href="#sizeof关键字" class="headerlink" title="sizeof关键字"></a>sizeof关键字</h2><p>功能：用于获取类型或者变量所占用的内存大小（字节）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> s = <span class="keyword">sizeof</span>(<span class="type">short</span>); <span class="comment">// 使用 shrot 类型所表示的字节大小来初始化 s</span></span><br><span class="line">    <span class="type">int</span> t = <span class="keyword">sizeof</span> s; <span class="comment">// 使用变量 s 所作占用的字节大小来初始化 t</span></span><br><span class="line">    <span class="type">int</span> u = <span class="keyword">sizeof</span>(s); <span class="comment">// 同上：使用变量 s 所作占用的字节大小来初始化 t</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="long"><a href="#long" class="headerlink" title="long"></a>long</h2><ul>
+<li>long 在使用不同编译器时，<strong>可能占用的内存不同</strong></li>
+<li>long 通常占用 4 个字节，也可能占用 8 个字节</li>
+<li>long long 表示整形，<strong>固定占用 8 个字节</strong></li>
+<li>long long 是 long long int 的缩写形式</li>
+</ul>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><ul>
+<li>浮点类型（float &amp; double）对数据的表示是不准确的</li>
+<li>整数类型（char，short，int，long）对数据的表示是准确的</li>
+<li>浮点类型与整数类型在内存中对数据的表示法完全不同</li>
+</ul>
+<h2 id="变量的作用域"><a href="#变量的作用域" class="headerlink" title="变量的作用域"></a>变量的作用域</h2><p><strong>C 语言中变量的分类</strong></p>
+<ul>
+<li>局部变量<ul>
+<li>函数内部定义的变量（隶属于当前函数）</li>
+<li>只能在当前函数中进行使用</li>
+</ul>
+</li>
+<li>全局变量<ul>
+<li>全局范围内的函数（不特定隶属于任意一个函数）</li>
+<li>可以在任意函数中访问使用</li>
+</ul>
+</li>
+</ul>
+<p><strong>同名变量的问题</strong></p>
+<ul>
+<li>不同函数中的局部变量可以同名（不会产生冲突）</li>
+<li>全局变量不能同名（会产生冲突）</li>
+<li>当局部变量和全局变量同名时，优先使用局部变量</li>
+</ul>
+<p><strong>全局变量的作用域</strong></p>
+<ul>
+<li><p>全局作用域：可以在程序的各个角落访问并使用（不限于当前文件中）</p>
+</li>
+<li><p>文件作用域：只能在当前代码文件中访问并使用</p>
+</li>
+<li><p>全局变量的作用域可能被局部变量覆盖（同名局部变量）</p>
+</li>
+<li><p>工程开发中，全局变量通常以 g_ 作为前缀命名（工程约定）</p>
+</li>
+</ul>
+<h2 id="不同变量的物理存储区域"><a href="#不同变量的物理存储区域" class="headerlink" title="不同变量的物理存储区域"></a>不同变量的物理存储区域</h2><ul>
+<li>在现代计算机系统中，物理内存被分为不同区域</li>
+<li>区域不同，用途不同，不同种类的变量位于不同区域<ul>
+<li>全局数据区域：存放全局变量，静态变量，<strong>其中的变量默认初始化为0</strong></li>
+<li>栈空间：存储函数参数，局部变量</li>
+<li>堆空间：用于动态创建变量</li>
+</ul>
+</li>
+<li>不同变量的生命期<ul>
+<li>全局数据区中的变量<ul>
+<li>程序开始运行时创建，程序结束时被销毁，整个程序运行期合法可用</li>
+</ul>
+</li>
+<li>栈空间中的变量<ul>
+<li>进入作用域时创建，离开作用域时销毁（自动销毁）<ul>
+<li>函数中的局部变量在函数调用返回后销毁</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>作用域和生命周期二者并无本质联系，只是语法层面(作用域)和二进制层面(生命周期)的两个说法</li>
+</ul>
+</li>
+</ul>
+<h2 id="静态变量"><a href="#静态变量" class="headerlink" title="静态变量"></a>静态变量</h2><ul>
+<li>static 是 C 语言中的关键字</li>
+<li>static 修饰的<strong>局部变量</strong>创建于全局数据区（拥有程序生命周期）</li>
+<li>static 修饰的<strong>全局变量</strong>只有文件作用域（超出对应文件外无法访问，作用域被缩小了）</li>
+<li>static <strong>局部变量只会初始化一次</strong>，作用域与普通变量无异</li>
+</ul>
+<blockquote>
+<p>对于局部变量而言，static 只是改变了它的生命周期，其本身的作用域不变</p>
+</blockquote>
+<h2 id="变量的声明周期"><a href="#变量的声明周期" class="headerlink" title="变量的声明周期"></a>变量的声明周期</h2><p><strong>变量的生命周期由变量的存储位置决定</strong></p>
+<ul>
+<li>static 将变量存储于全局数据区，默认初始化为 0</li>
+<li>auto 将变量存储于栈空间，默认初始化为随机值</li>
+<li>register 将变量存储于寄存器，默认初始化随机值(因为寄存器太少了，所以存储不一定成功，故实际中基本不用)</li>
+</ul>
+<h2 id="自定义数据类型"><a href="#自定义数据类型" class="headerlink" title="自定义数据类型"></a>自定义数据类型</h2><h3 id="typedef"><a href="#typedef" class="headerlink" title="typedef"></a>typedef</h3><p><strong>类型命名关键字(typedef)</strong></p>
+<ul>
+<li>C 语言中可以对类型赋予新名字</li>
+<li>语法 typedef Type NewTypeName;<ul>
+<li>注意：typedef 并没有创建新类型，只是创建了类型别名</li>
+</ul>
+</li>
+</ul>
+<p><strong>应用</strong></p>
+<ul>
+<li>typedef 可在函数中定义”局部类型名“</li>
+<li>typedef 常用于简化类型名（如：unsigned long long）</li>
+<li>typedef 定义类型名，能够以<strong>统一方式</strong>创建变量（Type var;）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 为 float [5] 起个新名字为： FArr5</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">float</span><span class="params">(FArr5)</span>[5];</span><br><span class="line"><span class="comment">// 为 int()(int, int) 起个新名字为： FArr5</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">int</span><span class="params">(IFuncII)</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef float(*FArr5)[5];</span></span><br><span class="line"><span class="comment">typedef int(*IFuncII)(int, int);</span></span><br><span class="line"><span class="comment">如何这么写的话，则：</span></span><br><span class="line"><span class="comment">FArr5 pa = &amp;g_arr;</span></span><br><span class="line"><span class="comment">IFuncII pf = add;</span></span><br><span class="line"><span class="comment">须这样写</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="type">float</span> g_arr[<span class="number">5</span>] = &#123;<span class="number">0.1</span>, <span class="number">0.2</span>, <span class="number">0.3</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    FArr5* pa = &amp;g_arr;</span><br><span class="line">    IFuncII* pf = add;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, (*pa)[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pf(i, i + <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">0.100000</span></span><br><span class="line"><span class="comment">0.200000</span></span><br><span class="line"><span class="comment">0.300000</span></span><br><span class="line"><span class="comment">0.000000</span></span><br><span class="line"><span class="comment">0.000000</span></span><br><span class="line"><span class="comment">11</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h3><p>是能够定义不同数据类型变量的集合类型</p>
+<ul>
+<li>struct 结构体变量的本质是<strong>变量的集合</strong></li>
+<li>struct 结构体变量中的<strong>成员占用独立的内存</strong></li>
+<li>struct 结构体可以用 typedef 赋予新类型名</li>
+<li>可定义 struct 结构体类型的指针，并指向对应类型的变量</li>
+</ul>
+<p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/jiegoutiyongfa.png" alt="jiegoutiyongfa"></p>
+<p><strong>深入 struct 结构体类型</strong></p>
+<ul>
+<li>struct 结构体类型可以先前置声明，在具体定义；<ul>
+<li>struct test;</li>
+</ul>
+</li>
+<li>前置类型声明只能用于定义指针；<ul>
+<li>struct test* p</li>
+</ul>
+</li>
+<li>类型完整定义之后才能进行变量定义</li>
+<li>struct 结构体类型可以省略类型名<ul>
+<li>省略类型名时，每次创建变脸必须给出完整结构体定义</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Test</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Test</span>* <span class="title">g_pt</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="comment">// 必须先给出类型的完整定义才能创建相应类型的变量</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Test</span> <span class="title">t</span>;</span>   </span><br><span class="line">    t.a = <span class="number">1</span>;</span><br><span class="line">    t.b = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    g_pt = &amp;t;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    <span class="type">int</span> b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>struct 结构体类型<strong>可以省略类型名（无名结构体类型）</strong></li>
+<li>类型名省略时，<strong>每次创建变量必须给出完整结构体定义</strong></li>
+<li><strong>无名结构体类型总是互不相同的类型</strong>（互不兼容）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">int</span> a, b;&#125; v1;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">int</span> a, b;&#125; v2;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">int</span> a, b;&#125;* pv;</span><br><span class="line">    </span><br><span class="line">    v1.a = <span class="number">1</span>;</span><br><span class="line">    v1.b = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// v2 = v1 // Error 类型不同互不兼容</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//pv = &amp;v1; // WARNING 类型不同互不兼容</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="位域"><a href="#位域" class="headerlink" title="位域"></a>位域</h4><ul>
+<li>现代程序设计中，内存使用的最小单位为字节（约定俗成）</li>
+<li>在一些特定场合中，可将<strong>比特</strong>作为最小单位使用内存</li>
+<li>结构体类型能够<strong>指定成员变量占用内存的比特位宽度</strong>（位域）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BW</span> &#123;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> a : <span class="number">4</span>; <span class="comment">// a 占用一个字节的 4 位款组 二进制的 1111 即：[0, 15]</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> b : <span class="number">2</span>; <span class="comment">// b 占用一个字节的 2 位款组</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> c : <span class="number">2</span>; <span class="comment">// c 占用一个字节的 2 位款组</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">BW</span> <span class="title">bw</span>;</span></span><br><span class="line">    bw.a = <span class="number">10</span>;</span><br><span class="line">    bw.b = <span class="number">1</span>; <span class="comment">// 因为大小为2bit，所以如果赋值超过2bit则会发生溢出回转</span></span><br><span class="line">    bw.c = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;sizeof(struct BW) = %d\n&quot;</span>, <span class="keyword">sizeof</span>(<span class="keyword">struct</span>  BW));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;bw.a = %d\n&quot;</span>, bw.a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;bw.b = %d\n&quot;</span>, bw.b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;bw.c = %d\n&quot;</span>, bw.c);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">sizeof(struct BW) = 1</span></span><br><span class="line"><span class="comment">bw.a = 10</span></span><br><span class="line"><span class="comment">bw.b = 1</span></span><br><span class="line"><span class="comment">bw.c = 3</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>深入位域</strong></p>
+<ul>
+<li>位域成员必须是整形，默认情况下成员依次排列</li>
+<li>位域成员占用的位数<strong>不能超过类型宽度</strong>（错误示例：char c : 9）</li>
+<li>当存储位不足时，自动启用新存储单元<ul>
+<li>char a : 7; char b : 6; 两个加起来超过了一个字节的大小，那么它将会自动启用一个新的字节来存储当前内容</li>
+</ul>
+</li>
+<li>可以舍弃当前未使用的位，重新启用存储单元</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Bits1</span> &#123;</span></span><br><span class="line">    <span class="type">unsigned</span> cahr a : <span class="number">4</span>;</span><br><span class="line">    <span class="type">unsigned</span> cahr   : <span class="number">0</span>;</span><br><span class="line">    <span class="type">unsigned</span> cahr b : <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>unsigned char : 0;</code> 这行代码，其作用主要是<strong>作为填充或对齐</strong>。当你在结构体中声明一个大小为0的位域时，它实际上不占用任何位（即，它不存在于内存布局中），但它可以影响结构体中后续位域的对齐方式。</p>
+<p>a占了一个字节的前4位，b正好可以占剩下的后四位，刚刚好一个字节；但<code>unsigned char : 0;</code> 这行代码会将 a 所在字节的后四位进行占位，b 只能重新分配一个新的字节并占前四位；</p>
+<ul>
+<li><code>unsigned char : 0;</code>：这定义了一个大小为0的位域。在大多数上下文中，这样的位域实际上不占用任何位（即，它不会为结构体增加任何额外的内存负担），并且它的存在主要是为了可能的对齐效果或作为占位符。然而，需要注意的是，编译器如何处理这种0大小的位域可能依赖于编译器的具体实现，并且可能不会产生预期的效果。</li>
+<li><code>unsigned char : 4;</code>：这定义了一个大小为4位的位域。这意味着这个位域将占用结构体中的4个位，用于存储数据。在这个例子中，由于使用了 <code>unsigned char</code> 类型（尽管在定义位域时类型主要影响解释方式，而不是实际占用的内存大小），这4个位可以用来存储从0到15（即 <code>0b0000</code> 到 <code>0b1111</code>）的整数值。</li>
+</ul>
+</blockquote>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8D%B0%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.</span> <span class="toc-text">打印语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E9%9D%A2%E9%87%8F%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">字面量的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B5%8B%E5%80%BC"><span class="toc-number">3.</span> <span class="toc-text">变量之间的赋值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#signed-%E4%B8%8E-unsigned"><span class="toc-number">4.</span> <span class="toc-text">signed 与 unsigned</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sizeof%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">5.</span> <span class="toc-text">sizeof关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#long"><span class="toc-number">6.</span> <span class="toc-text">long</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-number">7.</span> <span class="toc-text">浮点数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">8.</span> <span class="toc-text">变量的作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E5%8F%98%E9%87%8F%E7%9A%84%E7%89%A9%E7%90%86%E5%AD%98%E5%82%A8%E5%8C%BA%E5%9F%9F"><span class="toc-number">9.</span> <span class="toc-text">不同变量的物理存储区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">10.</span> <span class="toc-text">静态变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%91%A8%E6%9C%9F"><span class="toc-number">11.</span> <span class="toc-text">变量的声明周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">12.</span> <span class="toc-text">自定义数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#typedef"><span class="toc-number">12.1.</span> <span class="toc-text">typedef</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#struct"><span class="toc-number">12.2.</span> <span class="toc-text">struct</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%8D%E5%9F%9F"><span class="toc-number">12.2.1.</span> <span class="toc-text">位域</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&text=数据类型与变量"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&is_video=false&description=数据类型与变量"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=数据类型与变量&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&title=数据类型与变量"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&name=数据类型与变量&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8F%98%E9%87%8F/&t=数据类型与变量"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

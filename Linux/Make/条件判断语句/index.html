@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="makefile 中支持条件判断语句  可以根据条件的值来决定 make 的执行 可以比较两个不同变量或者变量值和常量值    注意事项： 条件判断语句只能用于控制 make 实际执行的语句；不能控制规则中命令的执行过程。  语法说明 常用形式 ifxxx (arg1, arg2)   其他合法形式 ifxxx “arg1” “arg2” ifxxx ‘arg1’ ‘arg2’ ifxxx “ar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="条件判断语句">
+<meta property="og:url" content="https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="makefile 中支持条件判断语句  可以根据条件的值来决定 make 的执行 可以比较两个不同变量或者变量值和常量值    注意事项： 条件判断语句只能用于控制 make 实际执行的语句；不能控制规则中命令的执行过程。  语法说明 常用形式 ifxxx (arg1, arg2)   其他合法形式 ifxxx “arg1” “arg2” ifxxx ‘arg1’ ‘arg2’ ifxxx “ar">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/tiaojianpanduanyuju.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/Linux/make/xiaotieshi.png">
+<meta property="article:published_time" content="2024-08-03T09:15:00.000Z">
+<meta property="article:modified_time" content="2024-08-31T14:11:50.600Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="make">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/Linux/make/tiaojianpanduanyuju.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>条件判断语句</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/Linux/Make/%E5%87%BD%E6%95%B0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/%E6%B5%AE%E7%82%B9%E6%95%B0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&text=条件判断语句"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&is_video=false&description=条件判断语句"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=条件判断语句&body=Check out this article: https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&name=条件判断语句&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&t=条件判断语句"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">语法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">2.</span> <span class="toc-text">条件判断关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%B7%A5%E7%A8%8B%E7%BB%8F%E9%AA%8C"><span class="toc-number">3.</span> <span class="toc-text">一些工程经验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        条件判断语句
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-08-03T09:15:00.000Z" class="dt-published" itemprop="datePublished">2024-08-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Linux/">Linux</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/make/" rel="tag">make</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>makefile 中支持条件判断语句</p>
+<ul>
+<li>可以根据<strong>条件的值</strong>来决定 make 的执行</li>
+<li>可以<strong>比较</strong>两个不同变量或者变量值和常量值</li>
+</ul>
+<p><img src="/public/image/Linux/make/tiaojianpanduanyuju.png" alt="tiaojianpanduanyuju"></p>
+<blockquote>
+<p>注意事项：</p>
+<p>条件判断语句只能用于控制 make 实际执行的语句；不能控制规则中命令的执行过程。</p>
+</blockquote>
+<h3 id="语法说明"><a href="#语法说明" class="headerlink" title="语法说明"></a>语法说明</h3><ul>
+<li>常用形式<ul>
+<li>ifxxx (arg1, arg2)</li>
+</ul>
+</li>
+<li>其他合法形式<ul>
+<li>ifxxx “arg1” “arg2”</li>
+<li>ifxxx ‘arg1’ ‘arg2’</li>
+<li>ifxxx “arg1” ‘arg2’</li>
+<li>ifxxx ‘arg1’ “arg2”</li>
+</ul>
+</li>
+</ul>
+<p><img src="/public/image/Linux/make/xiaotieshi.png" alt="xiaotieshi"></p>
+<h3 id="条件判断关键字"><a href="#条件判断关键字" class="headerlink" title="条件判断关键字"></a>条件判断关键字</h3><table>
+<thead>
+<tr>
+<th align="center">关键字</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ifeq</td>
+<td align="center">判断参数是否相等，相等为 true，否则为 false</td>
+</tr>
+<tr>
+<td align="center">ifneq</td>
+<td align="center">判断参数是否不相等，不相等为 true，相等为 false</td>
+</tr>
+<tr>
+<td align="center">ifdef</td>
+<td align="center">判断变量是否有值，有值为 true，否则为 false</td>
+</tr>
+<tr>
+<td align="center">ifndef</td>
+<td align="center">判断变量是否没有值，没有值为 true，否则为 false</td>
+</tr>
+</tbody></table>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"></span><br><span class="line">.PHONY : test</span><br><span class="line"></span><br><span class="line">var1 := A</span><br><span class="line">var2 := <span class="variable">$(var1)</span></span><br><span class="line">var3 :=</span><br><span class="line"></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">    <span class="keyword">ifeq</span> (<span class="variable">$(var1)</span>,<span class="variable">$(var2)</span>) 	<span class="comment"># # 这里前面是空格而不是一个 [Tab]</span></span><br><span class="line">		@echo <span class="string">&quot;var1 == var2&quot;</span>	</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		@echo <span class="string">&quot;var1 != var2&quot;</span></span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">ifneq</span> (<span class="variable">$(var2)</span>,)</span><br><span class="line">		@echo <span class="string">&quot;var2 is NOT empty&quot;</span>    </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		@echo <span class="string">&quot;var2 is empty&quot;</span>    </span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">ifdef</span> var2</span><br><span class="line">		@echo <span class="string">&quot;var2 is NOT empty&quot;</span>    </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		@echo <span class="string">&quot;var2 is empty&quot;</span>    </span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">ifndef</span> var3</span><br><span class="line">		@echo <span class="string">&quot;var3 is empty&quot;</span>    </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		@echo <span class="string">&quot;var3 is NOT empty&quot;</span>    </span><br><span class="line">    <span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意，在使用上述条件判断语句时候，前面就不能使用 [Tab] 了，要改为使用空格</p>
+</blockquote>
+<h3 id="一些工程经验"><a href="#一些工程经验" class="headerlink" title="一些工程经验"></a>一些工程经验</h3><ul>
+<li>条件判断语句之前可以有空格，但<strong>不能有 [Tab] 字符</strong>（’\t’）</li>
+<li>在条件语句中<strong>不要使用自动变量</strong>（$@、$^、$&lt;）</li>
+<li>一条完整的条件语句<strong>必须</strong>位于同一个 makefile 中</li>
+<li>条件判断语句类似 C 语言中的宏，<strong>预处理阶段有效，执行阶段无效</strong></li>
+<li>make 在加载 makefile 时<ul>
+<li>首先计算表达式的值（赋值方式不同，计算方式不同）</li>
+<li>根据判断语句的表达式决定执行的内容</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>此处的预处理阶段是指 make 解释器加载 makefile 的时候，在加载的时候就对条件判断语句进行处理了；除了完成后才会实际去执行 makefile 中的规则；</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">.PHONY : test</span><br><span class="line"></span><br><span class="line">var1 :=</span><br><span class="line">var2 := <span class="variable">$(var1)</span></span><br><span class="line"></span><br><span class="line">var3 =</span><br><span class="line">var4 = <span class="variable">$(var3)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#var3 = 3 </span></span><br><span class="line"></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">    <span class="keyword">ifdef</span> var1 </span><br><span class="line">		@echo <span class="string">&quot;var1 is defined&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		@echo <span class="string">&quot;var1 is NOT defined&quot;</span></span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">ifdef</span> var2</span><br><span class="line">		@echo <span class="string">&quot;var2 is defined&quot;</span>    </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		@echo <span class="string">&quot;var2 is NOT defined&quot;</span>    </span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">ifdef</span> var3 </span><br><span class="line">		@echo <span class="string">&quot;var3 is defined&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		@echo <span class="string">&quot;var3 is NOT defined&quot;</span></span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">ifdef</span> var4</span><br><span class="line">		@echo <span class="string">&quot;var4 is defined&quot;</span>    </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		@echo <span class="string">&quot;var4 is NOT defined&quot;</span>    </span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment"># make</span></span><br><span class="line"> <span class="comment"># var1 is NOT defined</span></span><br><span class="line"> <span class="comment"># var2 is NOT defined</span></span><br><span class="line"> <span class="comment"># var3 is NOT defined</span></span><br><span class="line"> <span class="comment"># var4 is defined</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里 make 解释器认为 var4 已经定义了，是为什么呢？</p>
+<p>因为在预处理阶段 make 解释器在加载 makefile 的时候，根本就无法判断出 var4 的值应该是什么，此时 make 解释器只能判断出var3 的值是空的，但 var4 的值要延迟到加载 makefile 文件的时候才能够得知，所以他就认为 var4 是有值的。</p>
+<p>当 var3 &#x3D; 3 时，二者就都是有值的。</p>
+</blockquote>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>条件判断根据条件的值来决定 make 的执行</li>
+<li>条件判断可以比较两个不同变量或者变量和常量的值</li>
+<li>条件判断在预处理阶段有效，执行阶段无效</li>
+<li>条件判断不能控制规则中命令的执行过程</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">语法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">2.</span> <span class="toc-text">条件判断关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%B7%A5%E7%A8%8B%E7%BB%8F%E9%AA%8C"><span class="toc-number">3.</span> <span class="toc-text">一些工程经验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&text=条件判断语句"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&is_video=false&description=条件判断语句"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=条件判断语句&body=Check out this article: https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&title=条件判断语句"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&name=条件判断语句&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/Linux/Make/%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5/&t=条件判断语句"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
