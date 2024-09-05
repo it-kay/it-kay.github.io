@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="多文件之间的互相访问 每个文件可以定义功能接口（可被其他文件访问的函数或数据）  源文件：代码实现文件，后缀 .c 头文件：源文件的接口定义文件，后缀为 .h   当需要使用其他文件提供的功能时，包含对应的头文件   12#include&lt;header.h&gt; &#x2F;&#x2F; 在编译系统文件中查找头文件#include&quot;header.h&quot; &#x2F;&#x2F; 先查找当前工程文件夹，再查找编译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多文件程序设计">
+<meta property="og:url" content="https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="多文件之间的互相访问 每个文件可以定义功能接口（可被其他文件访问的函数或数据）  源文件：代码实现文件，后缀 .c 头文件：源文件的接口定义文件，后缀为 .h   当需要使用其他文件提供的功能时，包含对应的头文件   12#include&lt;header.h&gt; &#x2F;&#x2F; 在编译系统文件中查找头文件#include&quot;header.h&quot; &#x2F;&#x2F; 先查找当前工程文件夹，再查找编译">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-09-03T07:49:00.000Z">
+<meta property="article:modified_time" content="2024-09-05T10:38:38.332Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="C语言基础">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>多文件程序设计</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%AE%8F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&text=多文件程序设计"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&is_video=false&description=多文件程序设计"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=多文件程序设计&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&name=多文件程序设计&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&t=多文件程序设计"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%96%87%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%92%E7%9B%B8%E8%AE%BF%E9%97%AE"><span class="toc-number">1.</span> <span class="toc-text">多文件之间的互相访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">全局变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA-c-%E6%96%87%E4%BB%B6%E4%BA%92%E7%9B%B8%E8%B0%83%E7%94%A8%E5%86%8D%E4%B8%8D%E9%80%9A%E8%BF%87-h-%E6%96%87%E4%BB%B6%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B"><span class="toc-number">3.</span> <span class="toc-text">多个 c 文件互相调用再不通过 .h 文件的情况下</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        多文件程序设计
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-03T07:49:00.000Z" class="dt-published" itemprop="datePublished">2024-09-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" rel="tag">C语言基础</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="多文件之间的互相访问"><a href="#多文件之间的互相访问" class="headerlink" title="多文件之间的互相访问"></a>多文件之间的互相访问</h2><ul>
+<li><p>每个文件可以定义功能接口（可被其他文件访问的函数或数据）</p>
+<ul>
+<li>源文件：代码实现文件，后缀 .c</li>
+<li>头文件：源文件的接口定义文件，后缀为 .h</li>
+</ul>
+</li>
+<li><p>当需要使用其他文件提供的功能时，包含对应的头文件</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;header.h&gt;</span> <span class="comment">// 在编译系统文件中查找头文件</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;header.h&quot;</span> <span class="comment">// 先查找当前工程文件夹，再查找编译系统文件夹</span></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>a.c 如果想要访问 b.c 中的代码：</p>
+<p>b.c 将对应的代码声明在 b.h 头文件中</p>
+<p>a.c 引入 b.h 头文件，即可使用对应的代码</p>
+</blockquote>
+<p><strong>多文件程序设计的一些原则</strong></p>
+<ul>
+<li>头文件中只做函数声明和变量声明（<strong>不做具体定义</strong>）</li>
+<li>头文件中可以定义数据类型（typedef，struct，union，enum）</li>
+<li>根据具体实现，一个头文件可以对应多个源文件（多数情况一对一）</li>
+<li>不要使用 #include 语句包含源文件</li>
+</ul>
+<h2 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h2><p><strong>普通全局变量</strong></p>
+<ul>
+<li>源文件中定义的全局变量可在所有其他源文件中使用</li>
+<li>可使用 extern 关键字在头文件中进行声明，并在其他文件中使用</li>
+</ul>
+<p><strong>静态全局变量</strong></p>
+<ul>
+<li>static 修饰的全局变量只能在当前源文件中使用</li>
+<li>无法通过 extern 关键字声明，在其他文件中使用</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// head.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">int</span> g_var;</span><br><span class="line"><span class="keyword">extern</span> <span class="type">int</span> f_var; <span class="comment">// 只会有 WARNING 因为语法上是合法的，但记住 f_var 被 static 所修饰只能在本身所在的源文件中使用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// head.c</span></span><br><span class="line"><span class="type">int</span> g_var = <span class="number">1</span>;</span><br><span class="line"><span class="type">static</span> <span class="type">int</span> f_var = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ul>
+<li>函数声明语句默认自带 extern 关键字修饰</li>
+<li>类型定义必须在头文件中，<strong>仅类型声明无法创建变量</strong></li>
+<li>静态全局变量<ul>
+<li>生命期为程序运行期</li>
+<li>作用域仅在定义的文件中</li>
+<li>无法直接在其他文件中使用</li>
+</ul>
+</li>
+<li>static 关键字可使函数具备<strong>文件作用域</strong>（静态函数）</li>
+<li>静态函数<strong>无法</strong>在其它文件中被调用</li>
+<li>函数设计时需要考虑是否在其他文件中使用</li>
+</ul>
+<h2 id="多个-c-文件互相调用再不通过-h-文件的情况下"><a href="#多个-c-文件互相调用再不通过-h-文件的情况下" class="headerlink" title="多个 c 文件互相调用再不通过 .h 文件的情况下"></a>多个 c 文件互相调用再不通过 .h 文件的情况下</h2><p>在 C 语言中，两个 <code>.c</code> 文件之间可以互相调用对方的函数或变量，但这通常是通过<strong>声明</strong>的方式来实现的。在不使用 <code>.h</code> 头文件的情况下，可以在一个 <code>.c</code> 文件中通过使用 <code>extern</code> 关键字声明另一个 <code>.c</code> 文件中的函数或变量。<code>extern</code> 告诉编译器某个函数或变量是在其他文件中定义的，链接器在链接时会找到对应的定义。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file1</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义变量和函数</span></span><br><span class="line"><span class="type">int</span> global_variable = <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">function_in_file1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;This is function in file1.c\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=========================================</span><br><span class="line">    </span><br><span class="line">file2</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明 file1.c 中的变量和函数</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">int</span> global_variable;</span><br><span class="line"><span class="keyword">extern</span> <span class="type">void</span> <span class="title function_">function_in_file1</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">function_in_file2</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;This is function in file2.c\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;global_variable from file1.c: %d\n&quot;</span>, global_variable);</span><br><span class="line">    function_in_file1();  <span class="comment">// 调用 file1.c 中的函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 C 语言中，**<code>extern</code>** 关键字的作用是告诉编译器某个变量或函数的定义在别的文件中，但它并不需要知道这个变量具体在哪个文件定义。真正把两个 <code>.c</code> 文件关联起来的过程发生在<strong>链接阶段</strong>，而不是编译阶段。</p>
+</blockquote>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%96%87%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%92%E7%9B%B8%E8%AE%BF%E9%97%AE"><span class="toc-number">1.</span> <span class="toc-text">多文件之间的互相访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">全局变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA-c-%E6%96%87%E4%BB%B6%E4%BA%92%E7%9B%B8%E8%B0%83%E7%94%A8%E5%86%8D%E4%B8%8D%E9%80%9A%E8%BF%87-h-%E6%96%87%E4%BB%B6%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B"><span class="toc-number">3.</span> <span class="toc-text">多个 c 文件互相调用再不通过 .h 文件的情况下</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&text=多文件程序设计"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&is_video=false&description=多文件程序设计"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=多文件程序设计&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&title=多文件程序设计"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&name=多文件程序设计&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%A4%9A%E6%96%87%E4%BB%B6%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/&t=多文件程序设计"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
