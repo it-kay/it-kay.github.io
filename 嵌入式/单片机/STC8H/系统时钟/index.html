@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="主频系统时钟 &#x2F; 时钟频率时钟周期指令周期 &#x2F; 机器周期也叫做指令周期。指令周期是一条指令的执行时间。 早期的STC8H单片机的机器周期为12个时钟周期。现在的STC8H可以有两种配置，一个是1T，一个是12T。  12T也就是早期的配置，假设当系统时钟为24MHz时，每个机器周期的时间就是12 * 41.67ns &#x3D; 500ns。 1T是芯片架构升级后的，每个机器周期的时间为">
+    <meta name="description" content="主频主频指CPU内核工作时的时钟频率，它表示CPU内数字脉冲信号震荡的速度。主频的高低在很大程度上反映了CPU速度的快慢，但与CPU实际的运算能力并没有直接的线性关系。 主频的产生主要依赖于CPU内部的时钟发生器（也称为时钟振荡器）。时钟发生器通过不断振荡产生稳定的电信号，这些电信号以固定的频率传递给CPU内部的计数器。计数器每接收一个信号就表示一个时钟周期的发生，而CPU则在每个时钟周期内执行一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="系统时钟">
 <meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F/index.html">
 <meta property="og:site_name" content="流年不知心底事">
-<meta property="og:description" content="主频系统时钟 &#x2F; 时钟频率时钟周期指令周期 &#x2F; 机器周期也叫做指令周期。指令周期是一条指令的执行时间。 早期的STC8H单片机的机器周期为12个时钟周期。现在的STC8H可以有两种配置，一个是1T，一个是12T。  12T也就是早期的配置，假设当系统时钟为24MHz时，每个机器周期的时间就是12 * 41.67ns &#x3D; 500ns。 1T是芯片架构升级后的，每个机器周期的时间为">
+<meta property="og:description" content="主频主频指CPU内核工作时的时钟频率，它表示CPU内数字脉冲信号震荡的速度。主频的高低在很大程度上反映了CPU速度的快慢，但与CPU实际的运算能力并没有直接的线性关系。 主频的产生主要依赖于CPU内部的时钟发生器（也称为时钟振荡器）。时钟发生器通过不断振荡产生稳定的电信号，这些电信号以固定的频率传递给CPU内部的计数器。计数器每接收一个信号就表示一个时钟周期的发生，而CPU则在每个时钟周期内执行一">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-09-02T00:41:00.000Z">
-<meta property="article:modified_time" content="2024-09-05T13:56:31.757Z">
+<meta property="article:modified_time" content="2024-09-06T11:46:34.899Z">
 <meta property="article:author" content="kay">
 <meta property="article:tag" content="STC8H">
 <meta name="twitter:card" content="summary">
@@ -129,7 +129,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E9%A2%91"><span class="toc-number">1.</span> <span class="toc-text">主频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F-%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87"><span class="toc-number">2.</span> <span class="toc-text">系统时钟 &#x2F; 时钟频率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%92%9F%E5%91%A8%E6%9C%9F"><span class="toc-number">3.</span> <span class="toc-text">时钟周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E5%91%A8%E6%9C%9F-%E6%9C%BA%E5%99%A8%E5%91%A8%E6%9C%9F"><span class="toc-number">4.</span> <span class="toc-text">指令周期 &#x2F; 机器周期</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E9%A2%91"><span class="toc-number">1.</span> <span class="toc-text">主频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F-%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87"><span class="toc-number">2.</span> <span class="toc-text">系统时钟 &#x2F; 时钟频率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%92%9F%E5%91%A8%E6%9C%9F"><span class="toc-number">3.</span> <span class="toc-text">时钟周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E5%91%A8%E6%9C%9F"><span class="toc-number">4.</span> <span class="toc-text">指令周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%91%A8%E6%9C%9F"><span class="toc-number">5.</span> <span class="toc-text">机器周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NOP-%E6%8C%87%E4%BB%A4"><span class="toc-number">6.</span> <span class="toc-text">NOP 指令</span></a></li></ol>
       </div>
     
   </span>
@@ -179,12 +179,34 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h2 id="主频"><a href="#主频" class="headerlink" title="主频"></a>主频</h2><h2 id="系统时钟-时钟频率"><a href="#系统时钟-时钟频率" class="headerlink" title="系统时钟 &#x2F; 时钟频率"></a>系统时钟 &#x2F; 时钟频率</h2><h2 id="时钟周期"><a href="#时钟周期" class="headerlink" title="时钟周期"></a>时钟周期</h2><h2 id="指令周期-机器周期"><a href="#指令周期-机器周期" class="headerlink" title="指令周期 &#x2F; 机器周期"></a>指令周期 &#x2F; 机器周期</h2><p>也叫做指令周期。指令周期是一条指令的执行时间。</p>
-<p>早期的STC8H单片机的机器周期为12个时钟周期。现在的STC8H可以有两种配置，一个是1T，一个是12T。</p>
+    <h2 id="主频"><a href="#主频" class="headerlink" title="主频"></a>主频</h2><p>主频指CPU内核工作时的时钟频率，它表示CPU内数字脉冲信号震荡的速度。主频的高低在很大程度上反映了CPU速度的快慢，但与CPU实际的运算能力并没有直接的线性关系。</p>
+<p>主频的产生主要依赖于CPU内部的时钟发生器（也称为时钟振荡器）。时钟发生器通过不断振荡产生稳定的电信号，这些电信号以固定的频率传递给CPU内部的计数器。计数器每接收一个信号就表示一个时钟周期的发生，而CPU则在每个时钟周期内执行一条指令或进行一步操作。</p>
+<p>11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz   2.80 GHz；</p>
+<p>其中 2.80 GHz 就是主频，即 CPU 的时钟频率，它表示CPU内部的时钟振荡器每秒能够产生2.8亿个时钟周期，每个时钟周期 CPU可 以执行一条或多条指令（这取决于CPU的架构和指令集）。</p>
+<h2 id="系统时钟-时钟频率"><a href="#系统时钟-时钟频率" class="headerlink" title="系统时钟 &#x2F; 时钟频率"></a>系统时钟 &#x2F; 时钟频率</h2><p>系统时钟频率是指同步电路中时钟的基础频率，即单位时间内（如1秒）时钟信号发生的次数。这个频率是由系统时钟振荡器产生的，它提供了一个稳定且精确的脉冲信号，用于控制计算机内部各个部件的同步工作。</p>
+<blockquote>
+<p>可以将系统时钟理解为主频，因为二者除了概念，在数值上是一致的；</p>
+</blockquote>
+<h2 id="时钟周期"><a href="#时钟周期" class="headerlink" title="时钟周期"></a>时钟周期</h2><p>时钟周期，也称为振荡周期或节拍周期，是<strong>时钟频率的倒数</strong>。它表示了CPU完成一个最基本动作所需的时间。时钟周期是计算机中最基本的、最小的时间单位。</p>
+<p>振荡周期指任何振动（振荡）现象重复出现的时间间隔，也就是完成一次振动所需要的时间。</p>
+<p>例如，STC8H的时钟频率为<code>24MHz</code>，那么每个时钟周期的时间就是<code>1/24MHz=41.67ns</code>。</p>
+<h2 id="指令周期"><a href="#指令周期" class="headerlink" title="指令周期"></a>指令周期</h2><p>指令周期是指<strong>计算机执行一条指令所需的全部时间。</strong>它包括了从取出指令、对指令进行译码、执行指令以及处理指令执行结果等一系列步骤。指令周期的长度取决于指令的复杂性和所需的操作数等因素。</p>
+<p>指令周期包括了从指令的获取、译码、操作数寻址、执行到结果写回的整个过程。</p>
+<p>指令周期可以被认为是计算机执行一条指令所经历的时钟周期数量。</p>
+<h2 id="机器周期"><a href="#机器周期" class="headerlink" title="机器周期"></a>机器周期</h2><p><strong>机器周期则是实现指令周期的基本单位</strong>，一个指令周期通常包含若干个机器周期。换句话说，一条指令的执行过程（即指令周期）可能涉及多个机器周期，每个机器周期完成指令执行过程中的一个或多个基本操作。</p>
+<blockquote>
+<p>早期的 STC8H 单片机的机器周期为 12 个时钟周期。现在的 STC8H 可以有两种配置，一个是 1T，一个是 12 T。这分别是什么意思呢？</p>
+<p> 1T 则说明是<strong>单时钟&#x2F;机器周期(1T)的单片机</strong>，指的是该单片机在执行指令时，每个机器周期仅需要一个时钟周期的时间。</p>
+<p>标准的 8051 单片机是 12T 的，即一个机器周期包含 12 个时钟周期</p>
+<p>传统的单片机（如8051）通常需要多个机器周期来完成一条指令的执行，但在 1T 单片机中，设计的目的是使每条指令在一个时钟周期内完成，因此<strong>指令周期和机器周期相等</strong>。</p>
+</blockquote>
 <ul>
 <li>12T也就是早期的配置，假设当系统时钟为24MHz时，每个机器周期的时间就是<code>12 * 41.67ns = 500ns</code>。</li>
 <li>1T是芯片架构升级后的，每个机器周期的时间为 <code>1 * 41.67ns = 41.67ns.</code>。</li>
 </ul>
+<h2 id="NOP-指令"><a href="#NOP-指令" class="headerlink" title="NOP 指令"></a>NOP 指令</h2><p>NOP指令是一种汇编指令，表示“no operation”（不执行任何操作）。它不会改变寄存器的值，也不会修改存储器中的数据，只消耗一个指令周期。在程序中插入NOP指令可以用于延时或调整代码的执行顺序。</p>
+<p>NOP指令在某些情况下也被用于填充一些未使用的空间，使程序的大小达到特定的大小或对齐要求。在编写汇编代码时，程序员可以在代码中插入NOP指令来占用空间，使得代码和数据能够对齐在内存中的特定地址上，以提高程序的执行效率。</p>
+<p>在STC8H单片机中，NOP指令被翻译成一条长度为1个字节的指令，不做任何操作。</p>
 
   </div>
 </article>
@@ -216,7 +238,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E9%A2%91"><span class="toc-number">1.</span> <span class="toc-text">主频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F-%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87"><span class="toc-number">2.</span> <span class="toc-text">系统时钟 &#x2F; 时钟频率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%92%9F%E5%91%A8%E6%9C%9F"><span class="toc-number">3.</span> <span class="toc-text">时钟周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E5%91%A8%E6%9C%9F-%E6%9C%BA%E5%99%A8%E5%91%A8%E6%9C%9F"><span class="toc-number">4.</span> <span class="toc-text">指令周期 &#x2F; 机器周期</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E9%A2%91"><span class="toc-number">1.</span> <span class="toc-text">主频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F-%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87"><span class="toc-number">2.</span> <span class="toc-text">系统时钟 &#x2F; 时钟频率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%92%9F%E5%91%A8%E6%9C%9F"><span class="toc-number">3.</span> <span class="toc-text">时钟周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E5%91%A8%E6%9C%9F"><span class="toc-number">4.</span> <span class="toc-text">指令周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%91%A8%E6%9C%9F"><span class="toc-number">5.</span> <span class="toc-text">机器周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NOP-%E6%8C%87%E4%BB%A4"><span class="toc-number">6.</span> <span class="toc-text">NOP 指令</span></a></li></ol>
       </div>
     
 
