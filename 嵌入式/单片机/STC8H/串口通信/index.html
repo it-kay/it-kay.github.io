@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/chuankouzuanUSB.png">
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/chuankouzuanUSByuanlitu.png">
 <meta property="article:published_time" content="2024-09-04T12:02:00.000Z">
-<meta property="article:modified_time" content="2024-09-06T14:14:40.291Z">
+<meta property="article:modified_time" content="2024-09-08T14:13:34.193Z">
 <meta property="article:author" content="kay">
 <meta property="article:tag" content="STC8H">
 <meta name="twitter:card" content="summary">
@@ -101,10 +101,10 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E5%AE%9A%E6%97%B6%E5%99%A8/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/PWM/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
-        <li><a class="icon" aria-label="下一篇" href="/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E5%AE%9A%E6%97%B6%E5%99%A8/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
         <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
@@ -245,6 +245,14 @@
 <blockquote>
 <p><code>UART_Init.UART_BRT_Use = BRT_Timer1;</code> 这一句的作用是<strong>指定用哪个定时器来生成波特率</strong>，即通过哪个定时器为串口通信提供时钟信号。</p>
 <p>在单片机中，多个定时器通常可以执行不同的任务，比如控制PWM信号、生成定时中断或产生串口波特率。如果某个定时器被用于其他任务，就需要选择另一个定时器来生成波特率。</p>
+<p>多机通信指的是什么？</p>
+<p>UART（Universal Asynchronous  Receiver&#x2F;Transmitter，通用异步收发器）串口通信中的多机通信，指的是一个UART设备（通常称为主设备或主机）同时与多个其他UART设备（称为从设备或从机）进行通信的模式。这种通信模式在需要集中控制多个设备或进行数据广播的场景中非常有用。</p>
+<p>URAT 中使用了 定时器，但我们却没有配置定时器却能使用为什么？</p>
+<p>因为他内部自己配置了对于定时器的一系列操作；</p>
+<p>if(COMx-&gt;UART_BRT_Use &#x3D;&#x3D; BRT_Timer1)<br>{<br>                TR1 &#x3D; 0;<br>                AUXR &amp;&#x3D; ~0x01;		&#x2F;&#x2F;S1 BRT Use Timer1;<br>                TMOD &amp;&#x3D; ~(1&lt;&lt;6);	&#x2F;&#x2F;Timer1 set As Timer<br>                TMOD &amp;&#x3D; ~0x30;		&#x2F;&#x2F;Timer1_16bitAutoReload;<br>                AUXR |&#x3D;  (1&lt;&lt;6);	&#x2F;&#x2F;Timer1 set as 1T mode<br>                TH1 &#x3D; (u8)(j&gt;&gt;8);<br>                TL1 &#x3D; (u8)j;<br>                ET1 &#x3D; 0;	&#x2F;&#x2F;禁止中断<br>                TMOD &amp;&#x3D; ~0x40;	&#x2F;&#x2F;定时<br>                INTCLKO &amp;&#x3D; ~0x02;	&#x2F;&#x2F;不输出时钟<br>                TR1  &#x3D; 1;<br>}</p>
+<p>波特率发生器怎么选：</p>
+<p>看数据手册：比如 UART4 可以选择 定时器2、定时器4，UART4 只能使用定时器2等。</p>
+<p>这里的波特率发生器就是定时器，但我们只需选择不需要配置，因为它默认会给我们进行配置 ；</p>
 </blockquote>
 <h4 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h4><h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>使用<code>STC-ISP</code>调试工具进行调试。切换好串口助手，选择正确的串口，设置和代码中相同的波特率。</p>
 <p>通过发送区进行数据发送，通过接收区观察接收内容。</p>

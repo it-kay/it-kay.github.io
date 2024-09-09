@@ -49,14 +49,194 @@
       </tags>
   </entry>
   <entry>
-    <title>MySQL</title>
-    <url>/Linux/Ubuntu/MySQL/</url>
-    <content><![CDATA[<h2 id="添加源"><a href="#添加源" class="headerlink" title="添加源"></a>添加源</h2><h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><h2 id="安装并设置密码"><a href="#安装并设置密码" class="headerlink" title="安装并设置密码"></a>安装并设置密码</h2>]]></content>
+    <title>数据类型</title>
+    <url>/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h2 id="char"><a href="#char" class="headerlink" title="char"></a>char</h2><ul>
+<li>char-字符型，一个字节的整数，范围【-128-127】</li>
+<li>字符数据（单引号括起来的字符）的本质是整数类型</li>
+<li>char 类型的变量可以打印为整数或者字符</li>
+</ul>
+<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><ul>
+<li>const 修饰的变量是只读的，本质还是变量</li>
+<li>const 修饰的局部变量在<strong>栈</strong>上分配空间</li>
+<li>const 修饰的全局变量在<strong>只读存储区</strong>分配空间</li>
+<li>const 只在编译器有用，在运行期无用</li>
+</ul>
+<blockquote>
+<p>const 修饰的变量不是真正的变量，他只是告诉编译器该变量不能出现在赋值符号的左边；</p>
+</blockquote>
+<ul>
+<li>在现代 C 语言编译器中，直接修改 const 全局变量将导致程序崩溃</li>
+</ul>
+<blockquote>
+<p>注意：标准 C 语言编译器不会将 const 修饰的全局变量存储与只读存储区中，而是存储与可修改的全局数据区，其值依然可以改变；</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> g_cc = <span class="number">2</span>;  </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> cc = <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> p = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span>* pp = (<span class="type">int</span>*)&amp;cc;</span><br><span class="line">    <span class="type">int</span>* g_pp = (<span class="type">int</span>*)&amp;g_cc;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, cc); <span class="comment">// 1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//p = 3 // Error</span></span><br><span class="line">    *pp = <span class="number">3</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;cc = %d\n&quot;</span>, cc);<span class="comment">// 3</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;g_cc = %d\n&quot;</span>, g_cc);<span class="comment">// 2</span></span><br><span class="line">    <span class="comment">//g_cc = 2 // Error</span></span><br><span class="line">     </span><br><span class="line">    *g_pp = <span class="number">3</span>; <span class="comment">// oops! Segmentation fault </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;g_cc = %d\n&quot;</span>, g_cc);<span class="comment">// 2</span></span><br><span class="line">        </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Gcc 将全局 cosnt 存储与只读存储区，当我们试图修改其中的内容时候，就会报 Segmentation fault 错误（这也是标准 C 语言的定义）</p>
+<p>其他编译器可能就没问题</p>
+</blockquote>
+<ul>
+<li>C 语言中的 const 使得变量具有只读属性</li>
+<li>现代 C 编译器中的 const 将具有全局生命周期的变量存储与只读存储区</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> g_array[<span class="number">5</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">modify</span><span class="params">(<span class="type">int</span>* p, <span class="type">int</span> v)</span> &#123;</span><br><span class="line">    *p = v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="type">const</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">static</span> <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="type">const</span> <span class="built_in">array</span>[<span class="number">5</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    modify((<span class="type">int</span>*)&amp;i, <span class="number">1</span>);    <span class="comment">// ok</span></span><br><span class="line">    modify((<span class="type">int</span>*)&amp;j, <span class="number">1</span>);    <span class="comment">// Error</span></span><br><span class="line">    modify((<span class="type">int</span>*)&amp;<span class="built_in">array</span>[<span class="number">0</span>], <span class="number">1</span>); <span class="comment">// ok</span></span><br><span class="line">    modify((<span class="type">int</span>*)&amp;g_array[<span class="number">0</span>], <span class="number">1</span>); <span class="comment">// Error</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, j);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;arrya[0] = %d\n&quot;</span>, <span class="built_in">array</span>[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;g_arrya[0] = %d\n&quot;</span>, g_array[<span class="number">0</span>]);</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>modify((int*)&amp;j, 1);    &#x2F;&#x2F; Error</p>
+<p>被 static 修饰的变量被存储在全局存储区，const 修饰的全局变量将被存放在只读存储区</p>
+<p>modify((int*)&amp;g_array[0], 1); &#x2F;&#x2F; Error</p>
+<p>g_array[0] 是全局变量，被 const 修饰的全局变量将存储区只读存储区</p>
+</blockquote>
+<ul>
+<li>const 修饰函数参数表示在函数体内不希望改变参数的值</li>
+<li>const 修饰函数返回值表示返回值不可改变，多用于返回指针的情形</li>
+</ul>
+<blockquote>
+<p>C 语言中的字符串字面量存储与只读存储区中，在程序中需要使用 const char* 指针</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">f</span><span class="params">(<span class="type">const</span> <span class="type">int</span> i )</span> &#123;</span><br><span class="line">    <span class="comment">// i = 5;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;kay wang&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* pc = f(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, pc);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//pc[3] = &quot;_&quot;; // Error 因为是只读的</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, pc);</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="void"><a href="#void" class="headerlink" title="void"></a>void</h2><p><strong>在 C 语言中可以定义 void 类型的指针</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">void</span> var; <span class="comment">// Eroor</span></span><br><span class="line">    <span class="type">void</span> <span class="built_in">array</span>[<span class="number">5</span>]; <span class="comment">// Err</span></span><br><span class="line">    <span class="type">void</span>* pv; <span class="comment">// C 语言允许定义 void 类型的指针 </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>不存在 void 类型的变量</strong></p>
+<ul>
+<li><p>C 语言中没有定义 void 究竟是多大内存的别名，无法在内存中开辟出 void 大小对应的变量</p>
+</li>
+<li><p>而指针是固定 4 或 8 个字节大小的，所以可以开辟指针类型的 void 变量</p>
+</li>
+</ul>
+<blockquote>
+<p>注意：在非标准 C 语言编译器中有的对 void 规定了大小，比如 gcc 编译器就规定了 void 大小为 1 个字节</p>
+<p>printf(“%ld\n”, sizeof(void)); &#x2F;&#x2F; 1</p>
+</blockquote>
+<p><strong>意义</strong></p>
+<ul>
+<li>C 语言规定只有相同类型的指针才可以互相赋值</li>
+<li>void* 指针作为左值用于 “接收” 任意类型的指针</li>
+<li>void* 指针作为右值使用时需要进行强制类型转换</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// malloc() 函数是 C 语言标准库中的一个函数，用于动态地分配内存。</span></span><br><span class="line"><span class="type">int</span>* pI = (<span class="type">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"><span class="type">char</span>* pC = (<span class="type">char</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">char</span>));</span><br><span class="line"><span class="type">void</span>* p = <span class="literal">NULL</span>;</span><br><span class="line"><span class="type">int</span>* pni = <span class="literal">NULL</span>;</span><br><span class="line"><span class="type">char</span>* pnc = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">p = pI; <span class="comment">// ok</span></span><br><span class="line">============</span><br><span class="line">pni = P; <span class="comment">// Error oops! pni = (int*)p</span></span><br><span class="line"></span><br><span class="line">p = pC <span class="comment">// ok</span></span><br><span class="line">==================</span><br><span class="line">pnc = P; <span class="comment">// Error oops! pnc = (void*)p</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>void 是一种抽象的数据类型</li>
+<li>void 类型不能用于定义变量</li>
+<li>void 类型用于声明函数无参数</li>
+<li>void 类型用于声明函数无返回值</li>
+<li>可以定义 void* 类型的指针</li>
+<li>void* 类型的指针可以接收任意类型的指针值</li>
+</ul>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
+<li>volatile 可理解为 “编译器警告关键字”</li>
+<li>volatile 告诉编译器必须每次去内存中取变量值</li>
+<li>volatile 主要修饰可能被多个线程访问的变量</li>
+<li>volatile 也可以修饰可能被未知因数更改的变量</li>
+</ul>
+<h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p><strong>C 语言中的常量类型</strong></p>
+<ul>
+<li>字面量<ul>
+<li>直接表示值含义的符号，如：5、’a’、”Ubuntu”</li>
+</ul>
+</li>
+<li>宏常量（字符化的字面量）<ul>
+<li>通过 #define 定义，间接表示值的符号，如：FIV &#x3D;&gt; 5.5</li>
+</ul>
+</li>
+<li>枚举常量<ul>
+<li>通过 enum 定义，间接表示值的符号，如：First &#x3D;&gt; 1</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 示例</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NAME kay;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 枚举常量只能是整形常量，浮点数都不可以</span></span><br><span class="line"><span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">    ThirdValue = <span class="number">333</span>,</span><br><span class="line">    FourthValue = <span class="number">444</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>常量的类型</strong></p>
+<ul>
+<li>字面量有其默认的类型，也可通过后缀指定其类型</li>
+<li>#define 定义的宏常量可以是任意类型</li>
+<li>enum 定义的枚举常量只能是整形</li>
+</ul>
+<blockquote>
+<p>字面量是常量，但是它的默认类型由语言提供，也可通过后缀指定其类型；</p>
+</blockquote>
+<h2 id="const-1"><a href="#const-1" class="headerlink" title="const"></a>const</h2><p><strong>C 语言中的只读变量</strong></p>
+<ul>
+<li>C 语言提供了 const 关键字，用于修饰一个变量</li>
+<li>被 const 修饰的变量<strong>只能作为右值使用</strong><ul>
+<li>无法通过赋值操作改变 const 变量的值</li>
+<li>const 修饰</li>
+</ul>
+</li>
+</ul>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p><strong>同样是4个字节，为什么float却比int的范围大得多呢？</strong></p>
+<ul>
+<li>float 能表示的具体数字的个数与int相同</li>
+<li>float可表示的数字之间不是连续的，存在间隙</li>
+<li>float只是一种近似的表示法，不能作为精确使用</li>
+<li>由于内存表示法相对复杂，float的运算速度比int慢很多</li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<p>double 与 float 具有相同的内存表示法，因此 double 也是不精确的。由于 double 占用的内存较多，所能表示的精度比 float 高；</p>
+</blockquote>
+<p><strong>小结</strong></p>
+<ul>
+<li>浮点类型与整数类型的内存表示法不同</li>
+<li>浮点类型的内存表示更复杂</li>
+<li>浮点类型可表示的范围更大</li>
+<li>浮点类型是一种不精确的类型</li>
+<li>浮点类型的运算速度很慢</li>
+</ul>
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><h2 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h2><h3 id="long"><a href="#long" class="headerlink" title="long"></a>long</h3><ul>
+<li>long 在使用不同的编译器时，可能占用的内存不同</li>
+<li>long 通常占 4 字节内存，也可能占 8 字节内存</li>
+<li>long long表示整形，固定占用 8 字节内存</li>
+<li>long long 是 long long int 的缩写形式</li>
+</ul>
+]]></content>
       <categories>
-        <category>Linux</category>
+        <category>C语言</category>
       </categories>
       <tags>
-        <tag>Ubuntu</tag>
+        <tag>C语言进阶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数组</title>
+    <url>/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="数组初始化"><a href="#数组初始化" class="headerlink" title="数组初始化"></a>数组初始化</h2><ul>
+<li>自动确定数组大小<ul>
+<li>type Name[] &#x3D; { V<sub>0</sub> , V<sub>1</sub> , … , V<sub>n</sub> }；</li>
+</ul>
+</li>
+<li>将部分数组元素初始化为 0<ul>
+<li>type Name[N] &#x3D; { V<sub>0</sub> , V<sub>1</sub> , … , V<sub>s</sub> }；</li>
+<li>S &lt; N，未指定初始值的元素默认为 0</li>
+</ul>
+</li>
+<li>将所有数组元素初始化为 0<ul>
+<li>type Name[N] &#x3D; {0};</li>
+</ul>
+</li>
+</ul>
+<h2 id="内存分布"><a href="#内存分布" class="headerlink" title="内存分布"></a>内存分布</h2><p>数组在计算机底层就是<strong>一片连续的内存</strong>，用于存储数组的元素；可以通过<strong>sizeof</strong>获取（字节）；</p>
+<p>其大小根据其中内容决定；</p>
+<blockquote>
+<p>int a[6]; 此数组的大小就是 4 X 6 &#x3D; 24 （字节）</p>
+</blockquote>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
+<li>数组名只能作为左值使用（可以看作是常量）</li>
+<li>只能使用<strong>整形常量</strong>对数组大小进行定义</li>
+<li>只能使用<strong>整型值</strong>作为下标对数组值进行访问</li>
+</ul>
+<p><img src="/public/image/Linux/make/tiaojianpanduanyuju.png" alt="tiaojianpanduanyuju"></p>
+]]></content>
+      <categories>
+        <category>C语言</category>
+      </categories>
+      <tags>
+        <tag>C语言进阶</tag>
       </tags>
   </entry>
   <entry>
@@ -141,62 +321,6 @@
 </li>
 <li><p><strong>依赖存在</strong>并且<strong>命令执行成功</strong>是目标完成的充要条件</p>
 </li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>make</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>伪目标</title>
-    <url>/Linux/Make/%E4%BC%AA%E7%9B%AE%E6%A0%87/</url>
-    <content><![CDATA[<h2 id="makefile-中的目标究竟是什么？"><a href="#makefile-中的目标究竟是什么？" class="headerlink" title="makefile 中的目标究竟是什么？"></a>makefile 中的目标究竟是什么？</h2><p>make 被设计的初衷是用于编译和管理 C 语言源代码的，所以目标在默认情况下：</p>
-<ul>
-<li>make 认为**目标对应着一个文件 **</li>
-<li>make 比较<strong>目标文件和依赖文件的新旧关系</strong>，决定是否执行命令</li>
-<li>make 以<strong>文件处理</strong>作为第一优先级</li>
-</ul>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面的代码有何意义：</span></span><br><span class="line"><span class="comment"># hello.out all : func.o main.o</span></span><br><span class="line"><span class="comment"># 	 gcc -o hello.out func.o main.o</span></span><br><span class="line">	</span><br><span class="line"><span class="comment"># func.o : func.c</span></span><br><span class="line"><span class="comment"># 	 gcc -o func.o -c func.c</span></span><br><span class="line">	</span><br><span class="line"><span class="comment"># main.o : main.c</span></span><br><span class="line"><span class="comment"># 	 gcc -o main.o -c main.c</span></span><br><span class="line">	</span><br><span class="line">clean :</span><br><span class="line">	rm *.o hello.out</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p> 当前目录不存在名为 clean 的文件时，clean会被作为标签进行使用，执行 rm *.o hello.out 命令；</p>
-<p>当前目录下存在名为 clean 的文件时，由于 make 以文件处理作为第一优先级，所以他会去检查 clean 这个命令，这时他会发现 clean 文件(目标)所对应的依赖并没有被修改过(clean没有依赖所以也就无法被修改依赖)，那么 make 就会认为 clean 文件是最新的就会不执行下面的命令，并提示”clean 是最新的。”</p>
-</blockquote>
-<p>为了解决这个问题(我们要执行 clean 下的命令而不是让 make 将 clean 当成成文件进行处理)，我们就引入了”伪代码”这个概念。</p>
-<p><strong>makefile 中的伪目标</strong></p>
-<ul>
-<li>通过 .PHONY 关键字声明一个伪目标</li>
-<li>伪目标不对应任何实际文件</li>
-<li>不管伪目标的依赖是否更新，命令总是执行</li>
-</ul>
-<h2 id="伪目标语法"><a href="#伪目标语法" class="headerlink" title="伪目标语法"></a>伪目标语法</h2><p><strong>先声明，后使用；</strong></p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean	# 声明</span></span><br><span class="line"><span class="comment">##注释##</span></span><br><span class="line"><span class="section">clean:	# 使用</span></span><br><span class="line">	rm *.o hello.out	</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这样处理后即使当前目录下存在 clean 文件，make 也只会将 clean 当作一个标签进行处理，而不是文件；</p>
-<p>因为此时 clean 就相当于变成了 .PHONY 文件的依赖，而 .PHONY 这样一个文件其实并不存在，所以 clean 文件的创建时间相比  .PHONY 来说永远是新的；这样 clean 下的命令就肯定会被执行； </p>
-</blockquote>
-<h2 id="妙用"><a href="#妙用" class="headerlink" title="妙用"></a>妙用</h2><p><strong>规则调用（函数调用）</strong></p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean rebuild all	# 声明</span></span><br><span class="line"><span class="comment">## oter rules ##</span></span><br><span class="line"><span class="section">rebuild: clean all</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm *.o hello.out</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这样当我们执行 make rebuild 时他就会按照先 clean 再 all 的顺序执行下去；</p>
-</blockquote>
-<p><strong>技巧</strong></p>
-<p>当我们使用的不是 GNU 下的标准 make 程序时，可能不存在 .PHONY 这个关键字，那么该如何实现伪目标的效果呢？</p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">clean: FORCE</span></span><br><span class="line">	rm *.o hello.out</span><br><span class="line"><span class="section">FORCE:</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>原理：如果一个规则没有命令或者依赖，并且它也不是一个文件名，在执行此规则时，目标(FORCE)总会被认为是最新的</p>
-</blockquote>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
-<li>默认情况下，make 认为目标对应着一个文件</li>
-<li>.PHONY 用于声明一个伪目标，伪目标不对应实际的文件</li>
-<li><strong>伪目标的本质是 make 中特殊目标 .PHONY 的依赖</strong></li>
-<li>使用伪目标可以模拟”函数调用”</li>
 </ul>
 ]]></content>
       <categories>
@@ -302,6 +426,62 @@
 </ol>
 <p><strong>规则中的模式替换（目录结构）</strong></p>
 <p><img src="/public/image/Linux/make/guizezhongdemoshitihuan.png" alt="guizezhongdemoshitihuan"></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>make</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>伪目标</title>
+    <url>/Linux/Make/%E4%BC%AA%E7%9B%AE%E6%A0%87/</url>
+    <content><![CDATA[<h2 id="makefile-中的目标究竟是什么？"><a href="#makefile-中的目标究竟是什么？" class="headerlink" title="makefile 中的目标究竟是什么？"></a>makefile 中的目标究竟是什么？</h2><p>make 被设计的初衷是用于编译和管理 C 语言源代码的，所以目标在默认情况下：</p>
+<ul>
+<li>make 认为**目标对应着一个文件 **</li>
+<li>make 比较<strong>目标文件和依赖文件的新旧关系</strong>，决定是否执行命令</li>
+<li>make 以<strong>文件处理</strong>作为第一优先级</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面的代码有何意义：</span></span><br><span class="line"><span class="comment"># hello.out all : func.o main.o</span></span><br><span class="line"><span class="comment"># 	 gcc -o hello.out func.o main.o</span></span><br><span class="line">	</span><br><span class="line"><span class="comment"># func.o : func.c</span></span><br><span class="line"><span class="comment"># 	 gcc -o func.o -c func.c</span></span><br><span class="line">	</span><br><span class="line"><span class="comment"># main.o : main.c</span></span><br><span class="line"><span class="comment"># 	 gcc -o main.o -c main.c</span></span><br><span class="line">	</span><br><span class="line">clean :</span><br><span class="line">	rm *.o hello.out</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 当前目录不存在名为 clean 的文件时，clean会被作为标签进行使用，执行 rm *.o hello.out 命令；</p>
+<p>当前目录下存在名为 clean 的文件时，由于 make 以文件处理作为第一优先级，所以他会去检查 clean 这个命令，这时他会发现 clean 文件(目标)所对应的依赖并没有被修改过(clean没有依赖所以也就无法被修改依赖)，那么 make 就会认为 clean 文件是最新的就会不执行下面的命令，并提示”clean 是最新的。”</p>
+</blockquote>
+<p>为了解决这个问题(我们要执行 clean 下的命令而不是让 make 将 clean 当成成文件进行处理)，我们就引入了”伪代码”这个概念。</p>
+<p><strong>makefile 中的伪目标</strong></p>
+<ul>
+<li>通过 .PHONY 关键字声明一个伪目标</li>
+<li>伪目标不对应任何实际文件</li>
+<li>不管伪目标的依赖是否更新，命令总是执行</li>
+</ul>
+<h2 id="伪目标语法"><a href="#伪目标语法" class="headerlink" title="伪目标语法"></a>伪目标语法</h2><p><strong>先声明，后使用；</strong></p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean	# 声明</span></span><br><span class="line"><span class="comment">##注释##</span></span><br><span class="line"><span class="section">clean:	# 使用</span></span><br><span class="line">	rm *.o hello.out	</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样处理后即使当前目录下存在 clean 文件，make 也只会将 clean 当作一个标签进行处理，而不是文件；</p>
+<p>因为此时 clean 就相当于变成了 .PHONY 文件的依赖，而 .PHONY 这样一个文件其实并不存在，所以 clean 文件的创建时间相比  .PHONY 来说永远是新的；这样 clean 下的命令就肯定会被执行； </p>
+</blockquote>
+<h2 id="妙用"><a href="#妙用" class="headerlink" title="妙用"></a>妙用</h2><p><strong>规则调用（函数调用）</strong></p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean rebuild all	# 声明</span></span><br><span class="line"><span class="comment">## oter rules ##</span></span><br><span class="line"><span class="section">rebuild: clean all</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm *.o hello.out</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样当我们执行 make rebuild 时他就会按照先 clean 再 all 的顺序执行下去；</p>
+</blockquote>
+<p><strong>技巧</strong></p>
+<p>当我们使用的不是 GNU 下的标准 make 程序时，可能不存在 .PHONY 这个关键字，那么该如何实现伪目标的效果呢？</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">clean: FORCE</span></span><br><span class="line">	rm *.o hello.out</span><br><span class="line"><span class="section">FORCE:</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原理：如果一个规则没有命令或者依赖，并且它也不是一个文件名，在执行此规则时，目标(FORCE)总会被认为是最新的</p>
+</blockquote>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>默认情况下，make 认为目标对应着一个文件</li>
+<li>.PHONY 用于声明一个伪目标，伪目标不对应实际的文件</li>
+<li><strong>伪目标的本质是 make 中特殊目标 .PHONY 的依赖</strong></li>
+<li>使用伪目标可以模拟”函数调用”</li>
+</ul>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -968,6 +1148,26 @@
       </tags>
   </entry>
   <entry>
+    <title>控制流程语句</title>
+    <url>/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8E%A7%E5%88%B6%E6%B5%81%E7%A8%8B%E8%AF%AD%E5%8F%A5/</url>
+    <content><![CDATA[<h2 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h2><ul>
+<li>switch 仅能用于离散变量或值（整数值）</li>
+<li>case 是分支入口，匹配成功后执行 case下的语句</li>
+<li>当语句全部执行后，需要使用 break跳出执行分支</li>
+<li>default 分支不是必须的（类似于 else 不是必须的）</li>
+</ul>
+<blockquote>
+<p><strong>离散变量</strong>是指其取值限定在某个特定、可数的集合中的变量；这些取值通常是整数。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>C语言</category>
+      </categories>
+      <tags>
+        <tag>C语言基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>指针</title>
     <url>/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8C%87%E9%92%88/</url>
     <content><![CDATA[<h2 id="指针：一种特殊的变量"><a href="#指针：一种特殊的变量" class="headerlink" title="指针：一种特殊的变量"></a>指针：一种特殊的变量</h2><p><strong>指针是 C 语言中的变量</strong></p>
@@ -1151,26 +1351,6 @@
 
 <p>因此：</p>
 <p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/erweishuzuzhizhen.png" alt="erweishuzuzhizhen"></p>
-]]></content>
-      <categories>
-        <category>C语言</category>
-      </categories>
-      <tags>
-        <tag>C语言基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>控制流程语句</title>
-    <url>/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E6%8E%A7%E5%88%B6%E6%B5%81%E7%A8%8B%E8%AF%AD%E5%8F%A5/</url>
-    <content><![CDATA[<h2 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h2><ul>
-<li>switch 仅能用于离散变量或值（整数值）</li>
-<li>case 是分支入口，匹配成功后执行 case下的语句</li>
-<li>当语句全部执行后，需要使用 break跳出执行分支</li>
-<li>default 分支不是必须的（类似于 else 不是必须的）</li>
-</ul>
-<blockquote>
-<p><strong>离散变量</strong>是指其取值限定在某个特定、可数的集合中的变量；这些取值通常是整数。</p>
-</blockquote>
 ]]></content>
       <categories>
         <category>C语言</category>
@@ -1573,221 +1753,14 @@
       </tags>
   </entry>
   <entry>
-    <title>异步Web实战</title>
-    <url>/Rust/project/%E5%BC%82%E6%AD%A5Web%E5%AE%9E%E6%88%98/</url>
-    <content><![CDATA[<h1 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><h2 id="rust编码规范"><a href="#rust编码规范" class="headerlink" title="rust编码规范"></a>rust编码规范</h2><p>新建<code>.rustfmt.toml</code>文件用于帮助你写出地道的rust代码。</p>
-<p>Rustfmt 的设计非常易于配置。您可以创建一个名为 <code>rustfmt.toml</code>或 的TOML 文件<code>.rustfmt.toml</code>，将其放在项目或任何其他父目录中，它将应用该文件中的选项。</p>
-<p>这需要将rust设置为<code>nightly</code>时才可使用。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rustup default nightly</span><br></pre></td></tr></table></figure>
-
-<p>在当前工作目录中的 Cargo 项目上运行：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cargo +nightly fmt</span><br><span class="line"></span><br><span class="line"># rustfmt lib.rs main.rs 将就只格式化“lib.rs”和“main.rs”</span><br><span class="line"># rustfmt lib.rs --check 检查 lib.rs 文件的格式，并给出修改意见，不进行格式化</span><br></pre></td></tr></table></figure>
-
-<h2 id="学习axum"><a href="#学习axum" class="headerlink" title="学习axum"></a>学习axum</h2><h2 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h2><h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p><strong>1.cargo-edit工具</strong></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">cargo install cargo<span class="literal">-edit</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>2. Toml文件插件</strong></p>
-<p><code>TOML Language Support</code></p>
-<p><strong>3. cratescha插件</strong></p>
-<p><code>crates</code></p>
-]]></content>
+    <title>MySQL</title>
+    <url>/Linux/Ubuntu/MySQL/</url>
+    <content><![CDATA[<h2 id="添加源"><a href="#添加源" class="headerlink" title="添加源"></a>添加源</h2><h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><h2 id="安装并设置密码"><a href="#安装并设置密码" class="headerlink" title="安装并设置密码"></a>安装并设置密码</h2>]]></content>
       <categories>
-        <category>Rust</category>
+        <category>Linux</category>
       </categories>
       <tags>
-        <tag>Rust</tag>
-        <tag>Rust-实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数组</title>
-    <url>/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E6%95%B0%E7%BB%84/</url>
-    <content><![CDATA[<h2 id="数组初始化"><a href="#数组初始化" class="headerlink" title="数组初始化"></a>数组初始化</h2><ul>
-<li>自动确定数组大小<ul>
-<li>type Name[] &#x3D; { V<sub>0</sub> , V<sub>1</sub> , … , V<sub>n</sub> }；</li>
-</ul>
-</li>
-<li>将部分数组元素初始化为 0<ul>
-<li>type Name[N] &#x3D; { V<sub>0</sub> , V<sub>1</sub> , … , V<sub>s</sub> }；</li>
-<li>S &lt; N，未指定初始值的元素默认为 0</li>
-</ul>
-</li>
-<li>将所有数组元素初始化为 0<ul>
-<li>type Name[N] &#x3D; {0};</li>
-</ul>
-</li>
-</ul>
-<h2 id="内存分布"><a href="#内存分布" class="headerlink" title="内存分布"></a>内存分布</h2><p>数组在计算机底层就是<strong>一片连续的内存</strong>，用于存储数组的元素；可以通过<strong>sizeof</strong>获取（字节）；</p>
-<p>其大小根据其中内容决定；</p>
-<blockquote>
-<p>int a[6]; 此数组的大小就是 4 X 6 &#x3D; 24 （字节）</p>
-</blockquote>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
-<li>数组名只能作为左值使用（可以看作是常量）</li>
-<li>只能使用<strong>整形常量</strong>对数组大小进行定义</li>
-<li>只能使用<strong>整型值</strong>作为下标对数组值进行访问</li>
-</ul>
-<p><img src="/public/image/Linux/make/tiaojianpanduanyuju.png" alt="tiaojianpanduanyuju"></p>
-]]></content>
-      <categories>
-        <category>C语言</category>
-      </categories>
-      <tags>
-        <tag>C语言进阶</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据类型</title>
-    <url>/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<h2 id="char"><a href="#char" class="headerlink" title="char"></a>char</h2><ul>
-<li>char-字符型，一个字节的整数，范围【-128-127】</li>
-<li>字符数据（单引号括起来的字符）的本质是整数类型</li>
-<li>char 类型的变量可以打印为整数或者字符</li>
-</ul>
-<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><ul>
-<li>const 修饰的变量是只读的，本质还是变量</li>
-<li>const 修饰的局部变量在<strong>栈</strong>上分配空间</li>
-<li>const 修饰的全局变量在<strong>只读存储区</strong>分配空间</li>
-<li>const 只在编译器有用，在运行期无用</li>
-</ul>
-<blockquote>
-<p>const 修饰的变量不是真正的变量，他只是告诉编译器该变量不能出现在赋值符号的左边；</p>
-</blockquote>
-<ul>
-<li>在现代 C 语言编译器中，直接修改 const 全局变量将导致程序崩溃</li>
-</ul>
-<blockquote>
-<p>注意：标准 C 语言编译器不会将 const 修饰的全局变量存储与只读存储区中，而是存储与可修改的全局数据区，其值依然可以改变；</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> g_cc = <span class="number">2</span>;  </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> cc = <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> p = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span>* pp = (<span class="type">int</span>*)&amp;cc;</span><br><span class="line">    <span class="type">int</span>* g_pp = (<span class="type">int</span>*)&amp;g_cc;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, cc); <span class="comment">// 1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//p = 3 // Error</span></span><br><span class="line">    *pp = <span class="number">3</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;cc = %d\n&quot;</span>, cc);<span class="comment">// 3</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;g_cc = %d\n&quot;</span>, g_cc);<span class="comment">// 2</span></span><br><span class="line">    <span class="comment">//g_cc = 2 // Error</span></span><br><span class="line">     </span><br><span class="line">    *g_pp = <span class="number">3</span>; <span class="comment">// oops! Segmentation fault </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;g_cc = %d\n&quot;</span>, g_cc);<span class="comment">// 2</span></span><br><span class="line">        </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Gcc 将全局 cosnt 存储与只读存储区，当我们试图修改其中的内容时候，就会报 Segmentation fault 错误（这也是标准 C 语言的定义）</p>
-<p>其他编译器可能就没问题</p>
-</blockquote>
-<ul>
-<li>C 语言中的 const 使得变量具有只读属性</li>
-<li>现代 C 编译器中的 const 将具有全局生命周期的变量存储与只读存储区</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> g_array[<span class="number">5</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">modify</span><span class="params">(<span class="type">int</span>* p, <span class="type">int</span> v)</span> &#123;</span><br><span class="line">    *p = v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="type">const</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">static</span> <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="type">const</span> <span class="built_in">array</span>[<span class="number">5</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    modify((<span class="type">int</span>*)&amp;i, <span class="number">1</span>);    <span class="comment">// ok</span></span><br><span class="line">    modify((<span class="type">int</span>*)&amp;j, <span class="number">1</span>);    <span class="comment">// Error</span></span><br><span class="line">    modify((<span class="type">int</span>*)&amp;<span class="built_in">array</span>[<span class="number">0</span>], <span class="number">1</span>); <span class="comment">// ok</span></span><br><span class="line">    modify((<span class="type">int</span>*)&amp;g_array[<span class="number">0</span>], <span class="number">1</span>); <span class="comment">// Error</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, j);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;arrya[0] = %d\n&quot;</span>, <span class="built_in">array</span>[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;g_arrya[0] = %d\n&quot;</span>, g_array[<span class="number">0</span>]);</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>modify((int*)&amp;j, 1);    &#x2F;&#x2F; Error</p>
-<p>被 static 修饰的变量被存储在全局存储区，const 修饰的全局变量将被存放在只读存储区</p>
-<p>modify((int*)&amp;g_array[0], 1); &#x2F;&#x2F; Error</p>
-<p>g_array[0] 是全局变量，被 const 修饰的全局变量将存储区只读存储区</p>
-</blockquote>
-<ul>
-<li>const 修饰函数参数表示在函数体内不希望改变参数的值</li>
-<li>const 修饰函数返回值表示返回值不可改变，多用于返回指针的情形</li>
-</ul>
-<blockquote>
-<p>C 语言中的字符串字面量存储与只读存储区中，在程序中需要使用 const char* 指针</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">f</span><span class="params">(<span class="type">const</span> <span class="type">int</span> i )</span> &#123;</span><br><span class="line">    <span class="comment">// i = 5;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;kay wang&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* pc = f(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, pc);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//pc[3] = &quot;_&quot;; // Error 因为是只读的</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, pc);</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="void"><a href="#void" class="headerlink" title="void"></a>void</h2><p><strong>在 C 语言中可以定义 void 类型的指针</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">void</span> var; <span class="comment">// Eroor</span></span><br><span class="line">    <span class="type">void</span> <span class="built_in">array</span>[<span class="number">5</span>]; <span class="comment">// Err</span></span><br><span class="line">    <span class="type">void</span>* pv; <span class="comment">// C 语言允许定义 void 类型的指针 </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>不存在 void 类型的变量</strong></p>
-<ul>
-<li><p>C 语言中没有定义 void 究竟是多大内存的别名，无法在内存中开辟出 void 大小对应的变量</p>
-</li>
-<li><p>而指针是固定 4 或 8 个字节大小的，所以可以开辟指针类型的 void 变量</p>
-</li>
-</ul>
-<blockquote>
-<p>注意：在非标准 C 语言编译器中有的对 void 规定了大小，比如 gcc 编译器就规定了 void 大小为 1 个字节</p>
-<p>printf(“%ld\n”, sizeof(void)); &#x2F;&#x2F; 1</p>
-</blockquote>
-<p><strong>意义</strong></p>
-<ul>
-<li>C 语言规定只有相同类型的指针才可以互相赋值</li>
-<li>void* 指针作为左值用于 “接收” 任意类型的指针</li>
-<li>void* 指针作为右值使用时需要进行强制类型转换</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// malloc() 函数是 C 语言标准库中的一个函数，用于动态地分配内存。</span></span><br><span class="line"><span class="type">int</span>* pI = (<span class="type">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"><span class="type">char</span>* pC = (<span class="type">char</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">char</span>));</span><br><span class="line"><span class="type">void</span>* p = <span class="literal">NULL</span>;</span><br><span class="line"><span class="type">int</span>* pni = <span class="literal">NULL</span>;</span><br><span class="line"><span class="type">char</span>* pnc = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">p = pI; <span class="comment">// ok</span></span><br><span class="line">============</span><br><span class="line">pni = P; <span class="comment">// Error oops! pni = (int*)p</span></span><br><span class="line"></span><br><span class="line">p = pC <span class="comment">// ok</span></span><br><span class="line">==================</span><br><span class="line">pnc = P; <span class="comment">// Error oops! pnc = (void*)p</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>void 是一种抽象的数据类型</li>
-<li>void 类型不能用于定义变量</li>
-<li>void 类型用于声明函数无参数</li>
-<li>void 类型用于声明函数无返回值</li>
-<li>可以定义 void* 类型的指针</li>
-<li>void* 类型的指针可以接收任意类型的指针值</li>
-</ul>
-<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><ul>
-<li>volatile 可理解为 “编译器警告关键字”</li>
-<li>volatile 告诉编译器必须每次去内存中取变量值</li>
-<li>volatile 主要修饰可能被多个线程访问的变量</li>
-<li>volatile 也可以修饰可能被未知因数更改的变量</li>
-</ul>
-<h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p><strong>C 语言中的常量类型</strong></p>
-<ul>
-<li>字面量<ul>
-<li>直接表示值含义的符号，如：5、’a’、”Ubuntu”</li>
-</ul>
-</li>
-<li>宏常量（字符化的字面量）<ul>
-<li>通过 #define 定义，间接表示值的符号，如：FIV &#x3D;&gt; 5.5</li>
-</ul>
-</li>
-<li>枚举常量<ul>
-<li>通过 enum 定义，间接表示值的符号，如：First &#x3D;&gt; 1</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 示例</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NAME kay;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 枚举常量只能是整形常量，浮点数都不可以</span></span><br><span class="line"><span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">    ThirdValue = <span class="number">333</span>,</span><br><span class="line">    FourthValue = <span class="number">444</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><strong>常量的类型</strong></p>
-<ul>
-<li>字面量有其默认的类型，也可通过后缀指定其类型</li>
-<li>#define 定义的宏常量可以是任意类型</li>
-<li>enum 定义的枚举常量只能是整形</li>
-</ul>
-<blockquote>
-<p>字面量是常量，但是它的默认类型由语言提供，也可通过后缀指定其类型；</p>
-</blockquote>
-<h2 id="const-1"><a href="#const-1" class="headerlink" title="const"></a>const</h2><p><strong>C 语言中的只读变量</strong></p>
-<ul>
-<li>C 语言提供了 const 关键字，用于修饰一个变量</li>
-<li>被 const 修饰的变量<strong>只能作为右值使用</strong><ul>
-<li>无法通过赋值操作改变 const 变量的值</li>
-<li>const 修饰</li>
-</ul>
-</li>
-</ul>
-<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p><strong>同样是4个字节，为什么float却比int的范围大得多呢？</strong></p>
-<ul>
-<li>float 能表示的具体数字的个数与int相同</li>
-<li>float可表示的数字之间不是连续的，存在间隙</li>
-<li>float只是一种近似的表示法，不能作为精确使用</li>
-<li>由于内存表示法相对复杂，float的运算速度比int慢很多</li>
-</ul>
-<blockquote>
-<p>注意：</p>
-<p>double 与 float 具有相同的内存表示法，因此 double 也是不精确的。由于 double 占用的内存较多，所能表示的精度比 float 高；</p>
-</blockquote>
-<p><strong>小结</strong></p>
-<ul>
-<li>浮点类型与整数类型的内存表示法不同</li>
-<li>浮点类型的内存表示更复杂</li>
-<li>浮点类型可表示的范围更大</li>
-<li>浮点类型是一种不精确的类型</li>
-<li>浮点类型的运算速度很慢</li>
-</ul>
-<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><h2 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h2><h3 id="long"><a href="#long" class="headerlink" title="long"></a>long</h3><ul>
-<li>long 在使用不同的编译器时，可能占用的内存不同</li>
-<li>long 通常占 4 字节内存，也可能占 8 字节内存</li>
-<li>long long表示整形，固定占用 8 字节内存</li>
-<li>long long 是 long long int 的缩写形式</li>
-</ul>
-]]></content>
-      <categories>
-        <category>C语言</category>
-      </categories>
-      <tags>
-        <tag>C语言进阶</tag>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -2007,6 +1980,47 @@
       </tags>
   </entry>
   <entry>
+    <title>Rust编译期计算</title>
+    <url>/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%9C%9F%E8%AE%A1%E7%AE%97/</url>
+    <content><![CDATA[<h2 id="Rust-编译期计算"><a href="#Rust-编译期计算" class="headerlink" title="Rust 编译期计算"></a>Rust 编译期计算</h2><p><em>CTFE</em>(compile time function evaluation)：是指在编译阶段由编译器进行的运算，这种运算不占用程序运行时的时间。</p>
+<p>两种方式：</p>
+<ul>
+<li><p>过程宏 + Build脚本(build.rs)</p>
+</li>
+<li><p>常量表达式求值</p>
+<ul>
+<li>常量函数(const fn)</li>
+<li>常量泛型(const generic)</li>
+</ul>
+</li>
+</ul>
+<p><strong>常量传播</strong>：常量传播是编译器的一种优化方式，例如将3 + 4 优化为 7 ，避免运行时再次计算。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> X: <span class="type">u32</span> = <span class="number">3</span> + <span class="number">4</span>; <span class="comment">// CTEF</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">x</span>: <span class="type">i32</span> = <span class="number">3</span> + <span class="number">4</span>; <span class="comment">// 不是 CTEF,但可能会被常量传播优化，因为他不在常量上下文。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常量表达式求值"><a href="#常量表达式求值" class="headerlink" title="常量表达式求值"></a>常量表达式求值</h3><p><strong>常量函数</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">fn</span> <span class="title function_">fib</span>(n: <span class="type">u128</span>) <span class="punctuation">-&gt;</span> <span class="type">u128</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">fn</span> <span class="title function_">helper</span>(n: <span class="type">u128</span>, a: <span class="type">u128</span>, b: <span class="type">u128</span>, i: <span class="type">u128</span>) <span class="punctuation">-&gt;</span> <span class="type">u128</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> i &lt;= n &#123;</span><br><span class="line">            <span class="title function_ invoke__">helper</span>(n, b, a + b, i + <span class="number">1</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            b</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">helper</span>(n, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> X: <span class="type">u128</span> = <span class="title function_ invoke__">filb</span>(<span class="number">10</span>); <span class="comment">// X 会在编译器完成求值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">println</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, X); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编译期计算通过 MIR(中级中间语言) 中内置的 MIri(编译器内置 MIR 解释器) 实现</p>
+</blockquote>
+<p><strong>常量泛型</strong></p>
+<p>为什么要有常量泛型？</p>
+<p>因为在 Rust 中定义相同的静态数组是不同的元素：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 二者是不同的类型</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">arr</span>: [<span class="number">3</span>; <span class="type">i32</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">arr</span>: [<span class="number">5</span>; <span class="type">i32</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>为了在使用过程中可以使用泛型统一个的不同长度的数组，官方引入了常量泛型的概念。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::mem::MaybeUninit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">ArrayVec</span>&lt;T, <span class="keyword">const</span> N: <span class="type">usize</span>&gt; &#123;</span><br><span class="line">    items: [MaybeUninit&lt;T&gt;; N],</span><br><span class="line">    length: <span class="type">usize</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="过程宏-Build脚本-build-rs"><a href="#过程宏-Build脚本-build-rs" class="headerlink" title="过程宏 + Build脚本(build.rs)"></a>过程宏 + Build脚本(build.rs)</h3>]]></content>
+      <categories>
+        <category>Rust</category>
+      </categories>
+      <tags>
+        <tag>Rust</tag>
+        <tag>Rust-基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Rust编译过程</title>
     <url>/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/</url>
     <content><![CDATA[<p><strong>Rust 编译过程</strong></p>
@@ -2056,38 +2070,19 @@
       </tags>
   </entry>
   <entry>
-    <title>Rust编译期计算</title>
-    <url>/Rust/basic/Rust%E7%BC%96%E8%AF%91%E6%9C%9F%E8%AE%A1%E7%AE%97/</url>
-    <content><![CDATA[<h2 id="Rust-编译期计算"><a href="#Rust-编译期计算" class="headerlink" title="Rust 编译期计算"></a>Rust 编译期计算</h2><p><em>CTFE</em>(compile time function evaluation)：是指在编译阶段由编译器进行的运算，这种运算不占用程序运行时的时间。</p>
-<p>两种方式：</p>
-<ul>
-<li><p>过程宏 + Build脚本(build.rs)</p>
-</li>
-<li><p>常量表达式求值</p>
-<ul>
-<li>常量函数(const fn)</li>
-<li>常量泛型(const generic)</li>
+    <title>VSCode中的Rust配置</title>
+    <url>/Rust/basic/vscode%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="安装必要插件"><a href="#安装必要插件" class="headerlink" title="安装必要插件"></a>安装必要插件</h1><ul>
+<li>rust-analyzer ：Rust 插件</li>
+<li>Dependi ：crate 相关插件</li>
+<li>Even Better TOML ：TOML 语法高亮</li>
 </ul>
-</li>
+<h1 id="一些非必要但是好用的-crate"><a href="#一些非必要但是好用的-crate" class="headerlink" title="一些非必要但是好用的 crate"></a>一些非必要但是好用的 crate</h1><ul>
+<li>cargo-edit: 该工具扩展了Cargo，允许您通过从命令行修改Cargo.toml文件来添加、删除和升级依赖项。</li>
 </ul>
-<p><strong>常量传播</strong>：常量传播是编译器的一种优化方式，例如将3 + 4 优化为 7 ，避免运行时再次计算。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> X: <span class="type">u32</span> = <span class="number">3</span> + <span class="number">4</span>; <span class="comment">// CTEF</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">x</span>: <span class="type">i32</span> = <span class="number">3</span> + <span class="number">4</span>; <span class="comment">// 不是 CTEF,但可能会被常量传播优化，因为他不在常量上下文。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">任意目录下</span></span><br><span class="line">cargo install cargo-edit</span><br></pre></td></tr></table></figure>
 
-<h3 id="常量表达式求值"><a href="#常量表达式求值" class="headerlink" title="常量表达式求值"></a>常量表达式求值</h3><p><strong>常量函数</strong></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">fn</span> <span class="title function_">fib</span>(n: <span class="type">u128</span>) <span class="punctuation">-&gt;</span> <span class="type">u128</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">fn</span> <span class="title function_">helper</span>(n: <span class="type">u128</span>, a: <span class="type">u128</span>, b: <span class="type">u128</span>, i: <span class="type">u128</span>) <span class="punctuation">-&gt;</span> <span class="type">u128</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> i &lt;= n &#123;</span><br><span class="line">            <span class="title function_ invoke__">helper</span>(n, b, a + b, i + <span class="number">1</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            b</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">helper</span>(n, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> X: <span class="type">u128</span> = <span class="title function_ invoke__">filb</span>(<span class="number">10</span>); <span class="comment">// X 会在编译器完成求值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">println</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, X); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>编译期计算通过 MIR(中级中间语言) 中内置的 MIri(编译器内置 MIR 解释器) 实现</p>
-</blockquote>
-<p><strong>常量泛型</strong></p>
-<p>为什么要有常量泛型？</p>
-<p>因为在 Rust 中定义相同的静态数组是不同的元素：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 二者是不同的类型</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">arr</span>: [<span class="number">3</span>; <span class="type">i32</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">arr</span>: [<span class="number">5</span>; <span class="type">i32</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>为了在使用过程中可以使用泛型统一个的不同长度的数组，官方引入了常量泛型的概念。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::mem::MaybeUninit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">ArrayVec</span>&lt;T, <span class="keyword">const</span> N: <span class="type">usize</span>&gt; &#123;</span><br><span class="line">    items: [MaybeUninit&lt;T&gt;; N],</span><br><span class="line">    length: <span class="type">usize</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="过程宏-Build脚本-build-rs"><a href="#过程宏-Build脚本-build-rs" class="headerlink" title="过程宏 + Build脚本(build.rs)"></a>过程宏 + Build脚本(build.rs)</h3>]]></content>
+]]></content>
       <categories>
         <category>Rust</category>
       </categories>
@@ -2116,28 +2111,6 @@
 
 <p><strong>上述可以看出 Move 的本质是 Rust 编译期把这个 a 变量重新进行了一个未初始化的标记，并不是立刻进行 drop，它会将 drop 延后到函数末尾释放</strong></p>
 <h1 id="Drop"><a href="#Drop" class="headerlink" title="Drop"></a>Drop</h1><p>析构函数时，按照栈先进后出的顺序进行析构，变量按照内存布局进行析构；</p>
-]]></content>
-      <categories>
-        <category>Rust</category>
-      </categories>
-      <tags>
-        <tag>Rust</tag>
-        <tag>Rust-基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VSCode中的Rust配置</title>
-    <url>/Rust/basic/vscode%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="安装必要插件"><a href="#安装必要插件" class="headerlink" title="安装必要插件"></a>安装必要插件</h1><ul>
-<li>rust-analyzer ：Rust 插件</li>
-<li>Dependi ：crate 相关插件</li>
-<li>Even Better TOML ：TOML 语法高亮</li>
-</ul>
-<h1 id="一些非必要但是好用的-crate"><a href="#一些非必要但是好用的-crate" class="headerlink" title="一些非必要但是好用的 crate"></a>一些非必要但是好用的 crate</h1><ul>
-<li>cargo-edit: 该工具扩展了Cargo，允许您通过从命令行修改Cargo.toml文件来添加、删除和升级依赖项。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">任意目录下</span></span><br><span class="line">cargo install cargo-edit</span><br></pre></td></tr></table></figure>
-
 ]]></content>
       <categories>
         <category>Rust</category>
@@ -2274,18 +2247,6 @@
       </tags>
   </entry>
   <entry>
-    <title>智能指针</title>
-    <url>/Rust/basic/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Rust</category>
-      </categories>
-      <tags>
-        <tag>Rust</tag>
-        <tag>Rust-基础</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>定义自己的Crate</title>
     <url>/Rust/basic/%E5%AE%9A%E4%B9%89%E8%87%AA%E5%B7%B1%E7%9A%84Crate/</url>
     <content><![CDATA[<h1 id="创建自己的-Crate"><a href="#创建自己的-Crate" class="headerlink" title="创建自己的 Crate"></a>创建自己的 Crate</h1><p>安装<code>cargo-edit</code>工具，他扩展了<code>cargo</code>的功能</p>
@@ -2304,13 +2265,9 @@
       </tags>
   </entry>
   <entry>
-    <title>集合类型</title>
-    <url>/Rust/basic/%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<h1 id="Vec"><a href="#Vec" class="headerlink" title="Vec&lt;T&gt;"></a>Vec&lt;T&gt;</h1><p>动态可增长数组；</p>
-<h1 id="VecDeque"><a href="#VecDeque" class="headerlink" title="VecDeque&lt;T&gt;"></a>VecDeque&lt;T&gt;</h1><p>基于环形换冲突的先进先出双端队列；</p>
-<h1 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList&lt;T&gt;"></a>LinkedList&lt;T&gt;</h1><p>非侵入式双向链表实现；</p>
-<h1 id="BinaryHeap"><a href="#BinaryHeap" class="headerlink" title="BinaryHeap&lt;T&gt;"></a>BinaryHeap&lt;T&gt;</h1><p>二叉堆实现，可用作优先队列</p>
-<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap&lt;K, V&gt;"></a>HashMap&lt;K, V&gt;</h1><h1 id="BTreeMap"><a href="#BTreeMap" class="headerlink" title="BTreeMap&lt;K, V&gt;"></a>BTreeMap&lt;K, V&gt;</h1><h1 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet&lt;T&gt;"></a>HashSet&lt;T&gt;</h1><h1 id="BTreeSet"><a href="#BTreeSet" class="headerlink" title="BTreeSet&lt;T&gt;"></a>BTreeSet&lt;T&gt;</h1>]]></content>
+    <title>智能指针</title>
+    <url>/Rust/basic/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[]]></content>
       <categories>
         <category>Rust</category>
       </categories>
@@ -2354,110 +2311,46 @@
       </tags>
   </entry>
   <entry>
-    <title>MySQL安装配置</title>
-    <url>/OS/Ubuntu/MySQL%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><strong>添加 MySQL APT 存储库</strong></p>
-<p> <a href="https://dev.mysql.com/downloads/repo/apt/">MySQL APT 存储库下载页面</a>。</p>
-<p>安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo dpkg -i mysql-apt-config_0.8.32-1_all.deb</span> </span><br></pre></td></tr></table></figure>
-
-<p><strong>更新存储库</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo apt-get update</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>安装MySQL</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo apt-get install mysql-server</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><p><strong>1. 停止MySQL服务</strong></p>
-<p>在卸载之前，首先需要确保MySQL服务已经停止运行，以防止卸载过程中出现潜在问题。可以使用以下命令来停止MySQL服务：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl stop mysql</span><br></pre></td></tr></table></figure>
-
-<p>或者，如果你使用的是较旧的Ubuntu版本，可能需要使用以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo service mysql stop</span><br></pre></td></tr></table></figure>
-
-<p><strong>2. 卸载MySQL软件包</strong></p>
-<p>使用<code>apt-get</code>命令来卸载MySQL服务器及其相关软件包。通常，除了<code>mysql-server</code>外，可能还需要卸载<code>mysql-client</code>和<code>mysql-common</code>等软件包。使用以下命令进行卸载：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get remove --purge mysql-server mysql-client mysql-common</span><br></pre></td></tr></table></figure>
-
-<p><code>--purge</code>选项会卸载软件包并删除其配置文件。</p>
-<p><strong>3. 删除MySQL的配置文件和数据目录</strong></p>
-<p>尽管<code>apt-get remove --purge</code>命令会删除大多数配置文件，但为了确保彻底卸载，建议手动删除MySQL的配置文件和数据目录。这些文件通常位于<code>/etc/mysql</code>和<code>/var/lib/mysql</code>目录下。使用以下命令进行删除：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo <span class="built_in">rm</span> -rf /etc/mysql /var/lib/mysql</span><br></pre></td></tr></table></figure>
-
-<p>此外，有些MySQL版本可能会在<code>/var/log/mysql</code>目录下生成日志文件，你也可以选择删除这些日志文件：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo <span class="built_in">rm</span> -rf /var/log/mysql</span><br></pre></td></tr></table></figure>
-
-<p><strong>4. 清理残留文件和依赖项</strong></p>
-<p>使用<code>apt-get autoremove</code>命令来自动删除不再需要的依赖项。此外，<code>apt-get autoclean</code>命令可以清理下载的软件包缓存，但这一步不是必须的，因为它不会直接删除MySQL的残留文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get autoremove  </span><br><span class="line">$ sudo apt-get autoclean</span><br></pre></td></tr></table></figure>
-
-<p><strong>5. 验证卸载结果</strong></p>
-<p>为了验证MySQL是否已完全卸载，可以尝试运行<code>mysql</code>命令查看其版本。如果MySQL已成功卸载，系统将显示一个错误消息，指出找不到<code>mysql</code>命令。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mysql --version</span><br></pre></td></tr></table></figure>
-
-<p>如果看到类似“Command ‘mysql’ not found, but can be installed with:”的错误消息，则表示MySQL已成功卸载。</p>
-]]></content>
-      <categories>
-        <category>OS</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>v2raya安装配置</title>
-    <url>/OS/Ubuntu/v2raya%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="安装-v2ray-core"><a href="#安装-v2ray-core" class="headerlink" title="安装 v2ray-core"></a>安装 v2ray-core</h2><p>下载：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">https://github.com/v2fly/v2ray-core</span><br></pre></td></tr></table></figure>
-
-<p>解压：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo unzip v2ray-linux-64.zip -d /usr/local/v2ray-core</span><br></pre></td></tr></table></figure>
-
-<p>拷贝geoip.dat和geosite.dat到&#x2F;usr&#x2F;local&#x2F;share&#x2F;v2ray&#x2F;：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /usr/local/share/v2ray/</span><br><span class="line">sudo mv /usr/local/v2ray-core/*dat  /usr/local/share/v2ray/</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装-v2rayA"><a href="#安装-v2rayA" class="headerlink" title="安装 v2rayA"></a>安装 v2rayA</h2><p>下载：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">https://github.com/v2rayA/v2rayA</span><br></pre></td></tr></table></figure>
-
-<p>安装：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i installer_debian_x64_*.deb</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置-v2rayA"><a href="#配置-v2rayA" class="headerlink" title="配置 v2rayA"></a>配置 v2rayA</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim /etc/default/v2raya</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加如下配置</span></span><br><span class="line"></span><br><span class="line">V2RAYA_V2RAY_BIN=/usr/local/v2ray-core/v2ray</span><br><span class="line">V2RAYA_V2RAY_CONFDIR=/usr/local/v2ray-core</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输入<span class="string">&quot;:wq!&quot;</span>后可保存更改</span></span><br></pre></td></tr></table></figure>
-
-<p>设置开机自启：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo systemctl enable --now v2raya</span><br><span class="line">sudo systemctl status v2raya </span><br></pre></td></tr></table></figure>
-
-<p>打开v2rayA：<code>v2rayA Web panel</code></p>
-]]></content>
-      <categories>
-        <category>OS</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>nodejs安装与配置</title>
-    <url>/%E5%89%8D%E7%AB%AF/nodejs/nodejs%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><a href="https://nodejs.org/">Node.js</a></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>下一步即可</p>
-<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>1.在你需要的目录下新建两个文件夹【node_global】和【node_cache】</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm config set prefix &quot;D:\tools\SDK\nodejs\configuration\node_global&quot;</span><br><span class="line"></span><br><span class="line">npm config set cache &quot;D:\tools\SDK\nodejs\configuration\node_cache&quot;</span><br></pre></td></tr></table></figure>
-
-<p>【此电脑】-单击右键【属性】-【高级系统设置】-【环境变量】</p>
-<p>2.在【系统变量】中点击【新建】</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">NODE_PATH</span><br><span class="line">D:\tools\SDK\nodejs\configuration\node_global\node_modules</span><br></pre></td></tr></table></figure>
-
-<p>3.编辑【用户变量】中的【Path】</p>
-<p>将默认C盘下【AppData\Roaming\npm】修改为【node_global】的路径</p>
-<p>4.在【系统变量】中选择【Path】添加【%NODE_PATH%】</p>
-]]></content>
+    <title>集合类型</title>
+    <url>/Rust/basic/%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="Vec"><a href="#Vec" class="headerlink" title="Vec&lt;T&gt;"></a>Vec&lt;T&gt;</h1><p>动态可增长数组；</p>
+<h1 id="VecDeque"><a href="#VecDeque" class="headerlink" title="VecDeque&lt;T&gt;"></a>VecDeque&lt;T&gt;</h1><p>基于环形换冲突的先进先出双端队列；</p>
+<h1 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList&lt;T&gt;"></a>LinkedList&lt;T&gt;</h1><p>非侵入式双向链表实现；</p>
+<h1 id="BinaryHeap"><a href="#BinaryHeap" class="headerlink" title="BinaryHeap&lt;T&gt;"></a>BinaryHeap&lt;T&gt;</h1><p>二叉堆实现，可用作优先队列</p>
+<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap&lt;K, V&gt;"></a>HashMap&lt;K, V&gt;</h1><h1 id="BTreeMap"><a href="#BTreeMap" class="headerlink" title="BTreeMap&lt;K, V&gt;"></a>BTreeMap&lt;K, V&gt;</h1><h1 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet&lt;T&gt;"></a>HashSet&lt;T&gt;</h1><h1 id="BTreeSet"><a href="#BTreeSet" class="headerlink" title="BTreeSet&lt;T&gt;"></a>BTreeSet&lt;T&gt;</h1>]]></content>
       <categories>
         <category>Rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
         <tag>Rust-基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>异步Web实战</title>
+    <url>/Rust/project/%E5%BC%82%E6%AD%A5Web%E5%AE%9E%E6%88%98/</url>
+    <content><![CDATA[<h1 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><h2 id="rust编码规范"><a href="#rust编码规范" class="headerlink" title="rust编码规范"></a>rust编码规范</h2><p>新建<code>.rustfmt.toml</code>文件用于帮助你写出地道的rust代码。</p>
+<p>Rustfmt 的设计非常易于配置。您可以创建一个名为 <code>rustfmt.toml</code>或 的TOML 文件<code>.rustfmt.toml</code>，将其放在项目或任何其他父目录中，它将应用该文件中的选项。</p>
+<p>这需要将rust设置为<code>nightly</code>时才可使用。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rustup default nightly</span><br></pre></td></tr></table></figure>
+
+<p>在当前工作目录中的 Cargo 项目上运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cargo +nightly fmt</span><br><span class="line"></span><br><span class="line"># rustfmt lib.rs main.rs 将就只格式化“lib.rs”和“main.rs”</span><br><span class="line"># rustfmt lib.rs --check 检查 lib.rs 文件的格式，并给出修改意见，不进行格式化</span><br></pre></td></tr></table></figure>
+
+<h2 id="学习axum"><a href="#学习axum" class="headerlink" title="学习axum"></a>学习axum</h2><h2 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h2><h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p><strong>1.cargo-edit工具</strong></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">cargo install cargo<span class="literal">-edit</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2. Toml文件插件</strong></p>
+<p><code>TOML Language Support</code></p>
+<p><strong>3. cratescha插件</strong></p>
+<p><code>crates</code></p>
+]]></content>
+      <categories>
+        <category>Rust</category>
+      </categories>
+      <tags>
+        <tag>Rust</tag>
+        <tag>Rust-实战</tag>
       </tags>
   </entry>
   <entry>
@@ -3034,6 +2927,89 @@ build: binary
       </tags>
   </entry>
   <entry>
+    <title>MySQL安装配置</title>
+    <url>/OS/Ubuntu/MySQL%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><strong>添加 MySQL APT 存储库</strong></p>
+<p> <a href="https://dev.mysql.com/downloads/repo/apt/">MySQL APT 存储库下载页面</a>。</p>
+<p>安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo dpkg -i mysql-apt-config_0.8.32-1_all.deb</span> </span><br></pre></td></tr></table></figure>
+
+<p><strong>更新存储库</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo apt-get update</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>安装MySQL</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo apt-get install mysql-server</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><p><strong>1. 停止MySQL服务</strong></p>
+<p>在卸载之前，首先需要确保MySQL服务已经停止运行，以防止卸载过程中出现潜在问题。可以使用以下命令来停止MySQL服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl stop mysql</span><br></pre></td></tr></table></figure>
+
+<p>或者，如果你使用的是较旧的Ubuntu版本，可能需要使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo service mysql stop</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 卸载MySQL软件包</strong></p>
+<p>使用<code>apt-get</code>命令来卸载MySQL服务器及其相关软件包。通常，除了<code>mysql-server</code>外，可能还需要卸载<code>mysql-client</code>和<code>mysql-common</code>等软件包。使用以下命令进行卸载：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get remove --purge mysql-server mysql-client mysql-common</span><br></pre></td></tr></table></figure>
+
+<p><code>--purge</code>选项会卸载软件包并删除其配置文件。</p>
+<p><strong>3. 删除MySQL的配置文件和数据目录</strong></p>
+<p>尽管<code>apt-get remove --purge</code>命令会删除大多数配置文件，但为了确保彻底卸载，建议手动删除MySQL的配置文件和数据目录。这些文件通常位于<code>/etc/mysql</code>和<code>/var/lib/mysql</code>目录下。使用以下命令进行删除：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo <span class="built_in">rm</span> -rf /etc/mysql /var/lib/mysql</span><br></pre></td></tr></table></figure>
+
+<p>此外，有些MySQL版本可能会在<code>/var/log/mysql</code>目录下生成日志文件，你也可以选择删除这些日志文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo <span class="built_in">rm</span> -rf /var/log/mysql</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 清理残留文件和依赖项</strong></p>
+<p>使用<code>apt-get autoremove</code>命令来自动删除不再需要的依赖项。此外，<code>apt-get autoclean</code>命令可以清理下载的软件包缓存，但这一步不是必须的，因为它不会直接删除MySQL的残留文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get autoremove  </span><br><span class="line">$ sudo apt-get autoclean</span><br></pre></td></tr></table></figure>
+
+<p><strong>5. 验证卸载结果</strong></p>
+<p>为了验证MySQL是否已完全卸载，可以尝试运行<code>mysql</code>命令查看其版本。如果MySQL已成功卸载，系统将显示一个错误消息，指出找不到<code>mysql</code>命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mysql --version</span><br></pre></td></tr></table></figure>
+
+<p>如果看到类似“Command ‘mysql’ not found, but can be installed with:”的错误消息，则表示MySQL已成功卸载。</p>
+]]></content>
+      <categories>
+        <category>OS</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>v2raya安装配置</title>
+    <url>/OS/Ubuntu/v2raya%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="安装-v2ray-core"><a href="#安装-v2ray-core" class="headerlink" title="安装 v2ray-core"></a>安装 v2ray-core</h2><p>下载：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">https://github.com/v2fly/v2ray-core</span><br></pre></td></tr></table></figure>
+
+<p>解压：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo unzip v2ray-linux-64.zip -d /usr/local/v2ray-core</span><br></pre></td></tr></table></figure>
+
+<p>拷贝geoip.dat和geosite.dat到&#x2F;usr&#x2F;local&#x2F;share&#x2F;v2ray&#x2F;：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /usr/local/share/v2ray/</span><br><span class="line">sudo mv /usr/local/v2ray-core/*dat  /usr/local/share/v2ray/</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-v2rayA"><a href="#安装-v2rayA" class="headerlink" title="安装 v2rayA"></a>安装 v2rayA</h2><p>下载：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">https://github.com/v2rayA/v2rayA</span><br></pre></td></tr></table></figure>
+
+<p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i installer_debian_x64_*.deb</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-v2rayA"><a href="#配置-v2rayA" class="headerlink" title="配置 v2rayA"></a>配置 v2rayA</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim /etc/default/v2raya</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加如下配置</span></span><br><span class="line"></span><br><span class="line">V2RAYA_V2RAY_BIN=/usr/local/v2ray-core/v2ray</span><br><span class="line">V2RAYA_V2RAY_CONFDIR=/usr/local/v2ray-core</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输入<span class="string">&quot;:wq!&quot;</span>后可保存更改</span></span><br></pre></td></tr></table></figure>
+
+<p>设置开机自启：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo systemctl enable --now v2raya</span><br><span class="line">sudo systemctl status v2raya </span><br></pre></td></tr></table></figure>
+
+<p>打开v2rayA：<code>v2rayA Web panel</code></p>
+]]></content>
+      <categories>
+        <category>OS</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>开发环境</title>
     <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A8%A1%E7%94%B5%E5%9F%BA%E7%A1%80/chuanbingliandianlu.png" alt="chuanbingliandianlu"></p>
@@ -3336,55 +3312,65 @@ build: binary
       </tags>
   </entry>
   <entry>
-    <title>bevy基础</title>
-    <url>/game/rust/Bevy/bevy%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h1 id="Bevy-基础"><a href="#Bevy-基础" class="headerlink" title="Bevy 基础"></a>Bevy 基础</h1><h2 id="Bevy设置"><a href="#Bevy设置" class="headerlink" title="Bevy设置"></a>Bevy设置</h2><h3 id="加快编译优化"><a href="#加快编译优化" class="headerlink" title="加快编译优化"></a>加快编译优化</h3><p>在<code>Cargo.toml</code>或<code>.cargo/config.toml</code>:</p>
-<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 对依赖项启用最大优化，但不对我们的代码启用最大优化：</span></span><br><span class="line"><span class="section">[profile.dev.package.&quot;*&quot;]</span></span><br><span class="line"><span class="attr">opt-level</span> = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在调试/开发模式下仅启用少量优化</span></span><br><span class="line"><span class="section">[profile.dev]</span></span><br><span class="line"><span class="attr">opt-level</span> = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 实际发布模式下最积极的优化配置：</span></span><br><span class="line"><span class="section">[profile.release]</span></span><br><span class="line"><span class="attr">lto</span> = <span class="literal">true</span> <span class="comment"># 设置为 true 时编译器会进行链接时间优化，但会增加编译时间。</span></span><br><span class="line"><span class="attr">opt-level</span> = <span class="number">3</span> <span class="comment"># 设置优化级别为最高。</span></span><br><span class="line"><span class="attr">codegen-units</span> = <span class="number">1</span> <span class="comment"># 控制了代码生成的单元数量。当设置为 1 时，整个 crate 会被编译成一个单独的代码生成单元。</span></span><br><span class="line"><span class="attr">incremental</span> = <span class="literal">false</span> <span class="comment"># 不启用增量编译：增量编译允许 Cargo 只重新编译自上次构建以来已更改的文件和依赖项，从而加快编译速度。</span></span><br><span class="line"><span class="attr">debug</span> = <span class="literal">false</span> <span class="comment"># 当设置为false时，编译器不会生成调试信息。</span></span><br></pre></td></tr></table></figure>
+    <title>nodejs安装与配置</title>
+    <url>/%E5%89%8D%E7%AB%AF/nodejs/nodejs%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><a href="https://nodejs.org/">Node.js</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>下一步即可</p>
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>1.在你需要的目录下新建两个文件夹【node_global】和【node_cache】</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm config set prefix &quot;D:\tools\SDK\nodejs\configuration\node_global&quot;</span><br><span class="line"></span><br><span class="line">npm config set cache &quot;D:\tools\SDK\nodejs\configuration\node_cache&quot;</span><br></pre></td></tr></table></figure>
 
-<p><strong>警告！</strong>如果您使用调试器（如<code>gdb</code>或<code>lldb</code>）来逐步执行代码，任何程度的编译器优化都会影响体验。您的断点可能会被跳过，并且代码流可能会以意想不到的方式跳来跳去。如果您想调试&#x2F;逐步执行代码，您可能需要 <code>opt-level = 0</code>。</p>
-<h3 id="加速-Rust-Analyzer"><a href="#加速-Rust-Analyzer" class="headerlink" title="加速 Rust-Analyzer"></a>加速 Rust-Analyzer</h3><p><em>Powershell</em> 中键入 <strong>rustup shwo</strong> 来显示你的Rust构建工具链</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\cnkay&gt; rustup show</span><br><span class="line">Default host: x86_64<span class="literal">-pc-windows-msvc</span></span><br><span class="line">rustup home:  D:\tools\SDK\rust\.rustup</span><br><span class="line"></span><br><span class="line">stable<span class="literal">-x86_64-pc-windows-msvc</span> (default)</span><br><span class="line">rustc <span class="number">1.78</span>.<span class="number">0</span> (<span class="number">9</span>b00956e5 <span class="number">2024</span><span class="literal">-04-29</span>)</span><br></pre></td></tr></table></figure>
+<p>【此电脑】-单击右键【属性】-【高级系统设置】-【环境变量】</p>
+<p>2.在【系统变量】中点击【新建】</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">NODE_PATH</span><br><span class="line">D:\tools\SDK\nodejs\configuration\node_global\node_modules</span><br></pre></td></tr></table></figure>
 
-<p>如果你使用的是 <em>MSVC</em> 工具链那么连接器是<code>link.exe</code>。</p>
-<p>为了实现快速编译，需要设置非默认链接器。在 <em>VSCode</em> 中设置<code>settings.json</code> 添加：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">Windows<span class="punctuation">:</span></span><br><span class="line"><span class="attr">&quot;rust-analyzer.cargo.extraEnv&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;RUSTFLAGS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-Clinker=rust-lld.exe&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">Linux(mold)<span class="punctuation">:</span></span><br><span class="line"><span class="attr">&quot;rust-analyzer.cargo.extraEnv&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;RUSTFLAGS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-Clinker=clang -Clink-arg=-fuse-ld=mold&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">Linux (lld)<span class="punctuation">:</span></span><br><span class="line"><span class="attr">&quot;rust-analyzer.cargo.extraEnv&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;RUSTFLAGS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-Clinker=clang -Clink-arg=-fuse-ld=lld&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="CI设置"><a href="#CI设置" class="headerlink" title="CI设置"></a>CI设置</h2><p><code>CI</code>是<strong>GitHub Actions</strong>的简称</p>
-<h2 id="ECS-模式"><a href="#ECS-模式" class="headerlink" title="ECS 模式"></a>ECS 模式</h2><p>ECS 是*实体(Entity)<em>、</em>组件(Component)<em>、</em>系统(System)*的简称，是一种将<strong>数据</strong>和<strong>行为</strong>分开的编程范式。</p>
-<p><strong>系统(System)</strong></p>
-<p>系统是处理实体和组件的逻辑单元，负责执行特定的功能或行为。</p>
-<p>系统是基于组件的存在于否，以及它们的状态来执行逻辑单元。</p>
-<p>系统通常是独立于特定实体的，可以处理多个具有相似组件结构的实体。</p>
-<p><strong>实体(Entity)</strong></p>
-<p>实体是系统中的基本对象，可以是游戏中的角色、物体或者其他有意义的实体。</p>
-<p>实体本身通常只是一个标识符，没有行为或状态。</p>
-<p><strong>组件(Component)</strong></p>
-<p>组件是实体的属性或数据单元，描述了实体的特征和状态。</p>
-<p>不同的组件可以包含不同类型的数据，例如位置、渲染信息、健康状态等。</p>
-<p>一个实体可以关联多个组件，组件之间是相互独立的。</p>
-<p><strong>总结</strong></p>
-<p><strong>实体只是指向组件的唯一ID或引用，本质上他将所有的组件连接在一起，构成游戏中的单个对象。</strong></p>
-<p><strong>组件只是存粹的数据结构，如坦克对象的大小和速度。</strong></p>
-<p><strong>系统只是对具有特定组件功能的实体进行操作的功能。</strong></p>
-<p>在Bevy中<strong>实体(Entity)</strong> 是指向一群<strong>组件(Component)</strong> 的唯一 <strong>事物(things)</strong>, 然后使用 <strong>系统(System)</strong> 处理其过程.</p>
-<p>例如，一个实体可能有<code>位置(Position)</code>和<code>速度(Velocity)</code>组件，而另一个实体可能有<code>位置(Position)</code>和<code>UI</code>组件。系统是在一组特定组件上运行的逻辑， 你可能有一个运行在所有带有<code>位置(Position)</code>和<code>速度(Velocity)</code>组件的实体上的<code>移动</code>系统。</p>
-<h2 id="ECS-中的数据"><a href="#ECS-中的数据" class="headerlink" title="ECS 中的数据"></a>ECS 中的数据</h2><h3 id="World"><a href="#World" class="headerlink" title="World"></a>World</h3><p>定义：<em>World</em>是<strong>系统</strong>和<strong>实体</strong>的集合。在<code>ECS</code>架构中，<em>World</em>是最高级别的组织单位，它包含了<strong>游戏中的所有实体（Entity）以及处理这些实体的系统（System）</strong>。</p>
-<p>当程序启动时，默认会生成一个World,可以存在多个World对象。</p>
-<h3 id="Entities-Components"><a href="#Entities-Components" class="headerlink" title="Entities&#x2F;Components"></a>Entities&#x2F;Components</h3><p>概念上类似于在数据库或电子表格。</p>
-<p>每一行数据就是一个对象，<code>(Entity)</code>与<code>ID</code>或者行号类似，<code>(Components)</code>类似于 表的<em>列</em>，可以有任意多个<em>行</em>。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 实体</span></span><br><span class="line"><span class="meta">#[derive(Component)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Xp</span>(<span class="type">u32</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 组件</span></span><br><span class="line"><span class="meta">#[derive(Component)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Health</span> &#123;</span><br><span class="line">    current: <span class="type">u32</span>,</span><br><span class="line">    max: <span class="type">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 系统</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">level_up</span>(<span class="keyword">mut</span> query: Query&lt;(&amp;<span class="keyword">mut</span> Xp, &amp;<span class="keyword">mut</span> Health)&gt;,) &#123;</span><br><span class="line">    <span class="comment">// process all relevant entities</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">mut</span> xp, <span class="keyword">mut</span> health) <span class="keyword">in</span> query.<span class="title function_ invoke__">iter_mut</span>() &#123;</span><br><span class="line">        <span class="keyword">if</span> xp.<span class="number">0</span> &gt; <span class="number">1000</span> &#123;</span><br><span class="line">            xp.<span class="number">0</span> -= <span class="number">1000</span>;</span><br><span class="line">            health.max += <span class="number">25</span>;</span><br><span class="line">            health.current = health.max;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h3><p>如果某物只有一个全局实例（单例），并且它是独立（不与其他数据关联），那么你就可以创建一个<code>Resources</code></p>
-<p>例如，您可以创建一个资源来存储游戏的图形 设置，或指向非 Bevy 库的接口。</p>
-<p>这是一种存储数据的简单方法，当你不需要<code>实体/组件</code>的灵活性的时候。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Resource)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">GameSettings</span> &#123;</span><br><span class="line">    current_level: <span class="type">u32</span>,</span><br><span class="line">    difficulty: <span class="type">u32</span>,</span><br><span class="line">    max_time_seconds: <span class="type">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">setup_game</span>(</span><br><span class="line">    <span class="keyword">mut</span> commands: Commands,</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="comment">// Add the GameSettings resource to the ECS</span></span><br><span class="line">    <span class="comment">// (if one already exists, it will be overwritten)</span></span><br><span class="line">    commands.<span class="title function_ invoke__">insert_resource</span>(GameSettings &#123;</span><br><span class="line">        current_level: <span class="number">1</span>,</span><br><span class="line">        difficulty: <span class="number">100</span>,</span><br><span class="line">        max_time_seconds: <span class="number">60</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">spawn_extra_enemies</span>(</span><br><span class="line">    <span class="keyword">mut</span> commands: Commands,</span><br><span class="line">    <span class="comment">// we can easily access our resource from any system</span></span><br><span class="line">    game_settings: Res&lt;GameSettings&gt;,</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="keyword">if</span> game_settings.difficulty &gt; <span class="number">50</span> &#123;</span><br><span class="line">        commands.<span class="title function_ invoke__">spawn</span>((</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        ));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.编辑【用户变量】中的【Path】</p>
+<p>将默认C盘下【AppData\Roaming\npm】修改为【node_global】的路径</p>
+<p>4.在【系统变量】中选择【Path】添加【%NODE_PATH%】</p>
 ]]></content>
       <categories>
-        <category>OS</category>
+        <category>Rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
-        <tag>bevy</tag>
+        <tag>Rust-基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ADC</title>
+    <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/ADC/</url>
+    <content><![CDATA[<p>ADC(Analog to Digital Converter 模数转换器）是一种将模拟信号转换为数字信号的电路。在电子系统中，模拟信号常常需要转换为数字信号进行处理和存储。模数转换的基本原理是将模拟信号进行<strong>采样</strong>，并将采样值<strong>量化</strong>为数字表示。</p>
+<ul>
+<li>采样：是指在一定时间间隔内对模拟信号进行测量，并将测量值存储在数字形式的数据中</li>
+<li>量化：是将这些连续的模拟信号值离散化为一系列数字值，通常使用二进制表示。</li>
+</ul>
+<p>简单理解，ADC是把模拟信号转换为数字信号的工具，我们可以认为，一个信号有强弱之分，强弱的体现为电压的高低。在数字电路中，只有0和1之分，也就是高电平或低电平。那么体现不了这个强弱。ADC的作用就是体现强弱，精确化的拿到具体的值。</p>
+<p><strong>ADC 转换流程图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/ADCzhuanhuanliuchengtu.png" alt="ADCzhuanhuanliuchengtu"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_UART.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Switch.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 用到引脚需要配置 GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Config</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    GPIO_InitTypeDef GPIO_Init;</span><br><span class="line">    </span><br><span class="line">    GPIO_Init.Mode = GPIO_PullUp;</span><br><span class="line">    GPIO_Init.Pin = GPIO_Pin_5</span><br><span class="line">    <span class="comment">// ADC引脚</span></span><br><span class="line">    GPIO_Inilize(GPIO_P0, &amp;GPIO_Init);</span><br><span class="line">    <span class="comment">// UART 引脚</span></span><br><span class="line">    GPIO_Init.Pin = GPIO_Pin_0 | GPIO_Pin_0;</span><br><span class="line">    GPIO_Inilize(GPIO_P3, &amp;GPIO_Init);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要用到 UART 查看数值输出也要配置 UART</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">UART_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    COMx_InitDefine UART_Init;</span><br><span class="line">    </span><br><span class="line">    UART_Init.UART_Mode = UART_8bit_BRTx;</span><br><span class="line">    UART_Init.UART_BRT_Use = BRT_Timer1;</span><br><span class="line">    UART_Init.UART_BaudRate = <span class="number">115200ul</span>;</span><br><span class="line">    UART_Init.Morecommunicate = DISABLE; </span><br><span class="line">    UART_Init.UART_RxEnable = ENABLE;</span><br><span class="line">    UART_Init.BaudRateDouble = DISABLE;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// UART 必须要通过中断，故要设置下开启中断，并设置中断优先级</span></span><br><span class="line">    NVIC_UART1_Init(ENABLE, Priority_1);</span><br><span class="line">    <span class="comment">// 引脚选择</span></span><br><span class="line">    UART1_SW(UART1_SW_P30_P31)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用到 ADC 需要配置ADC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">ADC_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    ADC_INitTypeDef ADC_Init;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ADC 模拟信号采样时间控制, 0~31（注意： SMPDUTY 一定不能设置小于 10）</span></span><br><span class="line">    ADC_Init.ADC_SMPduty = <span class="number">31</span>; </span><br><span class="line">    <span class="comment">// 设置 ADC 工作时钟频率	ADC_SPEED_2X1T~ADC_SPEED_2X16T</span></span><br><span class="line">    ADC_Init.ADC_Speed = ADC_SPEED_2X1T;</span><br><span class="line">    <span class="comment">// ADC结果调整,	ADC_LEFT_JUSTIFIED,ADC_RIGHT_JUSTIFIED</span></span><br><span class="line">    ADC_Init.ADC_AdjResult = ADC_RIGHT_JUSTIFIED;</span><br><span class="line">    <span class="comment">//ADC 通道选择时间控制 0(默认),1</span></span><br><span class="line">    ADC_Init.ADC_CsSetup = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// ADC 通道选择保持时间控制 0,1(默认),2,3</span></span><br><span class="line">    init.ADC_CsHold = <span class="number">1</span> ;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 初始化</span></span><br><span class="line">    ADC_Inilize(&amp;amp;init);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ADC 电源控制 ENABLE或DISABLE.</span></span><br><span class="line">    ADC_PowerControl(ENABLE);    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="type">float</span> adc_v = <span class="number">0.0</span>;</span><br><span class="line">    <span class="comment">// 中断总控</span></span><br><span class="line">    EA = <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    GPIO_Config();</span><br><span class="line">    UART_Config();</span><br><span class="line">    ADC_Config();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 查询一次ADC转换结果. 得到的是一个数值</span></span><br><span class="line">        <span class="comment">// ADC_CH13 是我们所使用的引脚，也就是硬件连接的引脚</span></span><br><span class="line">        u16 adc_result = Get_ADCResult(ADC_CH13)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;adc_result = %d&quot;</span>, adc_result);</span><br><span class="line">        </span><br><span class="line">        adc_v = adc_result * <span class="number">2.5</span> / <span class="number">4096</span>;  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;adc_v = %d&quot;</span>, adc_v);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p><strong>什么是模拟信号采样控制时间</strong></p>
+<p>这里的“采样时间控制”指的是 ADC 在开始转换之前对输入的模拟信号进行采样的时间长短。</p>
+<p>具体来说，采样时间是指 ADC 在转换开始前，<strong>输入模拟信号与内部采样电容相连的时间</strong>。采样时间的长短会影响采样电容对输入信号充电的充分程度。如果采样时间太短，采样电容无法完全充电，导致输入信号没有被准确读取，从而影响 ADC 转换后的数值精度。</p>
+<p>在 STC8H 的 ADC 模块中，采样时间可以通过软件配置</p>
+<p><strong>什么是ADC结果调整</strong></p>
+<p>就是 AD 转换结果对齐方式 设置ADC 转换的结果是左对齐还是右对齐，因为 STC8H 系列的单片机内部分别集成了一个 10 &#x2F; 12 位高速 A&#x2F;D 转换器；</p>
+<p>ADC 转换结果的数据格式有两种，左对齐和右对齐。可以方便用户进行读取；</p>
+<p>在 STC8H 系列中 STC8H1K28、STC8H1K08 是10 位高速 A&#x2F;D 转换器，其他都是 12位的</p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/ADCzhuanhuankongzhi.png" alt="ADCzhuanhuankongzhi"></p>
+<p><strong>什么是通道选择时间</strong></p>
+<p>见下图</p>
+<p><strong>什么是通道选择保持时间控制</strong></p>
+<p>见下图</p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/ADCzhuanhuanshijian.png" alt="ADCzhuanhuanshijian"></p>
+<p><strong>12位 ADC 采样计算中，2的十二次方最大时4095，为何我们在换算时通常是除以 4096</strong></p>
+<p>12 位的寄存器用来存储采样数值，那么这种情况下 12 位全零的状态也应该作为一个采样数值，即 寄存器最大值+1</p>
+<p>12位 ADC 的 ADCn 通道的输入电压 &#x3D; 采样数值 &#x2F; 4096 * ADC_VRef 是正解;</p>
+]]></content>
+      <categories>
+        <category>嵌入式</category>
+      </categories>
+      <tags>
+        <tag>STC8H</tag>
       </tags>
   </entry>
   <entry>
@@ -3410,26 +3396,20 @@ build: binary
 </ul>
 </li>
 </ol>
-<p>维持 20 毫秒的时间不动</p>
 <h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><p>STC8H 系列的单片机内部集成了8 通道 16 位高级PWM 定时器，分成两周期可不同的 PWM，分别命名为 PWMA 和PWMB ，可分别单独设置。</p>
-<p>第一组 PWMA 可配置成4 组互补&#x2F;对称&#x2F;死区控制的PWM 或捕捉外部信号。</p>
-<p>第二组 PWMB 可配置成4 路PWM 输出或捕捉外部信号。</p>
+<p>第一组 PWMA 可配置成 4 组互补 &#x2F; 对称 &#x2F; 死区控制 的PWM 或捕捉外部信号。</p>
+<p>第二组 PWMB 可配置成 4 路PWM 输出或捕捉外部信号。</p>
 <p>两组 PWM 的时钟频率可分别独立设置。</p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>控制引脚P2.7实现LED灯1的呼吸效果</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>串口实现 PWM 启停 0x01启动，0x00停止</p>
 <p>拷贝所需库文件（其他必备库请自行准备）</p>
-<ul>
-<li><code>STC8H_PWM.c</code> <code>STC8H_PWM.h</code></li>
-<li><code>NVIC.c</code> <code>NVIC.h</code></li>
-<li><code>witch.h</code></li>
-</ul>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Switch.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8H_PWM.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED_SW P45 <span class="comment">// LED 总开关</span></span></span><br><span class="line"><span class="comment">// LED </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED1 P27</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2 P26</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3 P15</span></span><br><span class="line">???? ????</span><br><span class="line"><span class="number">1000</span> <span class="number">1111</span>    </span><br><span class="line">----------</span><br><span class="line">?<span class="number">000</span> ????     </span><br><span class="line"><span class="number">0110</span> <span class="number">0000</span></span><br><span class="line">----------</span><br><span class="line">?<span class="number">110</span> ????    </span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FREQ 1000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PERIOD 	((MAIN_Fosc / FREQ) - 1)	<span class="comment">// 周期</span></span></span><br><span class="line"></span><br><span class="line">PWMx_Duty dutyA;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    GPIO_InitTypeDef	GPIO_InitStructure;		<span class="comment">//结构定义</span></span><br><span class="line">    <span class="comment">// 指定引脚</span></span><br><span class="line">    GPIO_InitStructure.Pin  = GPIO_Pin_5;		</span><br><span class="line">    <span class="comment">// 指定IO工作模式</span></span><br><span class="line">    GPIO_InitStructure.Mode = GPIO_OUT_PP;	</span><br><span class="line">    <span class="comment">// 端口/寄存器 初始化</span></span><br><span class="line">    GPIO_Inilize(GPIO_P4, &amp;GPIO_InitStructure);<span class="comment">//初始化</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 指定引脚</span></span><br><span class="line">    GPIO_InitStructure.Pin = GPIO_Pin_6 | GPIO_Pin_7;</span><br><span class="line">    <span class="comment">// 指定IO工作模式</span></span><br><span class="line">    GPIO_InitStructure.Mode = GPIO_PullUp;</span><br><span class="line">    <span class="comment">// 端口/寄存器 初始化</span></span><br><span class="line">    GPIO_Inilize(GPIO_P2, &amp;GPIO_InitStructure);<span class="comment">//初始化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">PWM_start_config</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    PWMx_InitDefine		PWMx_InitStructure;</span><br><span class="line">		</span><br><span class="line">	<span class="comment">// 配置 PWM4</span></span><br><span class="line">    <span class="comment">// 设置工作模式</span></span><br><span class="line">    PWMx_InitStructure.PWM_Mode = CCMRn_PWM_MODE2;</span><br><span class="line">    PWMx_InitStructure.PWM_Duty = <span class="number">0</span>; <span class="comment">//PWM占空比时间, 0~Period</span></span><br><span class="line">    <span class="comment">//输出通道选择，ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,ENO4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P</span></span><br><span class="line">    PWMx_InitStructure.PWM_EnoSelect  = ENO4P | ENO4N;	</span><br><span class="line">    </span><br><span class="line">    PWM_Configuration(PWM4, &amp;PWMx_InitStructure); <span class="comment">//初始化 PWM4 口</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 配置 PWMA</span></span><br><span class="line">    PWMx_InitStructure.PWM_Period   = PERIOD; <span class="comment">//周期时间,   0~65535</span></span><br><span class="line">    PWMx_InitStructure.PWM_DeadTime = <span class="number">0</span>; <span class="comment">//死区发生器设置, 0~255</span></span><br><span class="line">    <span class="comment">// 全局控制 PWM 输出是否被允许</span></span><br><span class="line">    PWMx_InitStructure.PWM_MainOutEnable= ENABLE; <span class="comment">//主输出使能, ENABLE,DISABLE</span></span><br><span class="line">    PWMx_InitStructure.PWM_CEN_Enable   = ENABLE; <span class="comment">//使能计数器, ENABLE,DISABLE</span></span><br><span class="line">    </span><br><span class="line">    PWM_Configuration(PWMA, &amp;PWMx_InitStructure); <span class="comment">//初始化PWM通用寄存器,  PWMA,PWMB</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切换 PWM4 选择 PWM4_SW_P26_P27 引脚</span></span><br><span class="line">    <span class="comment">// PWM4_SW_P16_P17,PWM4_SW_P26_P27,PWM4_SW_P66_P67,PWM4_SW_P34_P33</span></span><br><span class="line">    PWM4_SW(PWM4_SW_P26_P27);			</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 初始化PWMA的中断</span></span><br><span class="line">    <span class="comment">// PWM 不涉及中断，但是可以使用中断，如不使用可以不配置</span></span><br><span class="line">    NVIC_PWM_Init(PWMA,DISABLE,Priority_0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> direction = <span class="number">1</span>;</span><br><span class="line">    u8 duty_percent = <span class="number">0</span>;<span class="comment">// 0 -&gt; 100</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// </span></span><br><span class="line">    EAXSFR();		<span class="comment">/* 扩展寄存器访问使能， 必写！ */</span></span><br><span class="line">    GPIO_config();</span><br><span class="line">    PWM_config();</span><br><span class="line">    EA = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 总开关</span></span><br><span class="line">    LED_SW = <span class="number">0</span>;</span><br><span class="line">    LED1 = <span class="number">0</span>; <span class="comment">// P2.7 PWM4</span></span><br><span class="line">    LED2 = <span class="number">0</span>;</span><br><span class="line">    LED3 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 循环之前，设置一次pwm（可选）</span></span><br><span class="line">    dutyA.PWM4_Duty = PERIOD * duty_percent / <span class="number">100</span>;</span><br><span class="line">    UpdatePwm(PWM4, &amp;dutyA);</span><br><span class="line">    <span class="comment">// 0 -&gt; 100</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        duty_percent += direction;</span><br><span class="line">        <span class="comment">// 让duty_percent一直在0-100来回往返</span></span><br><span class="line">        <span class="keyword">if</span>(duty_percent &gt;= <span class="number">100</span>) &#123;</span><br><span class="line">            duty_percent = <span class="number">100</span>;</span><br><span class="line">            direction = <span class="number">-1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(duty_percent &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            duty_percent = <span class="number">0</span>;</span><br><span class="line">            direction = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 修改PWM4的duty</span></span><br><span class="line">        dutyA.PWM4_Duty = PERIOD * duty_percent / <span class="number">100</span>;</span><br><span class="line">        UpdatePwm(PWM4, &amp;dutyA);</span><br><span class="line">				</span><br><span class="line">        delay_ms(<span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Switch.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8H_PWM.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_UART.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// UART 周期时间 24000000L</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PERIOD (MAIN_Fosc/1000 -1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 标记位，是否更新PWM</span></span><br><span class="line"><span class="type">int</span> is_update_PWM = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 配置马达IO</span></span><br><span class="line">    GPIO_InitTypeDef GPIO_Init;</span><br><span class="line">    </span><br><span class="line">    GPIO_Init.Mode = GPIO_OUT_PP;		</span><br><span class="line">    GPIO_Init.Pin = GPIO_Pin_1;	    </span><br><span class="line">    GPIO_Inilize(GPIO_P0, &amp;GPIO_Init);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置 UART IO</span></span><br><span class="line">    GPIO_Init.Pin = GPIO_Pin_0 | GPIO_Pin_1;</span><br><span class="line">    GPIO_Inilize(GPIO_P3, &amp;GPIO_Init);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">PWM_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    PWMx_InitDefine PWM_Init;</span><br><span class="line">    <span class="comment">// PWM 工作模式</span></span><br><span class="line">    PWM_Init.PWM_Mode = CCMRn_PWM_MODE1;</span><br><span class="line">    <span class="comment">// 设置周期时间 1ms</span></span><br><span class="line">    PWM_Init.PWM_Period = PERIOD;</span><br><span class="line">    <span class="comment">// 设置占空比</span></span><br><span class="line">    PWM_Init.PWM_Duty = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 设置死区时间</span></span><br><span class="line">    PWM_Init.PWM_DeadTime = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 输出通道选择</span></span><br><span class="line">    PWM_Init.PWM_EnoSelect = ENO6P;</span><br><span class="line">    <span class="comment">// 使能计数器，开启输入捕获/比较输出</span></span><br><span class="line">    PWM_Init.PWM_CEN_Enable = ENABLE;</span><br><span class="line">    <span class="comment">// 主使能输出</span></span><br><span class="line">    PWM_Init.PWM_MainOutEnable = ENABLE;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 既要配置小组，也要配置大组</span></span><br><span class="line">    PWM_Configuration(PWM6, &amp;init);<span class="comment">// 初始化 PWM4 口</span></span><br><span class="line">    PWM_Configuration(PWMB, &amp;init);<span class="comment">// 初始化PWM通用寄存器,  PWMA,PWMB</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 不需要开启中断使能</span></span><br><span class="line">    <span class="comment">// PWM 不涉及中断，但是可以使用中断，如不使用可以不配置</span></span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 切换引脚</span></span><br><span class="line">    PWM6_SW(PWM6_SW_P01);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">UART_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    COMx_InitDefine UART_Init;</span><br><span class="line">    </span><br><span class="line">    UART_Init.UART_Mode = UART_8bit_BRTx; <span class="comment">//模式,UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx</span></span><br><span class="line">    UART_Init.UART_BRT_Use = BRT_Timer1; <span class="comment">//使用波特率, BRT_Timer1,BRT_Timer2,BRT_Timer3,BRT_Timer4</span></span><br><span class="line">    UART_Init.UART_BaudRate = <span class="number">115200</span>; <span class="comment">//波特率, 	   一般 110 ~ 115200</span></span><br><span class="line">    UART_Init.Morecommunicate = DISABLE;	<span class="comment">//多机通讯允许, ENABLE,DISABLE</span></span><br><span class="line">    UART_Init.UART_RxEnable = ENABLE; <span class="comment">//允许接收,   ENABLE,DISABLE</span></span><br><span class="line">    UART_Init.BaudRateDouble = ENABLE; <span class="comment">//波特率加倍, ENABLE,DISABLE</span></span><br><span class="line"></span><br><span class="line">    UART_Configuration(UART1, &amp;init);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 打开串口中断使能</span></span><br><span class="line">    NVIC_UART1_Init(ENABLE, Priority_1);</span><br><span class="line">    <span class="comment">// 切换引脚</span></span><br><span class="line">    UART1_SW(UART1_SW_P30_P31);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int8 direction = <span class="number">1</span>; <span class="comment">//控制占空比的变化 1 / -1</span></span><br><span class="line">int8 percent = <span class="number">0</span>; <span class="comment">// 占空比值    </span></span><br><span class="line">PWMx_Duty duty; <span class="comment">// 占空比设置结构体</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动PWM马达</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">start_motor</span><span class="params">()</span> &#123;</span><br><span class="line">    PWM_Config();</span><br><span class="line">    <span class="comment">//让pwm从0开始</span></span><br><span class="line">    percent = <span class="number">0</span>;</span><br><span class="line">    direction = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 停止PWM马达</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">stop_motor</span><span class="params">()</span> &#123;</span><br><span class="line">    PWMx_InitDefine PWM_Init;</span><br><span class="line">    <span class="comment">// PWM 工作模式</span></span><br><span class="line">    PWM_Init.PWM_Mode = CCMRn_FORCE_INVALID;</span><br><span class="line">    PWM_Configuration(PWM6, &amp;init);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    EA = <span class="number">1</span>;</span><br><span class="line">    EAXSFR(); <span class="comment">// </span></span><br><span class="line">    GPIO_Config();</span><br><span class="line">    PWM_Config();    </span><br><span class="line">    UART_Config();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 根据表示位判断是否跟新占空比</span></span><br><span class="line">        <span class="keyword">if</span>(is_update_PWM) &#123;</span><br><span class="line">            <span class="comment">// 占空比 0~100 循环</span></span><br><span class="line">            percent += direction;</span><br><span class="line">            <span class="keyword">if</span>(percent &gt;= <span class="number">100</span>) &#123;</span><br><span class="line">                direction = <span class="number">-1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(percent &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                direction = <span class="number">1</span>;</span><br><span class="line">            &#125;           </span><br><span class="line">            <span class="comment">// 设置占空比</span></span><br><span class="line">            duty.PWM6_Duty = PERIOD * percent / <span class="number">100</span>;</span><br><span class="line">            <span class="comment">// 更新占空比</span></span><br><span class="line">            UpdatePwm(PWM6, &amp;duty);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获取串口指令</span></span><br><span class="line">        <span class="keyword">if</span>(COM1.RX_Cnt &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(RX1_Buffer[<span class="number">0</span>] == <span class="number">0x01</span>) &#123;</span><br><span class="line">                is_update_PWM = <span class="number">1</span>;</span><br><span class="line">                <span class="comment">// 启动PWM</span></span><br><span class="line">                start_motor();               </span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(RX1_Buffer[<span class="number">0</span>] == <span class="number">0x00</span>) &#123;</span><br><span class="line">                is_update_PWM = <span class="number">0</span>;</span><br><span class="line">                stop_motor();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        COM1.RX_Cnt = <span class="number">0</span>;        </span><br><span class="line">    &#125;</span><br><span class="line">    delay_ms(<span class="number">20</span>);          </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p><strong>选择工作模式</strong></p>
 <p>常用的有 模式1、模式2</p>
 <p>一般来说，PWM 模式 2 是“下降模式”，即在计数器从最大值向下计数时输出高电平，而从0计数向上时输出低电平，反之亦然。这种模式决定了PWM信号的工作方式和输出形态。</p>
 <p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/PWMmoshi.png" alt="PWMmoshi.png"></p>
 <p><strong>设置PWM的占空比</strong></p>
-<p>占空比：<strong>占空比是指信号为高电平的时间与一个周期内总时间的比值</strong>。占空比为0意味着信号始终为低电平，而占空比为100%意味着信号始终为高电平。</p>
+<p>占空比：<strong>占空比是指信号为高电平的时间与一个周期内总时间的比值</strong>（也可以理解为在一个 PWM 周期内高电平所占的比值）。占空比为0意味着信号始终为低电平，而占空比为100%意味着信号始终为高电平。</p>
 <p><strong>选择PWM输出的通道</strong></p>
 <p>正相&#x2F;反相输出：正相（P）输出即正常的PWM波形，而反相（N）输出是正相波形的反相信号。在某些场合，如电机控制，需要同时输出正反相信号。</p>
 <blockquote>
@@ -3439,7 +3419,8 @@ build: binary
 </blockquote>
 <p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/PWMtongdaoyinjiaotu.png" alt="PWMtongdaoyinjiaotu"></p>
 <p><strong>设置PWM的周期</strong></p>
-<p>PWM周期指的是一个完整的PWM波形从开始到结束的时间长度，通常以时间单位（如毫秒或微秒）表示。在一个周期内，PWM信号会从高电平变化到低电平，然后再回到高电平，形成一个完整的波形。</p>
+<p>PWM 周期指的是一个完整的 PWM 波形从开始到结束的时间长度，通常以时间单位（如毫秒或微秒）表示。在一个周期内，PWM 信号会从高电平变化到低电平，然后再回到高电平，形成一个完整的波形。</p>
+<p>频率 &#x3D; 1&#x2F;周期：频率它描述了PWM信号中脉冲（或周期）出现的快慢。具体来说，频率是单位时间内脉冲重复出现的次数，通常用赫兹（Hz）作为单位来表示。例如，如果一个PWM信号的周期是1毫秒（ms），那么它的频率就是1毫秒的倒数，即1000次&#x2F;秒，或者说1千赫兹（kHz）。</p>
 <p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/PWMzhouqitu.png" alt="PWMzhouqitu"></p>
 <p>周期的长短决定了PWM信号的频率。周期越短，频率越高；周期越长，频率越低。具体的单位取决于定时器的配置和时钟频率。</p>
 <blockquote>
@@ -3452,57 +3433,22 @@ build: binary
 <p><strong>启用PWM主输出</strong></p>
 <p>主输出：这是一个全局开关，控制所有已配置的PWM输出通道是否真正输出信号。如果设置为DISABLE，则即便其他配置已经完成，信号仍不会输出。</p>
 <p><strong>启用定时器计数</strong></p>
-<p>这通常是PWM定时器的使能控制位。当启用时，定时器开始计数并生成PWM波形。如果设置为DISABLE，定时器停止计数，PWM信号也停止输出。</p>
+<p>这通常是 PWM 定时器的使能控制位。当启用时，定时器开始计数并生成PWM波形。如果设置为DISABLE，定时器停止计数，PWM信号也停止输出。</p>
 <blockquote>
 <p><strong>PWM（脉宽调制）</strong> 一般需要配合<strong>计数器（定时器）</strong>一起使用。PWM信号的生成过程依赖于计数器的工作机制，定时器用于控制PWM信号的频率和占空比。定时器通过不断计数和重置，来实现PWM信号的周期性变化。</p>
 </blockquote>
 <p><strong>选择输出引脚</strong></p>
 <p>这一步将具体的 PWM 通道与物理引脚进行绑定。PWM4 的正相和反相信号将分别从使用的引脚输出。</p>
+<p><strong>为什么周期计算要-1</strong></p>
+<p>因为计数从 0 开始，1000 个数数到 999 就够了</p>
+<p>举个例子：5 个数如果从 0 开始那么只需要数到 4 就可以了（5-1），因为到 5 它会自动变成0</p>
+<p><strong>PWM 要用到计数器，那么为什么没有配置，或者说配置的内容在哪</strong></p>
 <h2 id="特殊功能寄存器"><a href="#特殊功能寄存器" class="headerlink" title="特殊功能寄存器"></a>特殊功能寄存器</h2><p>由于 PWM 的配置相关特殊功能寄存器位于扩展 RAM 区域，访问这些寄存器,需先将P_SW2 的 BIT7 设置为 1,才可正常读写。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">EAXSFR();		<span class="comment">/* 扩展寄存器访问使能 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">将 EAXFR 置1</span></span><br><span class="line"><span class="comment">STC8H.h</span></span><br><span class="line"><span class="comment">#define	EAXSFR()		P_SW2 |= 0x80 </span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">EAXSFR();		<span class="comment">/* 扩展寄存器访问使能 */</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">将 EAXFR 置1</span></span><br><span class="line"><span class="comment">STC8H.h</span></span><br><span class="line"><span class="comment">#define	EAXSFR()		P_SW2 |= 0x80 </span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/teshugongnengyjiaojicunqi.png" alt="teshugongnengyjiaojicunqi"></p>
 <p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/teshujicunqishuom.png" alt="teshujicunqishuom"></p>
 ]]></content>
-      <categories>
-        <category>嵌入式</category>
-      </categories>
-      <tags>
-        <tag>STC8H</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>定时器</title>
-    <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E5%AE%9A%E6%97%B6%E5%99%A8/</url>
-    <content><![CDATA[<p>定时器（Timer）是一种嵌入式系统中常见的外设，通常由一个晶体振荡器提供时钟信号，可以计时一定的时间后执行相应的操作；它是基于<strong>硬件计数器</strong>的一种机制，通常集成在微控制器（MCU）或处理器中；定时器的基本功能是<strong>精确测量时间间隔</strong>，或者<strong>根据时间周期触发特定任务</strong>。定时器通常具有多种<strong>工作模式</strong>和计数方式，可以灵活地应用于各种场合。</p>
-<p>STC8H内置了5个16位定时器：T0，T1，T2，T3，T4；</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>定时器启动后，根据配置的模式和速率进行计数。在定时模式下，定时器对内部系统时钟进行计数；在计数模式下，定时器对外部引脚输入的脉冲进行计数。</p>
-<p>当定时器的计数值达到其容量上限（如16位定时器的上限为65535）时，会发生溢出。此时，定时器的溢出标志位（如TF0、TF1等）会被硬件置位，并向CPU发出中断请求（如果中断被允许）。</p>
-<p>如果CPU允许中断，并且没有其他更高优先级的中断正在处理，那么CPU会响应定时器的中断请求，并跳转到对应的中断服务程序执行。</p>
-<blockquote>
-<p>单片机复位后，程序计数器(PC)的内容为 0000H,从 0000H单元开始执行程序。另外中断服务程序的入口地址(又称中断向量)也位于程序存储器单元。在程序存储器中，每个中断都有一个固定的入口地址，当中断发生并得到响应后，单片机就会自动跳转到相应的中断入口地址去执行程序。外部中断0(INTO)的中断服务程序的入口地址是 0003H，定时器&#x2F;计数器0(TIMERO)中断服务程序的入口地址是 000BH，外部中断1(INT1)的中断服务程序的入口地址是 0013H，定时器&#x2F;计数器1(TIMER1)的中断服务程序的入口地址是 001BH 等。</p>
-</blockquote>
-<h3 id="中断向量表"><a href="#中断向量表" class="headerlink" title="中断向量表"></a>中断向量表</h3><p>中断被激活时，硬件会尝试跳转到我们提供的中断处理函数。而硬件怎么找到我们的中断处理函数呢？每种架构的 CPU 都会有一个固定的中断向量表，中断向量表按照中断号顺序存储中断处理函数的函数地址，当发生中断时，硬件会顺序查找对应的函数地址并跳转。</p>
-<p>当程序被编译时，编译器会识别出中断服务函数的声明，并根据中断号在生成的代码中将中断服务函数的入口地址放置在中断向量表中对应的位置。中断向量表是一个特殊的存储区域，它记录了所有中断服务函数的入口地址，以便在中断发生时能够快速找到并跳转到相应的中断服务函数执行。</p>
-<p>那么咱们写代码时加 interrupt n；Keil 编译后会将此函数首地址放入对应的寄存器中(<strong>中断向量</strong>)，请问这个中断号与中断向量的对应表在keil 中什么地方配置的呢，或者是在代码中如何实现的呢？这是由 keil 编译器所维护的一组对应关系表，写interrupt n，keil 会自动在中断向量处插入跳转到该函数入口点的 LJMP 单片机中断被允许且发生中断请求事件，CPU由硬件向PC写入中断向量实现中断跳转</p>
-<blockquote>
-<p>LJMP是一种远跳转指令，用于在保护模式或实地址模式下跳转到不同的代码段执行程序。</p>
-<p>中断向量不是寄存器，是 FLASH 中的 code 区域靠前的一部分</p>
-</blockquote>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>使用定时器，控制板载LED高低电平输出。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Timer.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;NVIC.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    </span><br><span class="line">	GPIO_InitTypeDef GPIO_Init; <span class="comment">//结构定义</span></span><br><span class="line">	GPIO_Init.Pin  = GPIO_Pin_3; <span class="comment">//指定要初始化的IO,</span></span><br><span class="line">    <span class="comment">//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">	GPIO_Init.Mode = GPIO_PullUp;	</span><br><span class="line">    </span><br><span class="line">	GPIO_Inilize(GPIO_P5, &amp;GPIO_InitStructure);	<span class="comment">//初始化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIMER_config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	TIM_InitTypeDef Timer_Init <span class="comment">//结构定义</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//定时器0做16位自动重装, 中断频率为100000HZ，中断函数从P6.7取反输出50KHZ方波信号.</span></span><br><span class="line">        </span><br><span class="line">	<span class="comment">//指定工作模式,TIM_16BitAutoReload, TIM_16Bit, TIM_8BitAutoReload, TIM_16BitAutoReloadNoMask        </span></span><br><span class="line">	Timer_Init.TIM_Mode = TIM_16BitAutoReload;	</span><br><span class="line">    <span class="comment">//指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext</span></span><br><span class="line">	Timer_Init.TIM_ClkSource = TIM_CLOCK_1T;	</span><br><span class="line">    <span class="comment">//是否输出高速脉冲, ENABLE或DISABLE，如果配置ENABLE，则P3.5端口会同步输出时钟脉冲</span></span><br><span class="line">	Timer_Init.TIM_ClkOut = DISABLE;		</span><br><span class="line">    <span class="comment">//初值,指定Timer频率 1000hz (每秒执行1000次，每次1ms（周期））</span></span><br><span class="line">    <span class="comment">//不要小于367hz (2.7ms周期)</span></span><br><span class="line">	<span class="comment">//不要大于1 000 000hz 一百万 （1us周期)</span></span><br><span class="line">	Timer_Init.TIM_Value     = <span class="number">65536UL</span> - (MAIN_Fosc / <span class="number">1000UL</span>);	</span><br><span class="line">	<span class="comment">//是否初始化后启动定时器, ENABLE或DISABLE																	</span></span><br><span class="line">	Timer_Init.TIM_Run       = ENABLE;	</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//初始化Timer0 Timer0,Timer1,Timer2,Timer3,Timer4</span></span><br><span class="line">	Timer_Inilize(Timer0,&amp;TIM_InitStructure);	</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//中断使能, ENABLE/DISABLE; 优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3</span></span><br><span class="line">	NVIC_Timer0_Init(ENABLE,Priority_0);		</span><br><span class="line">	</span><br><span class="line">&#125;                 </span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	GPIO_config();</span><br><span class="line">	TIMER_config();</span><br><span class="line">	<span class="comment">// 开启全局中断</span></span><br><span class="line">	EA = <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	P53 = <span class="number">0</span>;		<span class="comment">// 熄灯</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=============================================================================</span><br><span class="line"><span class="comment">// Timer_lsr.c</span></span><br><span class="line"><span class="comment">// 函数: Timer0_ISR_Handler</span></span><br><span class="line"><span class="comment">// 描述: Timer0中断函数.</span></span><br><span class="line"><span class="comment">// 参数: none.</span></span><br><span class="line"><span class="comment">// 返回: none.</span></span><br><span class="line"><span class="comment">// 版本: V1.0, 2020-09-23</span></span><br><span class="line"><span class="comment">//========================================================================</span></span><br><span class="line"><span class="type">void</span> Timer0_ISR_Handler (<span class="type">void</span>) interrupt TMR0_VECTOR <span class="comment">//进中断时已经清除标志</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span> 在此处添加用户代码</span></span><br><span class="line">   P53 = ~P53;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>嵌入式</category>
-      </categories>
-      <tags>
-        <tag>STC8H</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>STC8H</title>
-    <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/STC8H/</url>
-    <content><![CDATA[<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2>]]></content>
       <categories>
         <category>嵌入式</category>
       </categories>
@@ -3574,9 +3520,111 @@ build: binary
 <blockquote>
 <p><code>UART_Init.UART_BRT_Use = BRT_Timer1;</code> 这一句的作用是<strong>指定用哪个定时器来生成波特率</strong>，即通过哪个定时器为串口通信提供时钟信号。</p>
 <p>在单片机中，多个定时器通常可以执行不同的任务，比如控制PWM信号、生成定时中断或产生串口波特率。如果某个定时器被用于其他任务，就需要选择另一个定时器来生成波特率。</p>
+<p>多机通信指的是什么？</p>
+<p>UART（Universal Asynchronous  Receiver&#x2F;Transmitter，通用异步收发器）串口通信中的多机通信，指的是一个UART设备（通常称为主设备或主机）同时与多个其他UART设备（称为从设备或从机）进行通信的模式。这种通信模式在需要集中控制多个设备或进行数据广播的场景中非常有用。</p>
+<p>URAT 中使用了 定时器，但我们却没有配置定时器却能使用为什么？</p>
+<p>因为他内部自己配置了对于定时器的一系列操作；</p>
+<p>if(COMx-&gt;UART_BRT_Use &#x3D;&#x3D; BRT_Timer1)<br>{<br>                TR1 &#x3D; 0;<br>                AUXR &amp;&#x3D; ~0x01;		&#x2F;&#x2F;S1 BRT Use Timer1;<br>                TMOD &amp;&#x3D; ~(1&lt;&lt;6);	&#x2F;&#x2F;Timer1 set As Timer<br>                TMOD &amp;&#x3D; ~0x30;		&#x2F;&#x2F;Timer1_16bitAutoReload;<br>                AUXR |&#x3D;  (1&lt;&lt;6);	&#x2F;&#x2F;Timer1 set as 1T mode<br>                TH1 &#x3D; (u8)(j&gt;&gt;8);<br>                TL1 &#x3D; (u8)j;<br>                ET1 &#x3D; 0;	&#x2F;&#x2F;禁止中断<br>                TMOD &amp;&#x3D; ~0x40;	&#x2F;&#x2F;定时<br>                INTCLKO &amp;&#x3D; ~0x02;	&#x2F;&#x2F;不输出时钟<br>                TR1  &#x3D; 1;<br>}</p>
+<p>波特率发生器怎么选：</p>
+<p>看数据手册：比如 UART4 可以选择 定时器2、定时器4，UART4 只能使用定时器2等。</p>
+<p>这里的波特率发生器就是定时器，但我们只需选择不需要配置，因为它默认会给我们进行配置 ；</p>
 </blockquote>
 <h4 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h4><h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>使用<code>STC-ISP</code>调试工具进行调试。切换好串口助手，选择正确的串口，设置和代码中相同的波特率。</p>
 <p>通过发送区进行数据发送，通过接收区观察接收内容。</p>
+]]></content>
+      <categories>
+        <category>嵌入式</category>
+      </categories>
+      <tags>
+        <tag>STC8H</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>独立按键</title>
+    <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E7%8B%AC%E7%AB%8B%E6%8C%89%E9%94%AE/</url>
+    <content><![CDATA[<p>查看原理图，看独立按键分别接的是那些引脚</p>
+<h2 id="按键消抖"><a href="#按键消抖" class="headerlink" title="按键消抖"></a>按键消抖</h2><ol>
+<li>软件延时法：在按键按下时，使用软件延时一段时间，例如10毫秒，然后再检测按键是否还处于按下状态，如果是，则认为按键有效。这种方法简单易行，但会浪费一定的处理器时间，同时需要根据实际情况调整延时时间。</li>
+<li>硬件滤波法：在按键输入引脚上添加RC滤波电路，可以有效地去除按键信号上的瞬间噪声。这种方法对于高频噪声的去除效果较好，但需要一定的电路设计能力。</li>
+<li>程序消抖法：在程序中记录按键前后两次的状态，如果两次状态不同，则认为按键有效。这种方法可以根据需要调整检测时间，消抖效果较好，但需要额外的程序设计。</li>
+</ol>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><strong>当用户按下，或者松开按键时，捕获到这个事件。将事件通过串口发出来</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_UART.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Switch.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 独立按键</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY1 P51</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY2 P52</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY3 P53</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY4 P54</span></span><br><span class="line"></span><br><span class="line">u8 state = <span class="number">0x0f</span>; <span class="comment">// 0000 1111</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 按下/回弹</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IS_UP(state, i) = ((a &amp; (1 <span class="string">&lt;&lt; i)) &gt;</span> 0)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IS_DOWM(state, i) = ((a &amp; (1 &lt;&lt; i)) &lt;= 0)</span></span><br><span class="line"><span class="comment">// 设置控制变量</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SET_UP(state, i) = state |= (1 &lt;&lt; i) </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SET_DOWN(state, i) = state &amp;= ~(1 &lt;&lt; i)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将按键存入数组</span></span><br><span class="line">u8 <span class="title function_">get_kay</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(i == <span class="number">0</span>) <span class="keyword">return</span> KAY1;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(i == <span class="number">1</span>) <span class="keyword">return</span> KAY2;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(i == <span class="number">2</span>) <span class="keyword">return</span> KAY3;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(i == <span class="number">3</span>) <span class="keyword">return</span> KAY4;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// GPIO 配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Comfig</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    GPIO_InitTypeDef GPIO_Init;</span><br><span class="line">    </span><br><span class="line">    GPIO_Init.Mode = GPIO_PullUp;</span><br><span class="line">    GPIO_Init.Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;</span><br><span class="line">    </span><br><span class="line">    GPIO_Inilize(GPIO_P5, &amp;GPIO_Init);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UART 配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">UART_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    COMx_InitDefine UART_Init;</span><br><span class="line">    </span><br><span class="line">    UART_Init.UART_Mode = UART_8bit_BRTx;</span><br><span class="line">    UART_Init.UART_BRT_Use = BRT_Timer1;</span><br><span class="line">    UART_Init.UART_BaudRate = <span class="number">115200ul</span>;</span><br><span class="line">    UART_Init.Morecommunicate = DISABLE; <span class="comment">// 多机通讯</span></span><br><span class="line">    <span class="comment">// 是否允许接收来自发送端的数据</span></span><br><span class="line">    UART_Init.UART_RxEnable = ENABLE;</span><br><span class="line">    UART_Init.BaudRateDouble = DISABLE; <span class="comment">// 波特率加倍      </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">mian</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">          </span><br><span class="line">   	<span class="type">int</span> i; <span class="comment">// 四个灯循环遍历</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment">// 全局中断</span></span><br><span class="line">    EA = <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">    UART_Config();</span><br><span class="line">    GPIO_Comfig();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="comment">// 判断四个按键是否按下抬起</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>( (get_kay() == <span class="number">0</span>) &amp;&amp; (IS_UP(state, i))) &#123;</span><br><span class="line">                <span class="comment">// 将用于消抖的控制位置 0</span></span><br><span class="line">                SET_DOWN(state, i)</span><br><span class="line">                PrintString1(<span class="string">&quot;按钮%d被按下了\n&quot;</span>, i);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((get_kay() == <span class="number">0</span>) &amp;&amp; (IS_DOWM(stat, i))) &#123;</span><br><span class="line">                <span class="comment">// 将用于消抖的控制位置 1</span></span><br><span class="line">                SET_UP(state, i)</span><br><span class="line">                PrintString1(<span class="string">&quot;按钮%d被松开了\n&quot;</span>, i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>嵌入式</category>
+      </categories>
+      <tags>
+        <tag>STC8H</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>STC8H</title>
+    <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/STC8H/</url>
+    <content><![CDATA[<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2>]]></content>
+      <categories>
+        <category>嵌入式</category>
+      </categories>
+      <tags>
+        <tag>STC8H</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>热敏电阻</title>
+    <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E7%83%AD%E6%95%8F%E7%94%B5%E9%98%BB/</url>
+    <content><![CDATA[<p>NTC（Negative Temperature Coefficient）即负温度系数，是一种描述材料或元器件电阻值随温度变化的特性。具体来说，NTC指的是那些电阻值随温度升高而降低的材料或元器件。</p>
+<p>查看原理图，了解热敏电阻使用的是哪一个引脚</p>
+<p><strong>原理图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/remdianzuyuanlitu" alt="remdianzuyuanlitu"></p>
+<h2 id="计算热敏电阻位置的电压值"><a href="#计算热敏电阻位置的电压值" class="headerlink" title="计算热敏电阻位置的电压值"></a>计算热敏电阻位置的电压值</h2><p><strong>电容器两端的电压</strong>与谁并联，就跟谁电压相等。</p>
+<p>以上图为例：</p>
+<p>vcc 为 3.3 NTC 处电压为 ntc_V 那么经过 R20 处的电压就为 (3.3 - ntc_v) 那么流过 R20 的电流 I &#x3D;  (3.3 - ntc_v) &#x2F; 10</p>
+<p>假设 ntc-v 为 1.3 则 2 &#x2F; 10 000 &#x3D; 0.0002 安，也就是说 经过 R20 的电流为 0.0002 安</p>
+<p>同理，热敏电阻的电流 I &#x3D; (ntc_V - 0) &#x2F; 热敏电阻</p>
+<p>又因为串联电路电流处处相等：ntc_V  &#x2F; 热敏电阻 &#x3D;  (3.3 - ntc_v) &#x2F; 10</p>
+<p>所以：热敏电阻(KΩ) &#x3D; ntc_V  * 10 &#x2F; （3.3 - ntc_V  ）</p>
+<p><strong>电路中明明有一条路是电容的支路，但为什么还是按照串联计算呢</strong></p>
+<p>电容器在上电瞬间的行为表现为短路，因为当电容器刚刚连接到电源时，两个板之间的电势差为零，而电势的变化速度非常快。由于电容器的特性，当电压为零时，根据欧姆定律，电流会变为无限大，因此形成了短路的表象。</p>
+<p>然而，这种短路现象并不会持续很久，电容器内的电荷和电势会很快建立起来，电流会逐渐降低直至稳定。那么此时就会形成断路的情况，那么也就可以当作这条路不存在了。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// NTC.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span>	__NTC_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>	__NTC_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">函数声明</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// 热敏电阻初始化函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NTC_Init</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取对应温度的函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">NTC_GetTemperature</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// NTC.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;NTC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ADC.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 热敏电阻与温度对照表</span></span><br><span class="line">u16 code temp_table[]= &#123;</span><br><span class="line">	<span class="number">58354</span>, <span class="comment">// -55</span></span><br><span class="line">	<span class="number">55464</span>, <span class="comment">// -54</span></span><br><span class="line">	<span class="number">52698</span>, <span class="comment">// -53</span></span><br><span class="line">	<span class="number">50048</span>, <span class="comment">// -52</span></span><br><span class="line">	<span class="number">47515</span>, <span class="comment">// -51</span></span><br><span class="line">	<span class="number">45097</span>, <span class="comment">// -50</span></span><br><span class="line">	<span class="number">42789</span>, <span class="comment">// -49</span></span><br><span class="line">	<span class="number">40589</span>, <span class="comment">// -48</span></span><br><span class="line">	<span class="number">38492</span>, <span class="comment">// -47</span></span><br><span class="line">	<span class="number">36496</span>, <span class="comment">// -46</span></span><br><span class="line">	<span class="number">34597</span>, <span class="comment">// -45</span></span><br><span class="line">	<span class="number">32791</span>, <span class="comment">// -44</span></span><br><span class="line">	<span class="number">31075</span>, <span class="comment">// -43</span></span><br><span class="line">	<span class="number">29444</span>, <span class="comment">// -42</span></span><br><span class="line">	<span class="number">27896</span>, <span class="comment">// -41</span></span><br><span class="line">	<span class="number">26427</span>, <span class="comment">// -40</span></span><br><span class="line">	<span class="number">25034</span>, <span class="comment">// -39</span></span><br><span class="line">	<span class="number">23713</span>, <span class="comment">// -38</span></span><br><span class="line">	<span class="number">22460</span>, <span class="comment">// -37</span></span><br><span class="line">	<span class="number">21273</span>, <span class="comment">// -36</span></span><br><span class="line">	<span class="number">20148</span>, <span class="comment">// -35</span></span><br><span class="line">	<span class="number">19083</span>, <span class="comment">// -34</span></span><br><span class="line">	<span class="number">18075</span>, <span class="comment">// -33</span></span><br><span class="line">	<span class="number">17120</span>, <span class="comment">// -32</span></span><br><span class="line">	<span class="number">16216</span>, <span class="comment">// -31</span></span><br><span class="line">	<span class="number">15361</span>, <span class="comment">// -30</span></span><br><span class="line">	<span class="number">14551</span>, <span class="comment">// -29</span></span><br><span class="line">	<span class="number">13785</span>, <span class="comment">// -28</span></span><br><span class="line">	<span class="number">13061</span>, <span class="comment">// -27</span></span><br><span class="line">	<span class="number">12376</span>, <span class="comment">// -26</span></span><br><span class="line">	<span class="number">11728</span>, <span class="comment">// -25</span></span><br><span class="line">	<span class="number">11114</span>, <span class="comment">// -24</span></span><br><span class="line">	<span class="number">10535</span>, <span class="comment">// -23</span></span><br><span class="line">	<span class="number">9986</span>,  <span class="comment">// -22</span></span><br><span class="line">	<span class="number">9468</span>,  <span class="comment">// -21</span></span><br><span class="line">	<span class="number">8977</span>,  <span class="comment">// -20</span></span><br><span class="line">	<span class="number">8513</span>,  <span class="comment">// -19</span></span><br><span class="line">	<span class="number">8075</span>,  <span class="comment">// -18</span></span><br><span class="line">	<span class="number">7660</span>,  <span class="comment">// -17</span></span><br><span class="line">	<span class="number">7267</span>,  <span class="comment">// -16</span></span><br><span class="line">	<span class="number">6896</span>,  <span class="comment">// -15</span></span><br><span class="line">	<span class="number">6545</span>,  <span class="comment">// -14</span></span><br><span class="line">	<span class="number">6212</span>,  <span class="comment">// -13</span></span><br><span class="line">	<span class="number">5898</span>,  <span class="comment">// -12</span></span><br><span class="line">	<span class="number">5601</span>,  <span class="comment">// -11</span></span><br><span class="line">	<span class="number">5319</span>,  <span class="comment">// -10</span></span><br><span class="line">	<span class="number">5053</span>,  <span class="comment">// -9</span></span><br><span class="line">	<span class="number">4801</span>,  <span class="comment">// -8</span></span><br><span class="line">	<span class="number">4562</span>,  <span class="comment">// -7</span></span><br><span class="line">	<span class="number">4336</span>,  <span class="comment">// -6</span></span><br><span class="line">	<span class="number">4122</span>,  <span class="comment">// -5</span></span><br><span class="line">	<span class="number">3920</span>,  <span class="comment">// -4</span></span><br><span class="line">	<span class="number">3728</span>,  <span class="comment">// -3</span></span><br><span class="line">	<span class="number">3546</span>,  <span class="comment">// -2</span></span><br><span class="line">	<span class="number">3374</span>,  <span class="comment">// -1</span></span><br><span class="line">	<span class="number">3211</span>,  <span class="comment">// 0</span></span><br><span class="line">	<span class="number">3057</span>,  <span class="comment">// 1</span></span><br><span class="line">	<span class="number">2910</span>,  <span class="comment">// 2</span></span><br><span class="line">	<span class="number">2771</span>,  <span class="comment">// 3</span></span><br><span class="line">	<span class="number">2639</span>,  <span class="comment">// 4</span></span><br><span class="line">	<span class="number">2515</span>,  <span class="comment">// 5</span></span><br><span class="line">	<span class="number">2396</span>,  <span class="comment">// 6</span></span><br><span class="line">	<span class="number">2284</span>,  <span class="comment">// 7</span></span><br><span class="line">	<span class="number">2177</span>,  <span class="comment">// 8</span></span><br><span class="line">	<span class="number">2076</span>,  <span class="comment">// 9</span></span><br><span class="line">	<span class="number">1978</span>,  <span class="comment">// 10</span></span><br><span class="line">	<span class="number">1889</span>,  <span class="comment">// 11</span></span><br><span class="line">	<span class="number">1802</span>,  <span class="comment">// 12</span></span><br><span class="line">	<span class="number">1720</span>,  <span class="comment">// 13</span></span><br><span class="line">	<span class="number">1642</span>,  <span class="comment">// 14</span></span><br><span class="line">	<span class="number">1568</span>,  <span class="comment">// 15</span></span><br><span class="line">	<span class="number">1497</span>,  <span class="comment">// 16</span></span><br><span class="line">	<span class="number">1430</span>,  <span class="comment">// 17</span></span><br><span class="line">	<span class="number">1366</span>,  <span class="comment">// 18</span></span><br><span class="line">	<span class="number">1306</span>,  <span class="comment">// 19</span></span><br><span class="line">	<span class="number">1248</span>,  <span class="comment">// 20</span></span><br><span class="line">	<span class="number">1193</span>,  <span class="comment">// 21</span></span><br><span class="line">	<span class="number">1141</span>,  <span class="comment">// 22</span></span><br><span class="line">	<span class="number">1092</span>,  <span class="comment">// 23</span></span><br><span class="line">	<span class="number">1044</span>,  <span class="comment">// 24</span></span><br><span class="line">	<span class="number">1000</span>,  <span class="comment">// 25</span></span><br><span class="line">	<span class="number">957</span>,   <span class="comment">// 26</span></span><br><span class="line">	<span class="number">916</span>,   <span class="comment">// 27</span></span><br><span class="line">	<span class="number">877</span>,   <span class="comment">// 28</span></span><br><span class="line">	<span class="number">840</span>,   <span class="comment">// 29</span></span><br><span class="line">	<span class="number">805</span>,   <span class="comment">// 30</span></span><br><span class="line">	<span class="number">771</span>,   <span class="comment">// 31</span></span><br><span class="line">	<span class="number">739</span>,   <span class="comment">// 32</span></span><br><span class="line">	<span class="number">709</span>,   <span class="comment">// 33</span></span><br><span class="line">	<span class="number">679</span>,   <span class="comment">// 34</span></span><br><span class="line">	<span class="number">652</span>,   <span class="comment">// 35</span></span><br><span class="line">	<span class="number">625</span>,   <span class="comment">// 36</span></span><br><span class="line">	<span class="number">600</span>,   <span class="comment">// 37</span></span><br><span class="line">	<span class="number">576</span>,   <span class="comment">// 38</span></span><br><span class="line">	<span class="number">552</span>,   <span class="comment">// 39</span></span><br><span class="line">	<span class="number">530</span>,   <span class="comment">// 40</span></span><br><span class="line">	<span class="number">509</span>,   <span class="comment">// 41</span></span><br><span class="line">	<span class="number">489</span>,   <span class="comment">// 42</span></span><br><span class="line">	<span class="number">470</span>,   <span class="comment">// 43</span></span><br><span class="line">	<span class="number">452</span>,   <span class="comment">// 44</span></span><br><span class="line">	<span class="number">434</span>,   <span class="comment">// 45</span></span><br><span class="line">	<span class="number">417</span>,   <span class="comment">// 46</span></span><br><span class="line">	<span class="number">401</span>,   <span class="comment">// 47</span></span><br><span class="line">	<span class="number">386</span>,   <span class="comment">// 48</span></span><br><span class="line">	<span class="number">371</span>,   <span class="comment">// 49</span></span><br><span class="line">	<span class="number">358</span>,   <span class="comment">// 50</span></span><br><span class="line">	<span class="number">344</span>,   <span class="comment">// 51</span></span><br><span class="line">	<span class="number">331</span>,   <span class="comment">// 52</span></span><br><span class="line">	<span class="number">318</span>,   <span class="comment">// 53</span></span><br><span class="line">	<span class="number">306</span>,   <span class="comment">// 54</span></span><br><span class="line">	<span class="number">295</span>,   <span class="comment">// 55</span></span><br><span class="line">	<span class="number">284</span>,   <span class="comment">// 56</span></span><br><span class="line">	<span class="number">274</span>,   <span class="comment">// 57</span></span><br><span class="line">	<span class="number">264</span>,   <span class="comment">// 58</span></span><br><span class="line">	<span class="number">254</span>,   <span class="comment">// 59</span></span><br><span class="line">	<span class="number">245</span>,   <span class="comment">// 60</span></span><br><span class="line">	<span class="number">236</span>,   <span class="comment">// 61</span></span><br><span class="line">	<span class="number">228</span>,   <span class="comment">// 62</span></span><br><span class="line">	<span class="number">220</span>,   <span class="comment">// 63</span></span><br><span class="line">	<span class="number">212</span>,   <span class="comment">// 64</span></span><br><span class="line">	<span class="number">205</span>,   <span class="comment">// 65</span></span><br><span class="line">	<span class="number">198</span>,   <span class="comment">// 66</span></span><br><span class="line">	<span class="number">191</span>,   <span class="comment">// 67</span></span><br><span class="line">	<span class="number">184</span>,   <span class="comment">// 68</span></span><br><span class="line">	<span class="number">178</span>,   <span class="comment">// 69</span></span><br><span class="line">	<span class="number">172</span>,   <span class="comment">// 70</span></span><br><span class="line">	<span class="number">166</span>,   <span class="comment">// 71</span></span><br><span class="line">	<span class="number">160</span>,   <span class="comment">// 72</span></span><br><span class="line">	<span class="number">155</span>,   <span class="comment">// 73</span></span><br><span class="line">	<span class="number">150</span>,   <span class="comment">// 74</span></span><br><span class="line">	<span class="number">145</span>,   <span class="comment">// 75</span></span><br><span class="line">	<span class="number">140</span>,   <span class="comment">// 76</span></span><br><span class="line">	<span class="number">135</span>,   <span class="comment">// 77</span></span><br><span class="line">	<span class="number">131</span>,   <span class="comment">// 78</span></span><br><span class="line">	<span class="number">126</span>,   <span class="comment">// 79</span></span><br><span class="line">	<span class="number">122</span>,   <span class="comment">// 80</span></span><br><span class="line">	<span class="number">118</span>,   <span class="comment">// 81</span></span><br><span class="line">	<span class="number">115</span>,   <span class="comment">// 82</span></span><br><span class="line">	<span class="number">111</span>,   <span class="comment">// 83</span></span><br><span class="line">	<span class="number">107</span>,   <span class="comment">// 84</span></span><br><span class="line">	<span class="number">104</span>,   <span class="comment">// 85</span></span><br><span class="line">	<span class="number">101</span>,   <span class="comment">// 86</span></span><br><span class="line">	<span class="number">97</span>,    <span class="comment">// 87</span></span><br><span class="line">	<span class="number">94</span>,    <span class="comment">// 88</span></span><br><span class="line">	<span class="number">91</span>,    <span class="comment">// 89</span></span><br><span class="line">	<span class="number">89</span>,    <span class="comment">// 90</span></span><br><span class="line">	<span class="number">86</span>,    <span class="comment">// 91</span></span><br><span class="line">	<span class="number">83</span>,    <span class="comment">// 92</span></span><br><span class="line">	<span class="number">81</span>,    <span class="comment">// 93</span></span><br><span class="line">	<span class="number">78</span>,    <span class="comment">// 94</span></span><br><span class="line">	<span class="number">76</span>,    <span class="comment">// 95</span></span><br><span class="line">	<span class="number">74</span>,    <span class="comment">// 96</span></span><br><span class="line">	<span class="number">71</span>,    <span class="comment">// 97</span></span><br><span class="line">	<span class="number">69</span>,    <span class="comment">// 98</span></span><br><span class="line">	<span class="number">67</span>,    <span class="comment">// 99</span></span><br><span class="line">	<span class="number">65</span>,    <span class="comment">// 100</span></span><br><span class="line">	<span class="number">63</span>,    <span class="comment">// 101</span></span><br><span class="line">	<span class="number">61</span>,    <span class="comment">// 102</span></span><br><span class="line">	<span class="number">60</span>,    <span class="comment">// 103</span></span><br><span class="line">	<span class="number">58</span>,    <span class="comment">// 104</span></span><br><span class="line">	<span class="number">56</span>,    <span class="comment">// 105</span></span><br><span class="line">	<span class="number">55</span>,    <span class="comment">// 106</span></span><br><span class="line">	<span class="number">53</span>,    <span class="comment">// 107</span></span><br><span class="line">	<span class="number">52</span>,    <span class="comment">// 108</span></span><br><span class="line">	<span class="number">50</span>,    <span class="comment">// 109</span></span><br><span class="line">	<span class="number">49</span>,    <span class="comment">// 110</span></span><br><span class="line">	<span class="number">47</span>,    <span class="comment">// 111</span></span><br><span class="line">	<span class="number">46</span>,    <span class="comment">// 112</span></span><br><span class="line">	<span class="number">45</span>,    <span class="comment">// 113</span></span><br><span class="line">	<span class="number">43</span>,    <span class="comment">// 114</span></span><br><span class="line">	<span class="number">42</span>,    <span class="comment">// 115</span></span><br><span class="line">	<span class="number">41</span>,    <span class="comment">// 116</span></span><br><span class="line">	<span class="number">40</span>,    <span class="comment">// 117</span></span><br><span class="line">	<span class="number">39</span>,    <span class="comment">// 118</span></span><br><span class="line">	<span class="number">38</span>,    <span class="comment">// 119</span></span><br><span class="line">	<span class="number">37</span>,    <span class="comment">// 120</span></span><br><span class="line">	<span class="number">36</span>,    <span class="comment">// 121</span></span><br><span class="line">	<span class="number">35</span>,    <span class="comment">// 122</span></span><br><span class="line">	<span class="number">34</span>,    <span class="comment">// 123</span></span><br><span class="line">	<span class="number">33</span>,    <span class="comment">// 124</span></span><br><span class="line">	<span class="number">32</span>,    <span class="comment">// 125</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置热敏电阻要用到的引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NIC_GPIO_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    GPIO_InitTypeDef NIC_GPIO_Init; <span class="comment">//结构定义</span></span><br><span class="line">	NIC_GPIO_Init.Pin  = GPIO_Pin_4; <span class="comment">//指定要初始化的IO,</span></span><br><span class="line">    <span class="comment">// 指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">	NIC_GPIO_Init.Mode = GPIO_HighZ;	</span><br><span class="line">    </span><br><span class="line">	GPIO_Inilize(GPIO_P0, &amp;NIC_GPIO_Init);<span class="comment">//初始化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ADC 转换</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NIC_ADC_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    ADC_InitTypeDef NIC_ADC_init;</span><br><span class="line">	<span class="comment">// ADC 模拟信号采样时间控制, 0~31（注意： SMPDUTY 一定不能设置小于 10）</span></span><br><span class="line">	NIC_ADC_init.ADC_SMPduty = <span class="number">31</span>;	</span><br><span class="line">    <span class="comment">// 设置 ADC 工作时钟频率	ADC_SPEED_2X1T~ADC_SPEED_2X16T</span></span><br><span class="line">	NIC_ADC_init.ADC_Speed = ADC_SPEED_2X1T;	</span><br><span class="line">    <span class="comment">// ADC结果调整,	ADC_LEFT_JUSTIFIED,ADC_RIGHT_JUSTIFIED</span></span><br><span class="line">	NIC_ADC_init.ADC_AdjResult = ADC_RIGHT_JUSTIFIED;	</span><br><span class="line">	NIC_ADC_init.ADC_CsSetup = <span class="number">0</span>; <span class="comment">//ADC 通道选择时间控制 0(默认),1</span></span><br><span class="line">	NIC_ADC_init.ADC_CsHold = <span class="number">1</span>; <span class="comment">//ADC 通道选择保持时间控制 0,1(默认),2,3</span></span><br><span class="line">	</span><br><span class="line">	ADC_Inilize(&amp;NIC_ADC_init);</span><br><span class="line">	</span><br><span class="line">	ADC_PowerControl(ENABLE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 热敏电阻初始化</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NTC_Init</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    NIC_GPIO_Config();</span><br><span class="line">    NIC_ADC_Config();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取温度值</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">NTC_GetTemperature</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">float</span> ntc_V; <span class="comment">// ADC 处的电压</span></span><br><span class="line">    <span class="type">float</span> ntc_R; <span class="comment">// 热敏电阻的电阻值</span></span><br><span class="line">    <span class="type">float</span> ntc_100R; <span class="comment">// 热敏电阻的电阻值 * 100</span></span><br><span class="line">    <span class="type">float</span> diff; <span class="comment">// 差值</span></span><br><span class="line">    <span class="type">float</span> min <span class="comment">// 最小差值</span></span><br><span class="line">    <span class="type">int</span> i, index;</span><br><span class="line">    <span class="comment">// 获取 ADC 采样数值</span></span><br><span class="line">    u16 adc_result = Get_ADCResult(ADC_CH12);	<span class="comment">//channel = 0~15</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 转换为电压值</span></span><br><span class="line">    ntc_V = adc_result * <span class="number">2.5</span> / <span class="number">4096</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 根据电压求出电阻 电阻 = 电压 / 电流</span></span><br><span class="line">    <span class="comment">// 而串联电路电流处处相等下</span></span><br><span class="line">    ntc_100R = ntc_V * <span class="number">10</span> / ( <span class="number">3.3</span> - ntc_V );</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 用热敏电阻处的电阻与对照表中的数据进行比对进而得出温度值</span></span><br><span class="line">    ntc_R = <span class="number">10</span> * ntc_R；</span><br><span class="line">    <span class="comment">// 遍历数组，比较差值最小的，极为当前的温度</span></span><br><span class="line">    <span class="comment">// 默认第一个元素插值最小</span></span><br><span class="line">    index = <span class="number">0</span>; </span><br><span class="line">    min = temp_table[<span class="number">0</span>] - ntc_100R &gt; <span class="number">0</span>? temp_table[<span class="number">0</span>] - ntc_100R: -(temp_table[<span class="number">0</span>] - ntc_100R);</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="keyword">sizeof</span>(temp_table) / <span class="keyword">sizeof</span>(u16); i++) &#123;</span><br><span class="line">        <span class="comment">// 得出当前阻滞与对照表中阻止的差</span></span><br><span class="line">        diff = temp_table[i] - ntc_100R &gt; <span class="number">0</span>? temp_table[i] - ntc_100R: -(temp_table[i] - ntc_100R);</span><br><span class="line">        <span class="comment">// 获取差值最小的下标</span></span><br><span class="line">        <span class="keyword">if</span>(diff &lt; min) &#123;</span><br><span class="line">        	min = diff;</span><br><span class="line">            index = i;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">return</span> index - <span class="number">55</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_UART.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Switch.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_ADC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;NTC.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">UART_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	<span class="comment">// &amp;gt;&amp;gt;&amp;gt; 记得添加 NVIC.c, UART.c, UART_Isr.c &amp;lt;&amp;lt;&amp;lt;</span></span><br><span class="line">    COMx_InitDefine COMx_Init; <span class="comment">//结构定义</span></span><br><span class="line">    <span class="comment">//模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx</span></span><br><span class="line">    COMx_Init.UART_Mode = UART_8bit_BRTx;	</span><br><span class="line">    <span class="comment">//选择波特率发生器, BRT_Timer1, BRT_Timer2 (注意: 串口2固定使用BRT_Timer2)</span></span><br><span class="line">    COMx_Init.UART_BRT_Use = BRT_Timer1;			</span><br><span class="line">    COMx_Init.UART_BaudRate = <span class="number">115200ul</span>; <span class="comment">//波特率, 一般 110 ~ 115200</span></span><br><span class="line">    COMx_Init.UART_RxEnable = ENABLE; <span class="comment">//接收允许,   ENABLE或DISABLE</span></span><br><span class="line">    COMx_Init.BaudRateDouble = DISABLE; <span class="comment">//波特率加倍, ENABLE或DISABLE</span></span><br><span class="line">    <span class="comment">//初始化串口1 UART1,UART2,UART3,UART4</span></span><br><span class="line">    UART_Configuration(UART1, &amp;amp;COMx_InitStructure);		</span><br><span class="line">	<span class="comment">//中断使能, ENABLE/DISABLE; 优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3</span></span><br><span class="line">  	NVIC_UART1_Init(ENABLE,Priority_1);		</span><br><span class="line">    <span class="comment">// 引脚选择, UART1_SW_P30_P31,UART1_SW_P36_P37,UART1_SW_P16_P17,UART1_SW_P43_P44</span></span><br><span class="line">    UART1_SW(UART1_SW_P30_P31);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> t; <span class="comment">// 温度</span></span><br><span class="line">    </span><br><span class="line">    EA = <span class="number">1</span>;</span><br><span class="line">    NTC_Init</span><br><span class="line">    <span class="title function_">UART_Config</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 得到温度值</span></span><br><span class="line">        t = NTC_GetTemperature();</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;温度:%d\n&quot;</span>, t);        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p><strong>NTC.h 中的头尾是什么作用</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span>	__NTC_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>	__NTC_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 头文件的内容...</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>‌**#ifndef在C语言中是“if not defined”的简写，属于宏定义的一种，用于条件编译。**‌</p>
+<ol>
+<li><code>#ifndef __NTC_H</code>：这是预处理指令<code>#ifndef</code>（If Not Defined的缩写），用于检查宏<code>__NTC_H</code>是否尚未定义。如果<code>__NTC_H</code>没有被定义，那么编译器会执行<code>#ifndef</code>和紧接着的<code>#endif</code>之间的代码。这种机制用于确保头文件的内容只被包含一次。</li>
+<li><code>#define __NTC_H</code>：这行代码定义了宏<code>__NTC_H</code>。一旦这个宏被定义，后续的<code>#ifndef __NTC_H</code>检查就会失败，因为<code>__NTC_H</code>已经被定义了。这防止了头文件内容的重复包含。</li>
+<li><code>#endif</code>：这表示<code>#ifndef</code>和<code>#endif</code>之间的代码块的结束。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>嵌入式</category>
+      </categories>
+      <tags>
+        <tag>STC8H</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>定时器</title>
+    <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E5%AE%9A%E6%97%B6%E5%99%A8/</url>
+    <content><![CDATA[<p>定时器（Timer）是一种嵌入式系统中常见的外设，通常由一个晶体振荡器提供时钟信号，可以计时一定的时间后执行相应的操作；它是基于<strong>硬件计数器</strong>的一种机制，通常集成在微控制器（MCU）或处理器中；定时器的基本功能是<strong>精确测量时间间隔</strong>，或者<strong>根据时间周期触发特定任务</strong>。定时器通常具有多种<strong>工作模式</strong>和计数方式，可以灵活地应用于各种场合。</p>
+<p>STC8H内置了5个16位定时器：T0，T1，T2，T3，T4；</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>定时器启动后，根据配置的模式和速率进行计数。在定时模式下，定时器对内部系统时钟进行计数；在计数模式下，定时器对外部引脚输入的脉冲进行计数。</p>
+<p>当定时器的计数值达到其容量上限（如16位定时器的上限为65535）时，会发生溢出。此时，定时器的溢出标志位（如TF0、TF1等）会被硬件置位，并向CPU发出中断请求（如果中断被允许）。</p>
+<p>如果CPU允许中断，并且没有其他更高优先级的中断正在处理，那么CPU会响应定时器的中断请求，并跳转到对应的中断服务程序执行。</p>
+<blockquote>
+<p>单片机复位后，程序计数器(PC)的内容为 0000H,从 0000H单元开始执行程序。另外中断服务程序的入口地址(又称中断向量)也位于程序存储器单元。在程序存储器中，每个中断都有一个固定的入口地址，当中断发生并得到响应后，单片机就会自动跳转到相应的中断入口地址去执行程序。外部中断0(INTO)的中断服务程序的入口地址是 0003H，定时器&#x2F;计数器0(TIMERO)中断服务程序的入口地址是 000BH，外部中断1(INT1)的中断服务程序的入口地址是 0013H，定时器&#x2F;计数器1(TIMER1)的中断服务程序的入口地址是 001BH 等。</p>
+</blockquote>
+<h3 id="中断向量表"><a href="#中断向量表" class="headerlink" title="中断向量表"></a>中断向量表</h3><p>中断被激活时，硬件会尝试跳转到我们提供的中断处理函数。而硬件怎么找到我们的中断处理函数呢？每种架构的 CPU 都会有一个固定的中断向量表，中断向量表按照中断号顺序存储中断处理函数的函数地址，当发生中断时，硬件会顺序查找对应的函数地址并跳转。</p>
+<p>当程序被编译时，编译器会识别出中断服务函数的声明，并根据中断号在生成的代码中将中断服务函数的入口地址放置在中断向量表中对应的位置。中断向量表是一个特殊的存储区域，它记录了所有中断服务函数的入口地址，以便在中断发生时能够快速找到并跳转到相应的中断服务函数执行。</p>
+<p>那么咱们写代码时加 interrupt n；Keil 编译后会将此函数首地址放入对应的寄存器中(<strong>中断向量</strong>)，请问这个中断号与中断向量的对应表在keil 中什么地方配置的呢，或者是在代码中如何实现的呢？这是由 keil 编译器所维护的一组对应关系表，写interrupt n，keil 会自动在中断向量处插入跳转到该函数入口点的 LJMP 单片机中断被允许且发生中断请求事件，CPU由硬件向PC写入中断向量实现中断跳转</p>
+<blockquote>
+<p>LJMP是一种远跳转指令，用于在保护模式或实地址模式下跳转到不同的代码段执行程序。</p>
+<p>中断向量不是寄存器，是 FLASH 中的 code 区域靠前的一部分</p>
+</blockquote>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>使用定时器，控制板载LED高低电平输出。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Timer.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;NVIC.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    </span><br><span class="line">	GPIO_InitTypeDef GPIO_Init; <span class="comment">//结构定义</span></span><br><span class="line">	GPIO_Init.Pin  = GPIO_Pin_3; <span class="comment">//指定要初始化的IO,</span></span><br><span class="line">    <span class="comment">//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">	GPIO_Init.Mode = GPIO_PullUp;	</span><br><span class="line">    </span><br><span class="line">	GPIO_Inilize(GPIO_P5, &amp;GPIO_InitStructure);	<span class="comment">//初始化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TIMER_config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	TIM_InitTypeDef Timer_Init <span class="comment">//结构定义</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//定时器0做16位自动重装, 中断频率为100000HZ，中断函数从P6.7取反输出50KHZ方波信号.</span></span><br><span class="line">        </span><br><span class="line">	<span class="comment">//指定工作模式,TIM_16BitAutoReload, TIM_16Bit, TIM_8BitAutoReload, TIM_16BitAutoReloadNoMask        </span></span><br><span class="line">	Timer_Init.TIM_Mode = TIM_16BitAutoReload;	</span><br><span class="line">    <span class="comment">//指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext</span></span><br><span class="line">	Timer_Init.TIM_ClkSource = TIM_CLOCK_1T;	</span><br><span class="line">    <span class="comment">//是否输出高速脉冲, ENABLE或DISABLE，如果配置ENABLE，则P3.5端口会同步输出时钟脉冲</span></span><br><span class="line">	Timer_Init.TIM_ClkOut = DISABLE;		</span><br><span class="line">    <span class="comment">//初值,指定Timer频率 1000hz (每秒执行1000次，每次1ms（周期））</span></span><br><span class="line">    <span class="comment">//不要小于367hz (2.7ms周期)</span></span><br><span class="line">	<span class="comment">//不要大于1 000 000hz 一百万 （1us周期)</span></span><br><span class="line">	Timer_Init.TIM_Value     = <span class="number">65536UL</span> - (MAIN_Fosc / <span class="number">1000UL</span>);	</span><br><span class="line">	<span class="comment">//是否初始化后启动定时器, ENABLE或DISABLE																	</span></span><br><span class="line">	Timer_Init.TIM_Run       = ENABLE;	</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//初始化Timer0 Timer0,Timer1,Timer2,Timer3,Timer4</span></span><br><span class="line">	Timer_Inilize(Timer0,&amp;TIM_InitStructure);	</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//中断使能, ENABLE/DISABLE; 优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3</span></span><br><span class="line">	NVIC_Timer0_Init(ENABLE,Priority_0);		</span><br><span class="line">	</span><br><span class="line">&#125;                 </span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	GPIO_config();</span><br><span class="line">	TIMER_config();</span><br><span class="line">	<span class="comment">// 开启全局中断</span></span><br><span class="line">	EA = <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	P53 = <span class="number">0</span>;		<span class="comment">// 熄灯</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=============================================================================</span><br><span class="line"><span class="comment">// Timer_lsr.c</span></span><br><span class="line"><span class="comment">// 函数: Timer0_ISR_Handler</span></span><br><span class="line"><span class="comment">// 描述: Timer0中断函数.</span></span><br><span class="line"><span class="comment">// 参数: none.</span></span><br><span class="line"><span class="comment">// 返回: none.</span></span><br><span class="line"><span class="comment">// 版本: V1.0, 2020-09-23</span></span><br><span class="line"><span class="comment">//========================================================================</span></span><br><span class="line"><span class="type">void</span> Timer0_ISR_Handler (<span class="type">void</span>) interrupt TMR0_VECTOR <span class="comment">//进中断时已经清除标志</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span> 在此处添加用户代码</span></span><br><span class="line">   P53 = ~P53;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>嵌入式</category>
@@ -3627,7 +3675,7 @@ build: binary
   <entry>
     <title>震动马达</title>
     <url>/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E9%9C%87%E5%8A%A8%E9%A9%AC%E8%BE%BE/</url>
-    <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Delay.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MOTOR P01</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	GPIO_InitTypeDef	GPIO_InitStructure;		<span class="comment">//结构定义</span></span><br><span class="line">	GPIO_InitStructure.Pin  = GPIO_Pin_1;		<span class="comment">//指定要初始化的IO,</span></span><br><span class="line">	GPIO_InitStructure.Mode = GPIO_OUT_PP;	<span class="comment">//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">	GPIO_Inilize(GPIO_P0, &amp;GPIO_InitStructure);<span class="comment">//初始化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	GPIO_config();</span><br><span class="line">	</span><br><span class="line">	EA = <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		MOTOR = <span class="number">1</span>;</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		MOTOR = <span class="number">0</span>;</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 通过P0.1引脚控制马达震动。</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Delay.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MOTOR P01</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	GPIO_InitTypeDef	GPIO_InitStructure;		<span class="comment">//结构定义</span></span><br><span class="line">	GPIO_InitStructure.Pin  = GPIO_Pin_1;		<span class="comment">//指定要初始化的IO,</span></span><br><span class="line">	GPIO_InitStructure.Mode = GPIO_OUT_PP;	<span class="comment">//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">	GPIO_Inilize(GPIO_P0, &amp;GPIO_InitStructure);<span class="comment">//初始化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	GPIO_config();</span><br><span class="line">	</span><br><span class="line">	EA = <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		MOTOR = <span class="number">1</span>;</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		MOTOR = <span class="number">0</span>;</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">		delay_ms(<span class="number">250</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -3646,6 +3694,58 @@ build: binary
       </categories>
       <tags>
         <tag>STC8H</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>bevy基础</title>
+    <url>/game/rust/Bevy/bevy%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="Bevy-基础"><a href="#Bevy-基础" class="headerlink" title="Bevy 基础"></a>Bevy 基础</h1><h2 id="Bevy设置"><a href="#Bevy设置" class="headerlink" title="Bevy设置"></a>Bevy设置</h2><h3 id="加快编译优化"><a href="#加快编译优化" class="headerlink" title="加快编译优化"></a>加快编译优化</h3><p>在<code>Cargo.toml</code>或<code>.cargo/config.toml</code>:</p>
+<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 对依赖项启用最大优化，但不对我们的代码启用最大优化：</span></span><br><span class="line"><span class="section">[profile.dev.package.&quot;*&quot;]</span></span><br><span class="line"><span class="attr">opt-level</span> = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在调试/开发模式下仅启用少量优化</span></span><br><span class="line"><span class="section">[profile.dev]</span></span><br><span class="line"><span class="attr">opt-level</span> = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 实际发布模式下最积极的优化配置：</span></span><br><span class="line"><span class="section">[profile.release]</span></span><br><span class="line"><span class="attr">lto</span> = <span class="literal">true</span> <span class="comment"># 设置为 true 时编译器会进行链接时间优化，但会增加编译时间。</span></span><br><span class="line"><span class="attr">opt-level</span> = <span class="number">3</span> <span class="comment"># 设置优化级别为最高。</span></span><br><span class="line"><span class="attr">codegen-units</span> = <span class="number">1</span> <span class="comment"># 控制了代码生成的单元数量。当设置为 1 时，整个 crate 会被编译成一个单独的代码生成单元。</span></span><br><span class="line"><span class="attr">incremental</span> = <span class="literal">false</span> <span class="comment"># 不启用增量编译：增量编译允许 Cargo 只重新编译自上次构建以来已更改的文件和依赖项，从而加快编译速度。</span></span><br><span class="line"><span class="attr">debug</span> = <span class="literal">false</span> <span class="comment"># 当设置为false时，编译器不会生成调试信息。</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>警告！</strong>如果您使用调试器（如<code>gdb</code>或<code>lldb</code>）来逐步执行代码，任何程度的编译器优化都会影响体验。您的断点可能会被跳过，并且代码流可能会以意想不到的方式跳来跳去。如果您想调试&#x2F;逐步执行代码，您可能需要 <code>opt-level = 0</code>。</p>
+<h3 id="加速-Rust-Analyzer"><a href="#加速-Rust-Analyzer" class="headerlink" title="加速 Rust-Analyzer"></a>加速 Rust-Analyzer</h3><p><em>Powershell</em> 中键入 <strong>rustup shwo</strong> 来显示你的Rust构建工具链</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\cnkay&gt; rustup show</span><br><span class="line">Default host: x86_64<span class="literal">-pc-windows-msvc</span></span><br><span class="line">rustup home:  D:\tools\SDK\rust\.rustup</span><br><span class="line"></span><br><span class="line">stable<span class="literal">-x86_64-pc-windows-msvc</span> (default)</span><br><span class="line">rustc <span class="number">1.78</span>.<span class="number">0</span> (<span class="number">9</span>b00956e5 <span class="number">2024</span><span class="literal">-04-29</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果你使用的是 <em>MSVC</em> 工具链那么连接器是<code>link.exe</code>。</p>
+<p>为了实现快速编译，需要设置非默认链接器。在 <em>VSCode</em> 中设置<code>settings.json</code> 添加：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">Windows<span class="punctuation">:</span></span><br><span class="line"><span class="attr">&quot;rust-analyzer.cargo.extraEnv&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;RUSTFLAGS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-Clinker=rust-lld.exe&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">Linux(mold)<span class="punctuation">:</span></span><br><span class="line"><span class="attr">&quot;rust-analyzer.cargo.extraEnv&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;RUSTFLAGS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-Clinker=clang -Clink-arg=-fuse-ld=mold&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">Linux (lld)<span class="punctuation">:</span></span><br><span class="line"><span class="attr">&quot;rust-analyzer.cargo.extraEnv&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;RUSTFLAGS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-Clinker=clang -Clink-arg=-fuse-ld=lld&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="CI设置"><a href="#CI设置" class="headerlink" title="CI设置"></a>CI设置</h2><p><code>CI</code>是<strong>GitHub Actions</strong>的简称</p>
+<h2 id="ECS-模式"><a href="#ECS-模式" class="headerlink" title="ECS 模式"></a>ECS 模式</h2><p>ECS 是*实体(Entity)<em>、</em>组件(Component)<em>、</em>系统(System)*的简称，是一种将<strong>数据</strong>和<strong>行为</strong>分开的编程范式。</p>
+<p><strong>系统(System)</strong></p>
+<p>系统是处理实体和组件的逻辑单元，负责执行特定的功能或行为。</p>
+<p>系统是基于组件的存在于否，以及它们的状态来执行逻辑单元。</p>
+<p>系统通常是独立于特定实体的，可以处理多个具有相似组件结构的实体。</p>
+<p><strong>实体(Entity)</strong></p>
+<p>实体是系统中的基本对象，可以是游戏中的角色、物体或者其他有意义的实体。</p>
+<p>实体本身通常只是一个标识符，没有行为或状态。</p>
+<p><strong>组件(Component)</strong></p>
+<p>组件是实体的属性或数据单元，描述了实体的特征和状态。</p>
+<p>不同的组件可以包含不同类型的数据，例如位置、渲染信息、健康状态等。</p>
+<p>一个实体可以关联多个组件，组件之间是相互独立的。</p>
+<p><strong>总结</strong></p>
+<p><strong>实体只是指向组件的唯一ID或引用，本质上他将所有的组件连接在一起，构成游戏中的单个对象。</strong></p>
+<p><strong>组件只是存粹的数据结构，如坦克对象的大小和速度。</strong></p>
+<p><strong>系统只是对具有特定组件功能的实体进行操作的功能。</strong></p>
+<p>在Bevy中<strong>实体(Entity)</strong> 是指向一群<strong>组件(Component)</strong> 的唯一 <strong>事物(things)</strong>, 然后使用 <strong>系统(System)</strong> 处理其过程.</p>
+<p>例如，一个实体可能有<code>位置(Position)</code>和<code>速度(Velocity)</code>组件，而另一个实体可能有<code>位置(Position)</code>和<code>UI</code>组件。系统是在一组特定组件上运行的逻辑， 你可能有一个运行在所有带有<code>位置(Position)</code>和<code>速度(Velocity)</code>组件的实体上的<code>移动</code>系统。</p>
+<h2 id="ECS-中的数据"><a href="#ECS-中的数据" class="headerlink" title="ECS 中的数据"></a>ECS 中的数据</h2><h3 id="World"><a href="#World" class="headerlink" title="World"></a>World</h3><p>定义：<em>World</em>是<strong>系统</strong>和<strong>实体</strong>的集合。在<code>ECS</code>架构中，<em>World</em>是最高级别的组织单位，它包含了<strong>游戏中的所有实体（Entity）以及处理这些实体的系统（System）</strong>。</p>
+<p>当程序启动时，默认会生成一个World,可以存在多个World对象。</p>
+<h3 id="Entities-Components"><a href="#Entities-Components" class="headerlink" title="Entities&#x2F;Components"></a>Entities&#x2F;Components</h3><p>概念上类似于在数据库或电子表格。</p>
+<p>每一行数据就是一个对象，<code>(Entity)</code>与<code>ID</code>或者行号类似，<code>(Components)</code>类似于 表的<em>列</em>，可以有任意多个<em>行</em>。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 实体</span></span><br><span class="line"><span class="meta">#[derive(Component)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Xp</span>(<span class="type">u32</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 组件</span></span><br><span class="line"><span class="meta">#[derive(Component)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Health</span> &#123;</span><br><span class="line">    current: <span class="type">u32</span>,</span><br><span class="line">    max: <span class="type">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 系统</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">level_up</span>(<span class="keyword">mut</span> query: Query&lt;(&amp;<span class="keyword">mut</span> Xp, &amp;<span class="keyword">mut</span> Health)&gt;,) &#123;</span><br><span class="line">    <span class="comment">// process all relevant entities</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">mut</span> xp, <span class="keyword">mut</span> health) <span class="keyword">in</span> query.<span class="title function_ invoke__">iter_mut</span>() &#123;</span><br><span class="line">        <span class="keyword">if</span> xp.<span class="number">0</span> &gt; <span class="number">1000</span> &#123;</span><br><span class="line">            xp.<span class="number">0</span> -= <span class="number">1000</span>;</span><br><span class="line">            health.max += <span class="number">25</span>;</span><br><span class="line">            health.current = health.max;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h3><p>如果某物只有一个全局实例（单例），并且它是独立（不与其他数据关联），那么你就可以创建一个<code>Resources</code></p>
+<p>例如，您可以创建一个资源来存储游戏的图形 设置，或指向非 Bevy 库的接口。</p>
+<p>这是一种存储数据的简单方法，当你不需要<code>实体/组件</code>的灵活性的时候。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Resource)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">GameSettings</span> &#123;</span><br><span class="line">    current_level: <span class="type">u32</span>,</span><br><span class="line">    difficulty: <span class="type">u32</span>,</span><br><span class="line">    max_time_seconds: <span class="type">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">setup_game</span>(</span><br><span class="line">    <span class="keyword">mut</span> commands: Commands,</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="comment">// Add the GameSettings resource to the ECS</span></span><br><span class="line">    <span class="comment">// (if one already exists, it will be overwritten)</span></span><br><span class="line">    commands.<span class="title function_ invoke__">insert_resource</span>(GameSettings &#123;</span><br><span class="line">        current_level: <span class="number">1</span>,</span><br><span class="line">        difficulty: <span class="number">100</span>,</span><br><span class="line">        max_time_seconds: <span class="number">60</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">spawn_extra_enemies</span>(</span><br><span class="line">    <span class="keyword">mut</span> commands: Commands,</span><br><span class="line">    <span class="comment">// we can easily access our resource from any system</span></span><br><span class="line">    game_settings: Res&lt;GameSettings&gt;,</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="keyword">if</span> game_settings.difficulty &gt; <span class="number">50</span> &#123;</span><br><span class="line">        commands.<span class="title function_ invoke__">spawn</span>((</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        ));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>OS</category>
+      </categories>
+      <tags>
+        <tag>Rust</tag>
+        <tag>bevy</tag>
       </tags>
   </entry>
 </search>
