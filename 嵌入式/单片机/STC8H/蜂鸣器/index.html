@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="蜂鸣器（Buzzer）是一种能够将电信号转化为声音信号的电子设备，常用于嵌入式系统中发出提示音或警报声。 蜂鸣器是一种利用直流电或交流电驱动，发出特定频率的声音的器件。它通常由外壳、振动膜片、电磁线圈或压电元件组成；根据工作原理的不同，可以分为电磁式和压电式两类；按驱动方式分类可分为有源蜂鸣器和无源蜂鸣器 有源蜂鸣器：内部集成了振荡器，直接接通电源即可发声。使用方便，只需给定直流电压即可驱动。 无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蜂鸣器">
+<meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="蜂鸣器（Buzzer）是一种能够将电信号转化为声音信号的电子设备，常用于嵌入式系统中发出提示音或警报声。 蜂鸣器是一种利用直流电或交流电驱动，发出特定频率的声音的器件。它通常由外壳、振动膜片、电磁线圈或压电元件组成；根据工作原理的不同，可以分为电磁式和压电式两类；按驱动方式分类可分为有源蜂鸣器和无源蜂鸣器 有源蜂鸣器：内部集成了振荡器，直接接通电源即可发声。使用方便，只需给定直流电压即可驱动。 无">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/fengmingqiyuanlitu.png">
+<meta property="article:published_time" content="2024-09-10T07:23:00.000Z">
+<meta property="article:modified_time" content="2024-09-10T13:25:58.923Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="STC8H">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/fengmingqiyuanlitu.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>蜂鸣器</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E7%8B%AC%E7%AB%8B%E6%8C%89%E9%94%AE/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&text=蜂鸣器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&is_video=false&description=蜂鸣器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=蜂鸣器&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&name=蜂鸣器&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&t=蜂鸣器"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%AB%E5%85%B9%E4%B8%8E%E5%91%A8%E6%9C%9F%E7%9A%84%E6%8D%A2%E7%AE%97"><span class="toc-number">1.</span> <span class="toc-text">赫兹与周期的换算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        蜂鸣器
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-10T07:23:00.000Z" class="dt-published" itemprop="datePublished">2024-09-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/STC8H/" rel="tag">STC8H</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>蜂鸣器（Buzzer）是一种能够<strong>将电信号转化为声音信号的电子设备</strong>，常用于嵌入式系统中发出提示音或警报声。</p>
+<p>蜂鸣器是一种利用直流电或交流电驱动，发出特定频率的声音的器件。它通常由外壳、振动膜片、电磁线圈或压电元件组成；根据工作原理的不同，可以分为电磁式和压电式两类；按驱动方式分类可分为有源蜂鸣器和无源蜂鸣器</p>
+<p><strong>有源蜂鸣器</strong>：内部集成了振荡器，直接接通电源即可发声。使用方便，只需给定直流电压即可驱动。</p>
+<p><strong>无源蜂鸣器</strong>：没有内置振荡器，需要通过外部信号（如PWM信号）驱动产生振荡。声音频率、节奏可以通过外部控制。</p>
+<p><strong>原理图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/fengmingqiyuanlitu.png" alt="fengmingqiyuanlitu"></p>
+<h2 id="赫兹与周期的换算"><a href="#赫兹与周期的换算" class="headerlink" title="赫兹与周期的换算"></a>赫兹与周期的换算</h2><p><strong>频率是指在单位时间内(1s)发生重复事件的次数,通常用赫兹(Hz)表示;周期时间则指完成一次所需时间</strong></p>
+<p>频率和周期的关系为：f&#x3D;1&#x2F;T。即频率等于周期的倒数，二者成反比。假设频率为 f &#x3D; 2Hz，那么其周期 T &#x3D; 1 &#x2F; f &#x3D; 1 &#x2F; 2 &#x3D; 0.5 秒（高低电平各0.25）。</p>
+<p>那么 1047 个频率也就是一秒内要发生 1047 个重复的周期，也就是 1047 个高电平 + 1047 个低电平，那么也就是说在 1 秒内高低电平一共要被触发 1047 + 1047 &#x3D; 2097 次，也就是定时器在一秒内要被触发或者说被分割为 2097 个周期，所以触发事件就是：</p>
+<p>65536 - (MAIN_Fosc &#x2F; (2 * 1047));	</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><strong>通过定时器控制播放哆来咪发唆拉西哆</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Timer.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;NVIC.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 蜂鸣器引脚</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUZZER P00</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 小字二组 哆来咪发唆拉西哆 对应的频率</span></span><br><span class="line"><span class="comment">//			      C`	D`     E`   F`	  G`	A`	  B`    C``</span></span><br><span class="line">u16 hz_note[] = &#123;<span class="number">1047</span>, <span class="number">1175</span>, <span class="number">1319</span>, <span class="number">1397</span>, <span class="number">1568</span>, <span class="number">1760</span>, <span class="number">1976</span>, <span class="number">2093</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 引脚初始化</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    GPIO_InitTypeDef GPIO_Init;</span><br><span class="line">	GPIO_Init.Pin  = GPIO_Pin_0;</span><br><span class="line">    <span class="comment">// 指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">	GPIO_Init.Mode = GPIO_OUT_PP;</span><br><span class="line">	GPIO_Inilize(GPIO_P0, &amp;GPIO_Init);<span class="comment">//初始化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定时器配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Timer_Config</span><span class="params">(u16 hz_buzzer)</span> &#123;</span><br><span class="line">    TIM_InitTypeDef Timer_init;</span><br><span class="line">    </span><br><span class="line">    Timer_init.TIM_Mode = TIM_16BitAutoReload;</span><br><span class="line">    <span class="comment">// 时钟源 TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext</span></span><br><span class="line">	Timer_init.TIM_ClkSource = TIM_CLOCK_1T;</span><br><span class="line">    <span class="comment">// 可编程时钟输出,如果配置ENABLE，则 P3.5 端口会同步输出时钟脉冲</span></span><br><span class="line">	Timer_init.TIM_ClkOut = DISABLE	;	</span><br><span class="line">    <span class="comment">// 装载初值</span></span><br><span class="line">    Timer_init.TIM_Value = <span class="number">65536</span> - (MAIN_Fosc / (<span class="number">2</span> * hz_buzzer));		</span><br><span class="line">    <span class="comment">// 是否运行 ENABLE,DISABLE</span></span><br><span class="line">	Timer_init.TIM_Run = ENABLE;		</span><br><span class="line">	<span class="comment">// 选择定时器，并且进行配置</span></span><br><span class="line">	Timer_Inilize(Timer0, &amp;Timer_init);</span><br><span class="line">    <span class="comment">//打开中断使能</span></span><br><span class="line">	NVIC_Timer0_Init(ENABLE, Priority_1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定时器 0 中断函数中执行的代码</span></span><br><span class="line">handle_timer0_interrupt() &#123;</span><br><span class="line">    BUZZER = ~BUZZER;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="comment">// 中断总控制</span></span><br><span class="line">    EA = <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    GPIO_Config();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="keyword">sizeof</span>(hz_note) / siezeof(hz_note[<span class="number">0</span>]; i++))&#123;</span><br><span class="line">            Timer_Config(hz_note[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 每播放一个轮次，就停三秒钟不要出声，再继续播放；</span></span><br><span class="line">        stop();</span><br><span class="line">        </span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        </span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        </span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>定时器的效果是如何作用于蜂鸣器的</strong></p>
+<p>定时器的效果作用于蜂鸣器，主要是通过控制蜂鸣器电源的开关状态（即高电平或低电平）来实现的；定时周期决定了蜂鸣器发声的频率，因为频率是单位时间内周期性事件的次数。</p>
+<p>也就是说，在一秒内，以不同的频率给蜂鸣器发送高低电平就可以控制它发出不同的声音。</p>
+<p><strong>为什么高低电平各占一半呢，高低电平的占比不是和占空比有关么</strong></p>
+<p>这样做可以简化控制逻辑，同时确保蜂鸣器发出的声音具有稳定的频率和音色。他可能并不是真的各占一半。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%AB%E5%85%B9%E4%B8%8E%E5%91%A8%E6%9C%9F%E7%9A%84%E6%8D%A2%E7%AE%97"><span class="toc-number">1.</span> <span class="toc-text">赫兹与周期的换算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&text=蜂鸣器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&is_video=false&description=蜂鸣器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=蜂鸣器&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&title=蜂鸣器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&name=蜂鸣器&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/&t=蜂鸣器"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

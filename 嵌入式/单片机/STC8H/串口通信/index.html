@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/chuankouzuanUSB.png">
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/chuankouzuanUSByuanlitu.png">
 <meta property="article:published_time" content="2024-09-04T12:02:00.000Z">
-<meta property="article:modified_time" content="2024-09-08T14:13:34.193Z">
+<meta property="article:modified_time" content="2024-09-11T12:51:57.596Z">
 <meta property="article:author" content="kay">
 <meta property="article:tag" content="STC8H">
 <meta name="twitter:card" content="summary">
@@ -184,7 +184,7 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h2 id="什么是串口"><a href="#什么是串口" class="headerlink" title="什么是串口"></a>什么是串口</h2><p>串口是一个广义的概念，指的是用于串行通信的接口。在计算机和单片机等设备上，串口允许数据一位一位地按顺序传输，而不是像并行接口那样同时传输多个位。串口通信是许多嵌入式系统和外部设备（如传感器、模块、其他计算机等）之间进行通信的常用方式之一。</p>
+    <h2 id="什么是串口"><a href="#什么是串口" class="headerlink" title="什么是串口"></a>什么是串口</h2><p>串口是一个广义的概念，指的是用于串行通信的接口。在计算机和单片机等设备上，串口允许<strong>数据一位一位地按顺序传输</strong>，而不是像并行接口那样同时传输多个位。串口通信是许多嵌入式系统和外部设备（如传感器、模块、其他计算机等）之间进行通信的常用方式之一。</p>
 <blockquote>
 <p>物理上 串口引脚连接到我们的 USB 或者其他的通信口从而实现通信；</p>
 </blockquote>
@@ -193,6 +193,10 @@
 <p><strong>RXD</strong>（Receive Data）：指串口接收端的数据信号，接收设备会不断监听 RXD 线上的信号，一旦检测到起始位，它就会开始接收随后的数据位。在接收完所有数据位后，根据配置可能需要接收校验位，并最终以停止位作为数据帧的结束。接收到的数据会被转换回并行格式，供接收设备进一步处理。</p>
 <p>TXD 和 RXD 信号的实现方式取决于使用的芯片或模块。一般来说，它们都是通过芯片或模块的串口功能来实现的，这需要将相应的引脚连接到芯片或模块的串口引脚上。</p>
 <p>在发送数据时，需要将要发送的数据通过串口的发送缓冲区发送到 TXD 引脚上，接收端通过 RXD 引脚接收这些数据并放入接收缓冲区中。在接收端收到完整的数据后，可以通过相应的处理进行数据的解析和处理。</p>
+<blockquote>
+<p><strong>串行通信协议</strong>是指通过一根或几根信号线，按照特定的规则（协议），在发送端和接收端之间<strong>逐位</strong>传输数据的通信方式。相比于并行通信（多条数据线同时传输多位数据），串行通信只需要较少的信号线，因此适合长距离通信和节省硬件资源的场合。</p>
+<p>在串行通信中，数据<strong>一位一位地</strong>依次传输。为了保证发送端和接收端之间数据传输的正确性，通常需要一套完整的规则来定义如何传输、什么时候传输、如何同步等，这就是<strong>通信协议</strong>的作用。</p>
+</blockquote>
 <h3 id="TTL"><a href="#TTL" class="headerlink" title="TTL"></a>TTL</h3><p><strong>TTL</strong>（Transistor-Transistor Logic）是一种使用双极型晶体管（BJT）来实现逻辑电路的逻辑电平标准。其广泛应用于单片机通信中，特别是在串行通信接口（如UART、SPI、I2C）等场景下。</p>
 <p>严格来说，TTL不是一种通信协议，而是逻辑电平的定义标准，描述的是电器属性。</p>
 <p><strong>TX</strong>（Transmit）：发送端通过 TX 引脚发送数据。当发送一个逻辑高电平（1）时，TX引脚输出一个接近5V的电压；当发送一个逻辑低电平（0）时，TX引脚输出接近 0V 的电压。</p>

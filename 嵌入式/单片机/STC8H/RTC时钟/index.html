@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="在嵌入式开发中，RTC（Real-Time Clock，实时时钟）是一个重要的硬件模块，用来跟踪当前的时间和日期。与一般的系统时钟不同，RTC 具有独立的电源（通常为电池），即使系统断电或进入低功耗模式，RTC 仍然能够保持运行。 RTC的基本特性  独立性：RTC 时钟是独立于系统主处理器运行的，即使系统进入低功耗模式或关机，RTC 仍然能正常计时。这通常是通过一块备用电池（如纽扣电池）来供电实">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RTC时钟">
+<meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="在嵌入式开发中，RTC（Real-Time Clock，实时时钟）是一个重要的硬件模块，用来跟踪当前的时间和日期。与一般的系统时钟不同，RTC 具有独立的电源（通常为电池），即使系统断电或进入低功耗模式，RTC 仍然能够保持运行。 RTC的基本特性  独立性：RTC 时钟是独立于系统主处理器运行的，即使系统进入低功耗模式或关机，RTC 仍然能正常计时。这通常是通过一块备用电池（如纽扣电池）来供电实">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/RTCshizhongyuanlitu.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/I2Cyuanlitu.png">
+<meta property="article:published_time" content="2024-09-11T00:41:00.000Z">
+<meta property="article:modified_time" content="2024-09-11T15:22:16.051Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="STC8H">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/RTCshizhongyuanlitu.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>RTC时钟</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/I2C%E6%80%BB%E7%BA%BF/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E8%9C%82%E9%B8%A3%E5%99%A8/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&text=RTC时钟"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&is_video=false&description=RTC时钟"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=RTC时钟&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&name=RTC时钟&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&t=RTC时钟"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">1.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">问题</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        RTC时钟
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-11T00:41:00.000Z" class="dt-published" itemprop="datePublished">2024-09-11</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/STC8H/" rel="tag">STC8H</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>在嵌入式开发中，<strong>RTC（Real-Time Clock，实时时钟）</strong>是一个重要的<strong>硬件</strong>模块，用来跟踪当前的时间和日期。与一般的系统时钟不同，RTC 具有独立的电源（通常为电池），即使系统断电或进入低功耗模式，RTC 仍然能够保持运行。</p>
+<p><strong>RTC的基本特性</strong></p>
+<ul>
+<li><p><strong>独立性</strong>：RTC 时钟是<strong>独立于系统主处理器运行的</strong>，即使系统进入低功耗模式或关机，RTC 仍然能正常计时。这通常是通过一块<strong>备用电池</strong>（如纽扣电池）来供电实现的，如果没有电池，系统断电后 RTC 会停止工作，导致时间信息丢失。</p>
+</li>
+<li><p><strong>低功耗</strong>：RTC 的设计非常节能，因为它需要在设备断电或处于待机状态下保持时间。典型的 RTC 功耗极低，使得它能够在备用电池的支持下持续工作多年。</p>
+</li>
+<li><p><strong>精度</strong>：RTC 时钟的频率通常由一个外部的 <strong>32.768kHz晶振</strong> 提供，这种频率的晶振能够精确跟踪时间变化。之所以选择这个频率，是因为它可以通过二进制的除法很方便地分频为1秒。</p>
+<p>32.768kHz 可以是默认，也可以是可设置的</p>
+</li>
+<li><p><strong>计时功能</strong>：除了记录当前时间，RTC 通常还能提供<strong>闹钟、定时</strong>等功能。例如，可以设定某个时间触发闹钟中断，唤醒处理器执行特定任务。</p>
+</li>
+</ul>
+<p><strong>RTC时钟的组成部分</strong></p>
+<ul>
+<li><p><strong>晶振（Oscillator）</strong>：通常，RTC 时钟使用一个 <strong>32.768kHz</strong> 的石英晶体振荡器来提供计时参考。这种晶振因为频率较低，功耗小，且稳定性高，适合长时间精确计时。</p>
+</li>
+<li><p><strong>备用电池</strong>：为了确保系统断电后，RTC 仍能继续保持正确的时间，通常会有一个小型纽扣电池为其供电。即使系统关闭或断电，RTC 依然可以正常工作。</p>
+</li>
+<li><p><strong>寄存器</strong>：RTC 中包含用于存储当前时间、日期、以及闹钟设定的寄存器。操作系统或嵌入式程序可以通过访问这些寄存器来获取或设置时间信息。</p>
+</li>
+</ul>
+<p><strong>RTC 与系统时钟的区别</strong></p>
+<ul>
+<li><p><strong>RTC（实时时钟）</strong>：RTC的主要任务是记录“实际时间”，即年、月、日、时、分、秒等。它不依赖系统的运行状态，即使在设备断电的情况下，它仍能通过备用电池继续运行。</p>
+</li>
+<li><p><strong>系统时钟</strong>：系统时钟（或CPU时钟）是提供处理器和系统运行时基的时钟信号。它的频率通常较高（以MHz或GHz为单位），主要用于协调系统中各个组件的工作。</p>
+</li>
+</ul>
+<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><p><strong>以 PCF8563 为例</strong></p>
+<p>PCF8563：PCF8563 是一款低功耗的 I2C RTC 时钟芯片，能够以 BCD 格式存储时间和日期信息，并具有时钟报警、时钟输出等功能。它具有低功耗、集成度高、工作稳定等特点，适用于需要长时间运行且功耗要求较低的应用场景。</p>
+<p>PCF8563 通过<strong>I2C总线</strong>与主控芯片（如微控制器）进行通信。</p>
+<p><strong>原理图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/RTCshizhongyuanlitu.png" alt="RTCshizhongyuanlitu"></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/I2Cyuanlitu.png" alt="I2Cyuanlitu"></p>
+<p>引脚说明：</p>
+<ol>
+<li>INT： 中断引脚。当触发到定时任务时，会触发引脚高低电平变化。</li>
+<li>SCL和SDA：为I2C通讯的两个引脚。用来保证MCU和RTC时钟芯片间进行通讯的。</li>
+</ol>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span>	<span class="string">&quot;STC8G_H_Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span>	<span class="string">&quot;STC8G_H_GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span>	<span class="string">&quot;STC8G_H_NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span>	<span class="string">&quot;STC8G_H_Switch.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span>	<span class="string">&quot;STC8G_H_I2C.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> 	<span class="string">&quot;STC8G_H_UART.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置 RTC_GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RTC_GPIO_Config</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    GPIO_InitTypeDef RTC_GPIO_init;</span><br><span class="line">	<span class="comment">//IO模式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">    RTC_GPIO_init.Mode = GPIO_OUT_OD;		</span><br><span class="line">    RTC_GPIO_init.Pin = GPIO_Pin_2 | GPIO_Pin_3; <span class="comment">//要设置的端口</span></span><br><span class="line">    GPIO_Inilize(GPIO_P3, &amp;RTC_GPIO_init);        </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UART_GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">UART_GPIO_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line"></span><br><span class="line">    GPIO_InitTypeDef UART_GPIO_init;</span><br><span class="line">	<span class="comment">//IO模式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">    UART_GPIO_init.Mode = GPIO_PullUp;		</span><br><span class="line">    UART_GPIO_init.Pin = GPIO_Pin_0 | GPIO_Pin_1; <span class="comment">//要设置的端口</span></span><br><span class="line">    GPIO_Inilize(GPIO_P3, &amp;UART_GPIO_init);        </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置 UART</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">UART_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    </span><br><span class="line">    COMx_InitDefine UART_Init;   </span><br><span class="line">    <span class="comment">//模式,UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx</span></span><br><span class="line">    UART_Init.UART_Mode = UART_8bit_BRTx;</span><br><span class="line">    <span class="comment">//使用波特率,   BRT_Timer1,BRT_Timer2,BRT_Timer3,BRT_Timer4</span></span><br><span class="line">    <span class="comment">//查看手册 UART 与 Timer 要对应起来</span></span><br><span class="line">	UART_Init.UART_BRT_Use = BRT_Timer1;		</span><br><span class="line">    <span class="comment">//波特率,一般 110 ~ 115200</span></span><br><span class="line">	UART_Init.UART_BaudRate = <span class="number">115200</span>;	</span><br><span class="line">    <span class="comment">//多机通讯允许, ENABLE,DISABLE</span></span><br><span class="line">	UART_Init.Morecommunicate = DISABLE;	</span><br><span class="line">    <span class="comment">//允许接收,ENABLE,DISABLE</span></span><br><span class="line">	UART_Init.UART_RxEnable = DISABLE;		</span><br><span class="line">    <span class="comment">//波特率加倍, ENABLE,DISABLE</span></span><br><span class="line">	UART_Init.BaudRateDouble = DISABLE;	</span><br><span class="line">    </span><br><span class="line">    UART_Configuration(UART1, &amp;UART_Init);</span><br><span class="line">    UART1_SW(UART1_SW_P30_P31);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置 I2C</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">I2C_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    I2C_InitTypeDef I2C_Init;</span><br><span class="line">    <span class="comment">//总线速度=Fosc/2/(Speed*2+4),0~63</span></span><br><span class="line">    I2C_Init.I2C_Speed;				</span><br><span class="line">    <span class="comment">//I2C功能使能,ENABLE, DISABLE</span></span><br><span class="line">	I2C_Init.I2C_Enable;				</span><br><span class="line">    <span class="comment">//主从模式选择,  I2C_Mode_Master,I2C_Mode_Slave</span></span><br><span class="line">	I2C_Init.I2C_Mode = I2C_Mode_Master;		</span><br><span class="line">    <span class="comment">//主机使能自动发送,  ENABLE, DISABLE</span></span><br><span class="line">	I2C_Init.I2C_MS_WDTA = DISABLE;				</span><br><span class="line"></span><br><span class="line">	<span class="comment">//u8	I2C_SL_ADR; //从机设备地址,  0~127</span></span><br><span class="line">	<span class="comment">//u8	I2C_SL_MA; //从机设备地址比较使能,  ENABLE, DISABLE</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p><strong>在 PCF8563芯片中，晶振频率为32.768kHz，但我们为什么可以选择 32.768kHz、1024kHz、32Hz、1Hz，他不是只有个 32.768kHz 的晶振么</strong></p>
+<p>在 <strong>PCF8563</strong> 实时时钟（RTC）芯片中，虽然它使用了<strong>32.768kHz</strong>的晶振作为基准频率，但通过内部的<strong>分频电路</strong>，可以将该基准频率分频为其他不同的频率输出，如<strong>1024Hz</strong>、<strong>32Hz</strong>、和<strong>1Hz</strong>。这意味着尽管晶振频率固定为32.768kHz，但通过硬件电路的分频机制，PCF8563芯片可以输出不同的时钟频率。</p>
+<p><strong>I2C 的总线到底如何配置</strong></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">1.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">问题</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&text=RTC时钟"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&is_video=false&description=RTC时钟"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=RTC时钟&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&title=RTC时钟"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&name=RTC时钟&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/&t=RTC时钟"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
