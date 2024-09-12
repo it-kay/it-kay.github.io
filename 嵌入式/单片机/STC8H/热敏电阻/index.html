@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/remdianzuyuanlitu.png">
 <meta property="article:published_time" content="2024-09-08T02:31:50.782Z">
-<meta property="article:modified_time" content="2024-09-10T07:00:06.689Z">
+<meta property="article:modified_time" content="2024-09-12T11:53:32.016Z">
 <meta property="article:author" content="kay">
 <meta property="article:tag" content="STC8H">
 <meta name="twitter:card" content="summary">
@@ -200,7 +200,7 @@
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p><strong>NTC.h 中的头尾是什么作用</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span>	__NTC_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>	__NTC_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 头文件的内容...</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<p>‌#ifndef在C语言中是“if not defined”的简写，属于宏定义的一种，用于条件编译。</p>
+<p>‌#ifndef 在 C 语言中是“if not defined”的简写，属于宏定义的一种，用于条件编译。</p>
 <ol>
 <li><code>#ifndef __NTC_H</code>：这是预处理指令 <code>#ifndef</code>（If Not Defined的缩写），用于检查宏 <code>__NTC_H</code> 是否尚未定义。如果 <code>__NTC_H</code> 没有被定义，那么编译器会执行 <code>#ifndef</code> 和紧接着的 <code>#endif</code> 之间的代码。这种机制用于确保头文件的内容只被包含一次。</li>
 <li><code>#define __NTC_H</code>：这行代码定义了宏 <code>__NTC_H</code>。一旦这个宏被定义，后续的 <code>#ifndef __NTC_H</code> 检查就会失败，因为 <code>__NTC_H</code> 已经被定义了。这防止了头文件内容的重复包含。</li>
