@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/I2Czhuchong.png">
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/I2Cyinjiao.png">
 <meta property="article:published_time" content="2024-09-11T09:43:00.000Z">
-<meta property="article:modified_time" content="2024-09-12T11:12:33.982Z">
+<meta property="article:modified_time" content="2024-09-15T11:50:47.085Z">
 <meta property="article:author" content="kay">
 <meta property="article:tag" content="STC8H">
 <meta name="twitter:card" content="summary">
@@ -99,6 +99,8 @@
     <span id="actions">
       <ul>
         
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E5%A4%96%E9%83%A8%E4%B8%AD%E6%96%AD/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
         
         <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/RTC%E6%97%B6%E9%92%9F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
@@ -130,7 +132,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#I2C-%E7%9A%84%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">I2C 的关键特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E6%8B%89%E7%94%B5%E9%98%BB"><span class="toc-number">1.0.1.</span> <span class="toc-text">上拉电阻</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E7%94%B5%E5%B9%B3"><span class="toc-number">1.0.2.</span> <span class="toc-text">信号电平</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9F%E5%BA%A6"><span class="toc-number">1.0.3.</span> <span class="toc-text">速度</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">开发流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">3.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I2C-%E7%9A%84%E8%AF%BB%E5%86%99"><span class="toc-number">3.1.</span> <span class="toc-text">I2C 的读写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#I2C-%E7%9A%84%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.1.</span> <span class="toc-text">I2C 的读取流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#I2C-%E7%9A%84%E5%86%99%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">I2C 的写入流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">问题</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#I2C-%E7%9A%84%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">I2C 的关键特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E6%8B%89%E7%94%B5%E9%98%BB"><span class="toc-number">1.0.1.</span> <span class="toc-text">上拉电阻</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E7%94%B5%E5%B9%B3"><span class="toc-number">1.0.2.</span> <span class="toc-text">信号电平</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9F%E5%BA%A6"><span class="toc-number">1.0.3.</span> <span class="toc-text">速度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I2C-%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">I2C 的实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text">硬件实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E6%A8%A1%E6%8B%9F%EF%BC%88Bit-Banging%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">软件模拟（Bit-Banging）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">开发流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">3.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I2C-%E7%9A%84%E8%AF%BB%E5%86%99"><span class="toc-number">3.1.</span> <span class="toc-text">I2C 的读写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#I2C-%E7%9A%84%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.1.</span> <span class="toc-text">I2C 的读取流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#I2C-%E7%9A%84%E5%86%99%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">I2C 的写入流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">问题</span></a></li></ol>
       </div>
     
   </span>
@@ -188,7 +190,7 @@
 <p>可以将I2C总线比作一条双车道的公路，其中两条车道协同工作，互不干扰，使得交通更加高效。</p>
 </blockquote>
 <h2 id="I2C-的关键特性"><a href="#I2C-的关键特性" class="headerlink" title="I2C 的关键特性"></a>I2C 的关键特性</h2><ol>
-<li><p><strong>主从结构</strong>：I2C 是一种<strong>主从通信协议</strong>，其中<strong>主设备（Master）</strong>负责控制总线，启动和停止数据传输，管理时钟信号，而<strong>从设备（Slave）</strong>则<strong>被动响应</strong>主设备的请求。通常只有一个主设备，也支持多个主设备共存的架构。</p>
+<li><p><strong>主从结构</strong>：I2C是一种<strong>主从通信协议</strong>，其中<strong>主设备（Master）</strong>负责控制总线，启动和停止数据传输，管理时钟信号，而<strong>从设备（Slave）</strong>则<strong>被动响应</strong>主设备的请求。通常只有一个主设备，也支持多个主设备共存的架构。</p>
 </li>
 <li><p><strong>双线设计</strong>：I2C协议使用两条主要的信号线：</p>
 <ul>
@@ -242,12 +244,48 @@
 </ul>
 <p>此外，I2C 总线还支持更高速度的高速模式（High Speed Mode）和超高速模式（Ultra-Fast Mode），它们的时钟频率分别为 1MHz 和 5MHz。这些高速模式通常用于一些需要非常高速数据传输的应用场景。</p>
 <p>需要注意的是，总线的速度不仅受时钟频率的影响，还受到总线长度、电容负载、上拉电阻大小等因素的影响。因此，在实际应用中，需要根据具体情况来确定总线的速度以确保数据传输的稳定性和可靠性。</p>
+<h3 id="I2C-的实现方式"><a href="#I2C-的实现方式" class="headerlink" title="I2C 的实现方式"></a>I2C 的实现方式</h3><p>I2C 通信可以通过两种主要方式实现：<strong>硬件实现</strong>和<strong>软件模拟</strong>。</p>
+<h4 id="硬件实现"><a href="#硬件实现" class="headerlink" title="硬件实现"></a>硬件实现</h4><p>硬件实现指的是使用微控制器（MCU）或其他芯片<strong>内置的 I2C 硬件模块</strong>来进行通信。这种方式利用了专门设计的电路来管理I2C通信的所有细节，如时钟同步、地址识别和数据传输。</p>
+<p><strong>优点</strong></p>
+<ol>
+<li><strong>效率高</strong>：硬件处理所有通信细节，无需软件干预，减少了 CPU 的负担。</li>
+<li><strong>实时性强</strong>：通信快速且时序准确，不会受到软件处理速度的影响。</li>
+<li><strong>简化编程</strong>：大多数硬件 I2C 模块提供简单的接口用于发送和接收数据，无需编写复杂的控制代码。</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li><strong>灵活性较低</strong>：硬件实现通常固定支持一定的速率和模式，难以适应特殊的通信需求。</li>
+<li><strong>硬件依赖</strong>：只能在支持硬件 I2C 模块的芯片上使用。</li>
+</ol>
+<p><strong>注意点</strong></p>
+<ul>
+<li><strong>正确配置</strong>：确保正确设置 I2C 模块的时钟频率、从设备地址等参数。</li>
+<li><strong>错误处理</strong>：编写代码时要考虑如何处理通信错误，如未应答、总线冲突等。</li>
+<li><strong>电气特性</strong>：确保外围电路符合 I2C 的电气标准，例如上拉电阻的选择。</li>
+</ul>
+<h4 id="软件模拟（Bit-Banging）"><a href="#软件模拟（Bit-Banging）" class="headerlink" title="软件模拟（Bit-Banging）"></a>软件模拟（Bit-Banging）</h4><p>软件模拟，也称为Bit-Banging，是指通过软件<strong>控制普通的I&#x2F;O端口来模拟I2C通信</strong>。这种方式不依赖于硬件I2C模块，更加灵活。</p>
+<p><strong>优点</strong></p>
+<ol>
+<li><strong>灵活性高</strong>：可以在任何具有GPIO功能的微控制器上实现。</li>
+<li><strong>自定义能力强</strong>：可以根据需求自定义通信速率、时序等参数。</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li><strong>占用CPU资源</strong>：所有的通信过程都需要CPU来手动控制，可能影响程序的其他部分。</li>
+<li><strong>实时性差</strong>：通信质量和速度受CPU处理能力和当前任务负载的影响。</li>
+</ol>
+<p><strong>注意点</strong></p>
+<ul>
+<li><strong>精确时序</strong>：软件模拟需要精确控制时序，特别是在高速通信时。</li>
+<li><strong>中断管理</strong>：需要处理可能在通信过程中发生的中断，确保数据的完整性。</li>
+<li><strong>跨平台兼容性</strong>：在不同的硬件平台上，相同的软件模拟代码可能需要调整以适应特定的时钟和性能特性。</li>
+</ul>
 <h2 id="开发流程"><a href="#开发流程" class="headerlink" title="开发流程"></a>开发流程</h2><p>在开发中使用I2C协议进行通信的流程可以分为以下几个步骤：</p>
 <p><strong>硬件连接</strong></p>
 <p><strong>选择主设备和从设备地址</strong></p>
 <p><strong>软件的初始化</strong></p>
 <p><strong>I2C 库函数 &#x2F; 寄存器</strong></p>
-<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><p>STC8H 系列的单片机内部集成了一个 I1C 串行总线控制器。I2C 是一种高速同步通讯总线，通讯使用  SCL (时钟线)和 SDA (数据线)两线进行同步通讯。</p>
+<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><p>STC8H 系列的单片机内部集成了一个 <strong>I2C 串行总线控制器</strong>。I2C 是一种高速同步通讯总线，通讯使用  SCL (时钟线)和 SDA (数据线)两线进行同步通讯。</p>
 <p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/I2Cyinjiao.png" alt="I2Cyinjiao"></p>
 <blockquote>
 <p>在 STC8H 中 I2C 的控制器位于特殊寄存器地址范围内，所以访问使用时需要开启特殊寄存器允许使能</p>
@@ -284,15 +322,87 @@
 <h4 id="I2C-的写入流程"><a href="#I2C-的写入流程" class="headerlink" title="I2C 的写入流程"></a>I2C 的写入流程</h4><p>写入流程与读取流程类似~</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//========================================================================</span></span><br><span class="line"><span class="comment">// 函数: void I2C_WriteNbyte(u8 dev_addr, u8 mem_addr, u8 *p, u8 number)</span></span><br><span class="line"><span class="comment">// 描述: I2C写入数据函数.</span></span><br><span class="line"><span class="comment">// 参数: dev_addr: 设备地址, mem_addr: 存储地址, *p写入数据存储位置, number写入数据个数.</span></span><br><span class="line"><span class="comment">// 返回: none.</span></span><br><span class="line"><span class="comment">// 版本: V1.0, 2020-09-15</span></span><br><span class="line"><span class="comment">//========================================================================</span></span><br><span class="line"><span class="comment">/*  DeviceAddress,WordAddress,First Data Address,Byte lenth   */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">I2C_WriteNbyte</span><span class="params">(u8 dev_addr, u8 mem_addr, u8 *p, u8 number)</span>  </span><br><span class="line">&#123;</span><br><span class="line">	Start();                                <span class="comment">//发送起始命令</span></span><br><span class="line">	SendData(dev_addr);                     <span class="comment">//发送设备地址+写命令</span></span><br><span class="line">	RecvACK();</span><br><span class="line">	SendData(mem_addr);                     <span class="comment">//发送存储地址</span></span><br><span class="line">	RecvACK();</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">	&#123;</span><br><span class="line">		SendData(*p++);</span><br><span class="line">		RecvACK();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(--number);</span><br><span class="line">	Stop();                                 <span class="comment">//发送停止命令</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p><strong>I2C 是个通信协议，那为啥还有什么 I2C 的串行控制总线控制器呢，我不理解的地方在于，协议直接遵守实用就好了，为什么还需要配个控制器?</strong></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一、<strong>I2C 是个通信协议，那为啥还有什么 I2C 的串行控制总线控制器呢，我不理解的地方在于，协议直接遵守实用就好了，为什么还需要配个控制器?</strong></p>
 <ul>
 <li><p><strong>I2C协议</strong>：是一个<strong>通信协议</strong>，定义了设备间如何通过两条线（SDA 数据线，SCL 时钟线）进行数据交换。这个协议规定了设备如何开始通信、发送数据、确认数据接收、结束通信等细节。</p>
 </li>
 <li><p><strong>I2C控制器</strong>：是<strong>硬件上的实现</strong>，用于帮助微控制器（MCU）或处理器遵守 I2C 协议进行通信。I2C 控制器负责处理协议中的细节，比如生成时钟信号、发送和接收数据、处理起始条件、停止条件、应答信号等。</p>
 </li>
 </ul>
-<p>为什么需要 I2C 控制器?</p>
+<p>二、<strong>为什么需要 I2C 控制器?</strong></p>
 <p>虽然 I2C 协议是一个标准，但协议本身只是一套规则，实际通信的实现需要底层的硬件电路来处理时序、信号生成、数据传输等任务。如果没有 I2C 控制器，微控制器将需要通过软件代码逐位操作引脚，手动处理所有协议细节。这是非常复杂且低效的。</p>
+<p>三、<strong>在使用时，如何知道是传入写地址为设备从地址，还是传入读地址作为设备从地址？</strong></p>
+<p>在 I2C 通信中，当要求传入从设备地址时，通常只需要传入 7 位的 <strong>从设备地址</strong>，即不需要区分读地址和写地址，传入的是设备的基础地址。</p>
+<p>当然在一些微控制器中，比如 STC8H，它内部的 I2C 寄存器不自动处理 7 位地址和 R&#x2F;W 位，所以需要手动提供完整的 8 位地址；这时候就需要去查看<strong>数据手册</strong>、或者示例代码、又或者是具体的实现方式，查看他具体传输的是哪一个(当然一般在有 I2C 寄存器的芯片中，传输的从设备地址都是写地址)。</p>
+<p>四、<strong>什么是开漏模式</strong></p>
+<p><strong>开漏（open-drain）</strong> 指设备内部<strong>只能通过拉低引脚来输出低电平，而不能主动输出高电平(也就是说将引脚置 1 时，它是通过上拉电阻输出高电平的)。引脚的高电平由外部的上拉电阻提供</strong>，当设备不拉低引脚时，电压通过上拉电阻升高到逻辑高电平。</p>
+<p>五、<strong>默认情况下（因为有上拉电阻），数据线不是一直是1么，他是一直向从设备传输1么？</strong></p>
+<p>在 I2C 通信中，虽然数据线 <strong>SDA</strong> 和时钟线 <strong>SCL</strong> 默认情况下通过上拉电阻处于高电平（<strong>1</strong>），但这并不意味着总线在默认状态下一直传输 <strong>1</strong>。实际上，I2C 通信的关键在于时钟线 <strong>SCL</strong> 的配合，数据传输只在时钟有效时发生。下面是更详细的解释：</p>
+<ol>
+<li><strong>默认高电平的含义</strong></li>
+</ol>
+<ul>
+<li><p><strong>SDA 和 SCL</strong> 默认处于高电平状态是为了表示 <strong>总线空闲</strong>。高电平表示当前没有通信正在进行。</p>
+</li>
+<li><p>高电平是因为没有设备主动拉低 SDA 或 SCL，这只是表示线路空闲，并不是传输 <strong>1</strong>。</p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>通信开始（起始条件）</strong></li>
+</ol>
+<p>​	通信的开始由 <strong>主设备</strong> 发送<strong>起始条件</strong>来触发，起始条件的定义是：</p>
+<ul>
+<li><strong>SCL 处于高电平</strong> 时，主设备将 <strong>SDA</strong> 由 <strong>高电平拉低到低电平</strong>，这标志着通信的开始。</li>
+<li>在此之后，主设备会根据时钟信号 <strong>SCL</strong> 控制 SDA 的电平，开始发送数据位。</li>
+</ul>
+<ol start="3">
+<li><strong>数据传输的机制</strong></li>
+</ol>
+<p>​	数据的传输发生在 <strong>SCL 时钟信号的高电平周期</strong>，这时候 <strong>SDA</strong> 线上传输的是有效数据。</p>
+<ul>
+<li><strong>发送 0</strong>：主设备或从设备会主动拉低 <strong>SDA</strong> 线。</li>
+<li><strong>发送 1</strong>：设备不会拉低 <strong>SDA</strong> 线，SDA 保持由上拉电阻提供的高电平。</li>
+</ul>
+<p>​	只有在 <strong>SCL 高电平</strong> 时，SDA 上的电平才会被解读为有效数据（<strong>0 或 1</strong>）。如果 SCL 处于低电平，SDA 的变化不被视为数据。</p>
+<ol start="4">
+<li><strong>数据线高电平不代表传输 1</strong></li>
+</ol>
+<ul>
+<li><p><strong>SDA 默认高电平</strong> 并不意味着设备在传输 <strong>1</strong>。I²C 通信遵循特定的时序，只有在 <strong>SCL 高电平期间</strong> 读取 SDA 的状态，才能确定传输的是 <strong>0</strong> 还是 <strong>1</strong>。</p>
+</li>
+<li><p>当 <strong>总线空闲</strong>（即没有通信）时，SDA 和 SCL 线都保持高电平。但通信没有开始，所以没有传输任何有效数据。</p>
+</li>
+</ul>
+<p>当 I²C 总线空闲时，<strong>SDA 和 SCL</strong> 都是高电平，这表示 <strong>没有通信正在进行</strong>，而不是在传输 <strong>1</strong>。</p>
+<p><strong>数据传输</strong> 只会在通信启动（即发送起始条件）后，根据 <strong>SCL 时钟线的高低电平周期</strong>，在 SDA 线上传输有效数据位（0 或 1）。</p>
+<p><strong>默认高电平</strong> 只是空闲状态，数据的传输取决于时钟信号的配合和 SDA 线的实际电平状态。</p>
+<p>因此，虽然 SDA 线在空闲时是高电平，但它不会一直向从设备传输 <strong>1</strong>，只有在配合时钟信号的情况下，才会通过 SDA 传输有效的 <strong>0 或 1</strong>。</p>
+<p>六、<strong>在下面这函数中我将最后的 OLED_SCL_Clr(); &#x2F;&#x2F; 拉低 SCL 去掉可以么，有什么影响？，为什么每个循环结束都要拉低 SCL</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 写入一个字节</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Send_Byte</span><span class="params">(u8 dat)</span> &#123;</span><br><span class="line">	u8 i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++) &#123;</span><br><span class="line">		OLED_SCL_Clr();<span class="comment">// 将时钟信号设置为低电平</span></span><br><span class="line">		<span class="keyword">if</span>(dat&amp;<span class="number">0x80</span>) &#123; <span class="comment">// 将 dat 的 8 位从最高位依次写入</span></span><br><span class="line">			OLED_SDA_Set(); <span class="comment">// 将数据信号设置为高电平</span></span><br><span class="line">    &#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			OLED_SDA_Clr(); <span class="comment">// 将数据信号设置为低电平</span></span><br><span class="line">    &#125;</span><br><span class="line">		IIC_delay();</span><br><span class="line">		OLED_SCL_Set(); <span class="comment">// 将时钟信号设置为高电平，写入数据信号</span></span><br><span class="line">		IIC_delay();</span><br><span class="line">		OLED_SCL_Clr(); <span class="comment">// 将时钟信号设置为低电平</span></span><br><span class="line">		dat&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你将最后的 <code>OLED_SCL_Clr();</code>（拉低 SCL）去掉，会导致 <strong>I2C 时钟线 SCL</strong> 一直处于 <strong>高电平</strong>，这会对整个 I2C 通信产生不良影响。</p>
+<p>在 <strong>I2C 协议</strong> 中，SCL 的高低电平交替用于同步数据传输。如果你不在传输完一个位之后将 <strong>SCL 拉低</strong>，SCL 就会一直保持在 <strong>高电平</strong>。</p>
+<p>当 <strong>SCL 一直保持高电平</strong> 时，会导致以下两个主要问题：</p>
+<ol>
+<li><p><strong>时钟信号被认为未结束</strong></p>
+<ul>
+<li><p>I2C 的通信是基于 <strong>SCL 的上升沿和下降沿</strong> 来控制数据传输和同步的。</p>
+</li>
+<li><p>每一位数据传输后，<strong>SCL 必须回到低电平</strong> 才能标志着该位传输完成。</p>
+</li>
+<li><p>如果没有拉低 SCL，下一个数据位的传输将无法开始，通信也可能陷入死锁或混乱状态。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>I2C 从设备无法正确同步数据</strong></p>
+<ul>
+<li><strong>从设备</strong> 在每次 <strong>SCL 下降沿</strong> 后才准备好接收下一位数据。如果 SCL 没有被拉低，从设备可能会认为当前数据还在传输，无法同步到下一个时钟周期。</li>
+</ul>
+</li>
+</ol>
+<p>尽管在循环开始时已经拉低了 SCL，但是 <strong>在每次数据位传输后（也就是循环的结尾），需要再次拉低 SCL</strong>，确保时钟周期完整，并为下一个数据位的传输做准备。</p>
+<p><strong>SCL 需要周期性地升高和降低</strong>，形成时钟信号，这样 I2C 通信才能正常进行。</p>
+<p>七、<strong>SCL 的时钟是如何产生的</strong></p>
 
   </div>
 </article>
@@ -324,7 +434,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#I2C-%E7%9A%84%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">I2C 的关键特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E6%8B%89%E7%94%B5%E9%98%BB"><span class="toc-number">1.0.1.</span> <span class="toc-text">上拉电阻</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E7%94%B5%E5%B9%B3"><span class="toc-number">1.0.2.</span> <span class="toc-text">信号电平</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9F%E5%BA%A6"><span class="toc-number">1.0.3.</span> <span class="toc-text">速度</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">开发流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">3.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I2C-%E7%9A%84%E8%AF%BB%E5%86%99"><span class="toc-number">3.1.</span> <span class="toc-text">I2C 的读写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#I2C-%E7%9A%84%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.1.</span> <span class="toc-text">I2C 的读取流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#I2C-%E7%9A%84%E5%86%99%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">I2C 的写入流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">问题</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#I2C-%E7%9A%84%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">I2C 的关键特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E6%8B%89%E7%94%B5%E9%98%BB"><span class="toc-number">1.0.1.</span> <span class="toc-text">上拉电阻</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E7%94%B5%E5%B9%B3"><span class="toc-number">1.0.2.</span> <span class="toc-text">信号电平</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9F%E5%BA%A6"><span class="toc-number">1.0.3.</span> <span class="toc-text">速度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I2C-%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">I2C 的实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text">硬件实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E6%A8%A1%E6%8B%9F%EF%BC%88Bit-Banging%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">软件模拟（Bit-Banging）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">开发流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">3.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I2C-%E7%9A%84%E8%AF%BB%E5%86%99"><span class="toc-number">3.1.</span> <span class="toc-text">I2C 的读写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#I2C-%E7%9A%84%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.1.</span> <span class="toc-text">I2C 的读取流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#I2C-%E7%9A%84%E5%86%99%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">I2C 的写入流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">问题</span></a></li></ol>
       </div>
     
 
