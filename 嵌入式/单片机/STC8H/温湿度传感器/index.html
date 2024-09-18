@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="在嵌入式开发中，温湿度传感器是一类用于测量环境温度和湿度的设备，广泛应用于气候监测、家用电器、物联网（IoT）设备、工业自动化等领域。它们能够感知环境中的温度和湿度变化，并将这些信息以电信号（0 和 1）的形式传递给微控制器（MCU）或处理单元。 温湿度传感器的工作原理温湿度传感器通常将温度和湿度这两个参数集成在一个传感器芯片上，它们的工作原理如下： 温度传感器部分 温度测量常使用热敏电阻、热电偶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="温湿度传感器">
+<meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="在嵌入式开发中，温湿度传感器是一类用于测量环境温度和湿度的设备，广泛应用于气候监测、家用电器、物联网（IoT）设备、工业自动化等领域。它们能够感知环境中的温度和湿度变化，并将这些信息以电信号（0 和 1）的形式传递给微控制器（MCU）或处理单元。 温湿度传感器的工作原理温湿度传感器通常将温度和湿度这两个参数集成在一个传感器芯片上，它们的工作原理如下： 温度传感器部分 温度测量常使用热敏电阻、热电偶">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shixucanshu.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shjushixu.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11geshishuom.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shili.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11yinjiao.png">
+<meta property="article:published_time" content="2024-09-18T00:47:00.000Z">
+<meta property="article:modified_time" content="2024-09-18T12:31:25.228Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="STC8H">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shixucanshu.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>温湿度传感器</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E7%9F%A9%E9%98%B5%E9%94%AE%E7%9B%98/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/GPIO/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&text=温湿度传感器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&is_video=false&description=温湿度传感器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=温湿度传感器&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&name=温湿度传感器&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&t=温湿度传感器"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">温湿度传感器的工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%A9%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E9%83%A8%E5%88%86"><span class="toc-number">1.1.</span> <span class="toc-text">温度传感器部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E9%83%A8%E5%88%86"><span class="toc-number">1.2.</span> <span class="toc-text">湿度传感器部分</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E7%A7%8D%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">常见的温湿度传感器种类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DHT-%E7%B3%BB%E5%88%97%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="toc-number">2.1.</span> <span class="toc-text">DHT 系列传感器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SHT-%E7%B3%BB%E5%88%97%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">SHT 系列传感器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AM2302%EF%BC%88DHT22-%E7%9A%84%E6%94%B9%E8%BF%9B%E7%89%88%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">AM2302（DHT22 的改进版）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DHT11"><span class="toc-number">3.</span> <span class="toc-text">DHT11</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number"></span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">实现</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        温湿度传感器
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-18T00:47:00.000Z" class="dt-published" itemprop="datePublished">2024-09-18</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/STC8H/" rel="tag">STC8H</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>在嵌入式开发中，<strong>温湿度传感器</strong>是一类用于测量环境<strong>温度</strong>和<strong>湿度</strong>的<strong>设备</strong>，广泛应用于气候监测、家用电器、物联网（IoT）设备、工业自动化等领域。它们能够感知环境中的温度和湿度变化，并将这些信息以<strong>电信号</strong>（0 和 1）的形式传递给微控制器（MCU）或处理单元。</p>
+<h3 id="温湿度传感器的工作原理"><a href="#温湿度传感器的工作原理" class="headerlink" title="温湿度传感器的工作原理"></a><strong>温湿度传感器的工作原理</strong></h3><p>温湿度传感器通常将温度和湿度这两个参数集成在一个<strong>传感器芯片</strong>上，它们的工作原理如下：</p>
+<h4 id="温度传感器部分"><a href="#温度传感器部分" class="headerlink" title="温度传感器部分"></a>温度传感器部分</h4><ul>
+<li>温度测量常使用热敏电阻、热电偶、或半导体温度传感器来感知温度。<ul>
+<li><strong>热敏电阻</strong>：通过材料电阻值随温度变化而变化的特性来测量温度。</li>
+<li><strong>半导体温度传感器</strong>：基于 PN 结的电压特性，随着温度变化产生可测量的电压变化。</li>
+<li><strong>热电偶</strong>：由两种不同金属连接形成，当温度变化时产生电势差。</li>
+</ul>
+</li>
+</ul>
+<h4 id="湿度传感器部分"><a href="#湿度传感器部分" class="headerlink" title="湿度传感器部分"></a>湿度传感器部分</h4><ul>
+<li>湿度测量一般通过电容式湿度传感器或电阻式湿度传感器来完成。<ul>
+<li><strong>电容式湿度传感器</strong>：由一层吸湿性介质组成，介质吸收空气中的水分导致电容变化，从而测量湿度。</li>
+<li><strong>电阻式湿度传感器</strong>：感湿材料的电阻随空气湿度变化而变化，电阻值的变化反映空气中的湿度。</li>
+</ul>
+</li>
+</ul>
+<h3 id="常见的温湿度传感器种类"><a href="#常见的温湿度传感器种类" class="headerlink" title="常见的温湿度传感器种类"></a><strong>常见的温湿度传感器种类</strong></h3><p>嵌入式开发中，使用最广泛的温湿度传感器主要有以下几类：</p>
+<h4 id="DHT-系列传感器"><a href="#DHT-系列传感器" class="headerlink" title="DHT 系列传感器"></a><strong>DHT 系列传感器</strong></h4><ul>
+<li>DHT11 和 DHT22 是常见的低成本温湿度传感器，具有数字输出，易于与微控制器连接。<ul>
+<li><strong>DHT11</strong>：精度较低，温度测量范围为 0<del>50℃，湿度测量范围为 20%</del>90%RH（相对湿度）。</li>
+<li><strong>DHT22</strong>：精度较高，温度测量范围为 -40<del>80℃，湿度测量范围为 0%</del>100%RH。</li>
+<li><strong>通信方式</strong>：单总线协议，通常用一根数据线来传输温度和湿度数据，简单易用。</li>
+</ul>
+</li>
+</ul>
+<h4 id="SHT-系列传感器"><a href="#SHT-系列传感器" class="headerlink" title="SHT 系列传感器"></a><strong>SHT 系列传感器</strong></h4><ul>
+<li>SHT3x、SHT4x 系列是 Sensirion 公司生产的高精度温湿度传感器，广泛用于工业和高精度应用。<ul>
+<li><strong>精度</strong>：温度测量精度高达 ±0.1℃，湿度测量精度 ±1.5%RH。</li>
+<li><strong>通信方式</strong>：采用 I2C 或 SPI 接口，数据传输速度快，适合对精度要求较高的应用。</li>
+</ul>
+</li>
+</ul>
+<h4 id="AM2302（DHT22-的改进版）"><a href="#AM2302（DHT22-的改进版）" class="headerlink" title="AM2302（DHT22 的改进版）"></a><strong>AM2302（DHT22 的改进版）</strong></h4><ul>
+<li>与 DHT22 类似，AM2302 是精度更高的温湿度传感器。<ul>
+<li><strong>温度测量范围</strong>：-40~80℃。</li>
+<li><strong>湿度测量范围</strong>：0~100%RH。</li>
+</ul>
+</li>
+</ul>
+<h3 id="DHT11"><a href="#DHT11" class="headerlink" title="DHT11"></a>DHT11</h3><p><strong>DHT11</strong> 是一种常用的低成本<strong>温湿度传感器</strong>，广泛用于简单的环境监测应用。它可以<strong>同时测量环境的温度和湿度</strong>，并通过<strong>单线数字接口</strong>与微控制器通信，易于使用。</p>
+<p><strong>温度测量：</strong>DHT11 使用一个 <strong>NTC 热敏电阻</strong>作为温度感应器，感知周围环境的温度变化。热敏电阻的电阻值会随着温度变化而变化，传感器内部将此电阻变化转换为温度数据。</p>
+<p><strong>湿度测量：</strong>DHT11 使用<strong>电容式湿度传感器</strong>来检测湿度。传感器内有一个吸湿性聚合物层，这一层的电容会随着空气中水分含量（湿度）的变化而变化。传感器通过测量这一电容变化来计算空气湿度。</p>
+<p><strong>通信协议</strong></p>
+<p>DHT11 使用<strong>单线数字通信协议</strong>来与微控制器通信，这意味着它只需<strong>一个数据线即可传输温湿度数据</strong>。通信流程通常如下：</p>
+<ol>
+<li><p><strong>初始化</strong>：微控制器向传感器发送一个低电平启动信号（至少 18ms），然后释放数据线。</p>
+</li>
+<li><p><strong>响应信号</strong>：DHT11 传感器发送一个响应信号，告诉微控制器它已经准备好数据。</p>
+</li>
+<li><p>数据传输</p>
+<p>：DHT11 以位（bit）的形式将温度和湿度数据传给微控制器。数据传输分为两个部分：</p>
+<ul>
+<li><strong>湿度数据</strong>（16 位）：包含湿度的整数和小数部分。</li>
+<li><strong>温度数据</strong>（16 位）：包含温度的整数和小数部分。</li>
+</ul>
+</li>
+<li><p><strong>校验位</strong>：最后传感器发送一个 8 位的校验码，用于确认数据是否传输正确。</p>
+</li>
+</ol>
+<p><strong>DHT11 温湿度传感器的通信时序参数</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shixucanshu.png" alt="DHT11shixucanshu"></p>
+<p><strong>数据时序图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shjushixu.png" alt="DHT11shjushixu"></p>
+<p><strong>信息格式说明</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11geshishuom.png" alt="DHT11geshishuom"></p>
+<p><strong>接收到的 40 位数据示例</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shili.png" alt="DHT11shili"></p>
+<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><p>使用 DHT11 模块</p>
+<p><strong>引脚图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11yinjiao.png" alt="DHT11yinjiao"></p>
+<blockquote>
+<p>NG 通常表示<strong>没有接地</strong>或<strong>没有连接</strong>。在具体电路中，建议结合设计者的注释或相关文档进一步确认它的确切含义。</p>
+</blockquote>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DHT11.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> __DHT11_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __DHT11_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_GPIO.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">typedef</span> &#123;</span></span><br><span class="line">    <span class="type">float</span> humidity;    <span class="comment">// 湿度</span></span><br><span class="line">    <span class="type">float</span> temperature; <span class="comment">// 温度</span></span><br><span class="line">    u8 is_ok;		   <span class="comment">// 校验位：0 数据异常，1 数据正确</span></span><br><span class="line">    </span><br><span class="line">&#125;DHT11_TRH;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">DHT11_Init</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">DHT11_GetTRH</span><span class="params">()</span>;</span><br><span class="line">===============================================================================</span><br><span class="line"><span class="comment">// DHT11.c    </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;DHT11.h&quot;</span> </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DHT11 P46 <span class="comment">// 温湿度传感器数据引脚    </span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HIGH 1    <span class="comment">// 高电平</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LOW 0    <span class="comment">// 低电平</span></span></span><br><span class="line">    </span><br><span class="line"><span class="comment">// 计算从设备输出的高低电平是否正确 </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> calc_time(HIGH, min, max, ErrMsg); count = 0;								\</span></span><br><span class="line"><span class="meta">                                            do &#123;									\				</span></span><br><span class="line">                                                count++;							\</span><br><span class="line">                                                NOP16();<span class="comment">// 不同设备可能时间不同 		 \ </span></span><br><span class="line">                                            &#125; <span class="keyword">while</span>(DHT11 == HIGH);					\</span><br><span class="line">                                            <span class="keyword">if</span>(count &lt; main || count &gt; max) &#123;		\</span><br><span class="line">                                                <span class="built_in">printf</span>(<span class="string">&quot;%s: %d\n&quot;</span>, ErrMsg, count);	\</span><br><span class="line">                                                <span class="keyword">return</span> trh;							\</span><br><span class="line">                                            &#125;</span><br><span class="line">    </span><br><span class="line"><span class="type">void</span> <span class="title function_">Delay20ms</span><span class="params">(<span class="type">void</span>)</span> &#123; <span class="comment">// @24.000MHz</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> data i, j, k;</span><br><span class="line">    </span><br><span class="line">    _nop_();</span><br><span class="line">    i = <span class="number">3</span>;</span><br><span class="line">    j = <span class="number">112</span>;</span><br><span class="line">    k = <span class="number">91</span>;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">while</span>(--k);</span><br><span class="line">        &#125; <span class="keyword">while</span>(--j);</span><br><span class="line">        </span><br><span class="line">    &#125; <span class="keyword">while</span>(--i);  </span><br><span class="line">&#125;    </span><br><span class="line">      </span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DHT11_Config</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    GPIO_InitTypeDef GPIO_DHT11_Init;</span><br><span class="line">    GPIO_DHT11_Init.Mode = GPIO_PullUp; <span class="comment">//IO模式, GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP</span></span><br><span class="line">	GPIO_DHT11_Init.Pin = GPIO_Pin_6;   <span class="comment">//要设置的端口</span></span><br><span class="line">    </span><br><span class="line">    GPIO_Inilize(GPIO_P4, &amp;GPIO_DHT11_Init);</span><br><span class="line">&#125;    </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">DHT11_Init</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    GPIO_DHT11_Config();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DHT11_TRH <span class="title function_">DhT11_GetTRH</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    DHT11_TRH trh;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    u8 dat[<span class="number">5</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    trh.is_ok = <span class="number">0</span>; <span class="comment">// 默认数据不准确</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 主机起始信号拉低时间</span></span><br><span class="line">    DHT11 = <span class="number">0</span>;</span><br><span class="line">    Delay20ms();</span><br><span class="line">    DHT11 = <span class="number">1</span>; <span class="comment">// 拉高后 10~35us 内温湿度传感觉会进行相应；</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 主机释放总线时间,高电平持续 10~35 us</span></span><br><span class="line">    calc_time(HIGH, <span class="number">10</span>, <span class="number">35</span>, <span class="string">&quot;主机释放时间有误&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 响应低电平时间，低电平持续时间 78~88 us</span></span><br><span class="line">    calc_time(LOW, <span class="number">78</span>, <span class="number">88</span>, <span class="string">&quot;响应低电平时间有误&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 响应高电平时间，高电平持续 80~92 us</span></span><br><span class="line">    calc_time(HIGH, <span class="number">80</span>, <span class="number">92</span>, <span class="string">&quot;响应高电平时间有无&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 开始接收数据并校验是否正确（40 位）</span></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123; <span class="comment">// 五个字节</span></span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">7</span>; j &gt;= <span class="number">0</span>; j--) &#123; <span class="comment">// 每个字节八位</span></span><br><span class="line">            <span class="comment">// 判断低电平是否有误</span></span><br><span class="line">            calc_time(LOW, <span class="number">50</span>, <span class="number">58</span>, <span class="string">&quot;信号 0|1 低电平时间有误&quot;</span>);</span><br><span class="line">            <span class="comment">// 判断高电平是否有误</span></span><br><span class="line">            calc_time(LOW, <span class="number">23</span>, <span class="number">74</span>, <span class="string">&quot;信号 0|1 低电平时间有误&quot;</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(count &gt; <span class="number">48</span>) &#123; <span class="comment">// 48 是 0|1 高电平的中间值</span></span><br><span class="line">                <span class="comment">// 数组默认为 0，所以这里只需要根据位置修改为 1 即可</span></span><br><span class="line">                dat[i] |= <span class="number">1</span> &lt;&lt; j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="comment">// 校验数据是否正确</span></span><br><span class="line">    <span class="keyword">if</span>(dat[<span class="number">4</span>] == dat[<span class="number">0</span>] + dat[<span class="number">1</span>] + dat[<span class="number">2</span>] + dat[<span class="number">3</span>]) &#123;</span><br><span class="line">        trh.is_ok = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 组装温湿度</span></span><br><span class="line">       trh.humidity = dat[<span class="number">0</span>] + dat[<span class="number">1</span>] * <span class="number">0.1</span>;</span><br><span class="line">       <span class="comment">// 温度小数位的最高位为标志位不参与运算 </span></span><br><span class="line">       trh.humidity = dat[<span class="number">2</span>] + (dat[<span class="number">3</span>] &amp; <span class="number">0x7F</span>) * <span class="number">0.1</span>; </span><br><span class="line">        </span><br><span class="line">       <span class="keyword">if</span>(dat[<span class="number">3</span>] &amp; <span class="number">0x80</span>) &#123;</span><br><span class="line">           trh.humidity = -trh.humidity;</span><br><span class="line">       &#125; </span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> trh;</span><br><span class="line">&#125;                           </span><br><span class="line">===========================================================================</span><br><span class="line"><span class="comment">//main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Switch.h&quot;</span>  </span></span><br><span class="line"><span class="meta">#inculude <span class="string">&quot;STC8G_H_Delay.h&quot;</span>   </span></span><br><span class="line"><span class="meta">#inculude <span class="string">&quot;STC8G_H_UART.h&quot;</span>  </span></span><br><span class="line"><span class="meta">#inculude <span class="string">&quot;DHTll.h.h&quot;</span>   </span></span><br><span class="line">    </span><br><span class="line"><span class="type">void</span> UART_Config(<span class="type">void</span>) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;    </span><br><span class="line"> </span><br><span class="line"><span class="type">void</span> main() &#123;</span><br><span class="line">    DHT11_TRH DHT11_trh;</span><br><span class="line">      </span><br><span class="line">    EA = <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    DHT11_Init();</span><br><span class="line">    UART_Config();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        trh = DHT11_GetTRH();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(trh.is_ok) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;温度：%.2f\n&quot;</span>, trh.temperature);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;湿度：%.2f\n&quot;</span>, trh.humidity);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;数据有误，请重新获取~&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        </span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">        delay_ms(<span class="number">250</span>);</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">温湿度传感器的工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%A9%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E9%83%A8%E5%88%86"><span class="toc-number">1.1.</span> <span class="toc-text">温度传感器部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E9%83%A8%E5%88%86"><span class="toc-number">1.2.</span> <span class="toc-text">湿度传感器部分</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E7%A7%8D%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">常见的温湿度传感器种类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DHT-%E7%B3%BB%E5%88%97%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="toc-number">2.1.</span> <span class="toc-text">DHT 系列传感器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SHT-%E7%B3%BB%E5%88%97%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">SHT 系列传感器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AM2302%EF%BC%88DHT22-%E7%9A%84%E6%94%B9%E8%BF%9B%E7%89%88%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">AM2302（DHT22 的改进版）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DHT11"><span class="toc-number">3.</span> <span class="toc-text">DHT11</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number"></span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">实现</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&text=温湿度传感器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&is_video=false&description=温湿度传感器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=温湿度传感器&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&title=温湿度传感器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&name=温湿度传感器&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E6%B8%A9%E6%B9%BF%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/&t=温湿度传感器"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
