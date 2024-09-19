@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="HID（Human Interface Device）协议是一种用于连接人机交互设备（如键盘、鼠标、游戏控制器等）到计算机或其他主机设备的通信协议。它是 USB（通用串行总线）设备的一部分，专门用于处理和管理人机交互设备的数据传输。 HID 协议概述 HID 协议最初是为 USB 而设计的，但随着技术的发展，它也被应用在其他通信方式上，例如 蓝牙。HID 设备以一种标准化的方式报告其数据，使得主机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HID协议">
+<meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="HID（Human Interface Device）协议是一种用于连接人机交互设备（如键盘、鼠标、游戏控制器等）到计算机或其他主机设备的通信协议。它是 USB（通用串行总线）设备的一部分，专门用于处理和管理人机交互设备的数据传输。 HID 协议概述 HID 协议最初是为 USB 而设计的，但随着技术的发展，它也被应用在其他通信方式上，例如 蓝牙。HID 设备以一种标准化的方式报告其数据，使得主机">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/HIDtongxinliucheng.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/HIDshili.png">
+<meta property="article:published_time" content="2024-09-19T03:31:00.000Z">
+<meta property="article:modified_time" content="2024-09-19T12:43:37.911Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="STC8H">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/HIDtongxinliucheng.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HID协议</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/EEPROM%E8%AF%BB%E5%86%99/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E7%9F%A9%E9%98%B5%E9%94%AE%E7%9B%98/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&text=HID协议"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&is_video=false&description=HID协议"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HID协议&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&name=HID协议&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&t=HID协议"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">1.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.</span> <span class="toc-text">问题</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HID协议
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-19T03:31:00.000Z" class="dt-published" itemprop="datePublished">2024-09-19</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/STC8H/" rel="tag">STC8H</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>HID（Human Interface Device）协议是一种用于<strong>连接人机交互设备（如键盘、鼠标、游戏控制器等）到计算机</strong>或其他主机设备的通信协议。它是 <strong>USB（通用串行总线）设备的一部分</strong>，专门用于<strong>处理和管理人机交互设备的数据传输</strong>。</p>
+<p><strong>HID 协议概述</strong></p>
+<p>HID 协议最初是为 USB 而设计的，但随着技术的发展，它也被应用在其他通信方式上，例如 <strong>蓝牙</strong>。HID 设备以一种标准化的方式报告其数据，使得主机可以理解设备的输入和输出，无需依赖具体的硬件驱动。HID 的典型设备包括：</p>
+<ul>
+<li>键盘、鼠标、触控板、游戏手柄、条码扫描仪、远程控制设备</li>
+</ul>
+<p><strong>HID 设备的工作原理</strong></p>
+<p>HID 协议定义了<strong>如何描述设备的功能</strong>以及<strong>如何传输数据</strong>。通过使用 HID 协议，<strong>设备和主机之间可以在无需特定驱动程序的情况下通信</strong>。</p>
+<p>HID 设备通过 <strong>描述符（Descriptor）</strong> 向主机传达其自身信息。描述符是一个<strong>数据结构</strong>（例如数组），详细说明了设备的输入&#x2F;输出功能、设备的类型、报告格式等。主机通过解析描述符，可以知道如何与设备交互和处理其数据。</p>
+<p><strong>通信流程</strong></p>
+<p>USB HID通讯时序可以大致分为以下几个步骤：</p>
+<ol>
+<li>设备连接和初始化：设备被插入USB端口后，会进行初始化和配置，包括分配USB地址和设置通信端点等。</li>
+<li>主机发送设备描述符：主机会向设备发送请求，要求设备提供自己的描述符信息，包括设备类型、厂商信息、设备功能等。</li>
+<li>设备响应描述符请求：设备接收到主机的请求后，会根据请求提供相应的设备描述符信息，包括设备类型、厂商信息、设备功能等。</li>
+<li>主机发送配置描述符：主机会向设备发送请求，要求设备提供自己的配置描述符信息，包括端点数量、数据传输速率、电源需求等。</li>
+<li>设备响应配置描述符请求：设备接收到主机的请求后，会根据请求提供相应的配置描述符信息，包括端点数量、数据传输速率、电源需求等。</li>
+<li>主机发送数据：主机会向设备发送数据包，数据包中包含了控制信息和数据内容。</li>
+<li>设备接收和处理数据：设备接收到主机发送的数据包后，会进行处理和响应，包括识别控制信息和处理数据内容。</li>
+<li>设备发送数据：设备会向主机发送数据包，数据包中包含了控制信息和数据内容。</li>
+<li>主机接收和处理数据：主机接收到设备发送的数据包后，会进行处理和响应，包括识别控制信息和处理数据内容。</li>
+<li>完成通讯：通讯完成后，设备和主机会进行断开连接和资源释放等操作。</li>
+</ol>
+<p>需要注意的是，USB HID通讯过程中的具体时序和流程可能会因为具体的应用场景和设备而有所不同，上述步骤仅供参考。</p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/HIDtongxinliucheng.png" alt="HIDtongxinliucheng"></p>
+<p><strong>通信方式：中断传输</strong></p>
+<p><strong>中断传输（Interrupt Transfer）</strong> 是 HID 协议中的核心通信方式。主机会定期轮询 HID 设备，询问其是否有新的输入数据。这种传输方式确保主机能够及时接收到输入数据（例如鼠标移动、按键输入等）。</p>
+<p>当有数据变化时，设备通过中断传输将输入报告发送给主机，主机根据报告内容执行相应的操作，如在屏幕上移动鼠标光标、显示键盘输入的字符等。</p>
+<blockquote>
+<p>也就是说，当我通过单片机按键输入 Q 之后必须也要判断按键弹起不然他就会一直输出 Q</p>
+</blockquote>
+<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><p><strong>学习官方 USB HID 范例</strong></p>
+<ol>
+<li><p>下载<a target="_blank" rel="noopener" href="https://www.stcaimcu.com/forum.php?mod=attachment&aid=ODg3Mnw1NTVmMzc3NXwxNzEzNDMzODM4fDF8MTUyNQ==">8H试验箱</a>中的代码（60-HID(Human Interface Device)协议范例）使用其中的示例编译并烧录到开发板中；</p>
+</li>
+<li><p>将开发板的开关拨动到 HID</p>
+</li>
+<li><p>打开”设置“ -&gt; 搜索”蓝牙和其他设备设置“并点击 -&gt; 查看 ”输入“中的设备</p>
+</li>
+</ol>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/HIDshili.png" alt="HIDshili"></p>
+<blockquote>
+<p>如果提示 ”其他设备“ USB-SERIAL CH340(COM3) 则说明没有将开关拨动到 HID</p>
+<p>如果按照上述步骤执行，但是不显示”STC UST Keyboard“则可能需要多烧录几次（重复1、2、3步骤）</p>
+</blockquote>
+<p>官方示例的作用，就是帮助我们构建了一个HID设备，将设备注册到了PC机中。</p>
+<p><strong>文件说明</strong></p>
+<ul>
+<li>usb.c 和 usb.h：  USB入口文件，提供USB所有功能，设备信息，配置信息，通讯过程等</li>
+<li>usb_req_std.c 和 usb_req_std.h：设备信息和配置信息通讯过程中的逻辑实现。</li>
+<li>usb_req_class.c 和 usb_req_class.h：通讯过程中的逻辑实现</li>
+<li>usb_vendor.c 和 usb_vendor.h：初始化配置逻辑</li>
+<li>usb_desc.c 和 usb_desc.h: 协议描述信息，内部是协议的常量信息。</li>
+</ul>
+<p><strong>修改 PC 端的显示</strong></p>
+<p>修改 usb_desc.c 中间的内容即可：</p>
+<ol>
+<li>MANUFACTDESC 制造商信息。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原代码</span></span><br><span class="line"><span class="type">char</span> code MANUFACTDESC[<span class="number">8</span>] =</span><br><span class="line">&#123;</span><br><span class="line">    <span class="number">0x08</span>,<span class="number">0x03</span>,</span><br><span class="line">    <span class="string">&#x27;S&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;T&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;C&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line">===================================</span><br><span class="line"><span class="comment">// 修改后代码</span></span><br><span class="line"><span class="type">char</span> code MANUFACTDESC[<span class="number">18</span>] =</span><br><span class="line">&#123;</span><br><span class="line">    <span class="number">0x12</span>,<span class="number">0x03</span>,</span><br><span class="line">    <span class="string">&#x27;T&#x27;</span>,<span class="number">0</span>, <span class="comment">// &#x27;T&#x27; 的 Unicode 表示：0x0054</span></span><br><span class="line">    <span class="string">&#x27;O&#x27;</span>,<span class="number">0</span>, <span class="comment">// &#x27;O&#x27; 的 Unicode 表示：0x004F</span></span><br><span class="line">    <span class="string">&#x27;O&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;U&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;P&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;P&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;E&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;R&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;    </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>0x12</code> 和 <code>0x03</code> 是用于 USB 描述符中的两个特定字节，</p>
+<p><code>0x12</code> 是 <strong>18（十进制）</strong>，表示该字符串描述符的总长度为 <strong>18 字节</strong>。字符串描述符的第一个字节通常用来表示整个描述符的长度，包括描述符本身的所有数据。</p>
+<p><code>0x03</code> 是 USB 标准中定义的 <strong>描述符类型代码</strong>，表示这是一个 <strong>字符串描述符（String Descriptor）</strong>。</p>
+</blockquote>
+<p>在上面的代码中要注意除了<strong>字符串描述类型代码</strong>之外要按照<strong>小端序</strong>，即<strong>低位在前，高位在后</strong>。</p>
+<p>小端序是指<strong>低字节存储在低地址</strong>，高字节存储在高地址。在多字节数据类型（例如 16 位、32 位、64 位）中，小端序总是将数值的<strong>最低有效字节（LSB, Least Significant Byte）</strong>存储在最前面的地址位置，而<strong>最高有效字节（MSB, Most Significant Byte）</strong>放在最后的地址。（以 ‘T’ 为例在 0x0054 中，54 存储在数组中的低位也就是下标为 2 的位置，00 存储在数组的高位也就是下标为 3 的位置）</p>
+<ol start="2">
+<li>PRODUCTDESC 产品信息。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原来的</span></span><br><span class="line"><span class="type">char</span> code PRODUCTDESC[<span class="number">26</span>] =</span><br><span class="line">&#123;</span><br><span class="line">    <span class="number">0x1a</span>,<span class="number">0x03</span>,</span><br><span class="line">    <span class="string">&#x27;S&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;T&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;C&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27; &#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;H&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;I&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;D&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27; &#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;D&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;e&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;m&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;o&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">&#125;;</span><br><span class="line">=============================================</span><br><span class="line"><span class="comment">// 修改后</span></span><br><span class="line"><span class="type">char</span> code PRODUCTDESC[<span class="number">34</span>] =</span><br><span class="line">&#123;</span><br><span class="line">    <span class="number">0x22</span>,<span class="number">0x03</span>,</span><br><span class="line">    <span class="string">&#x27;S&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;Z&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27; &#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;I&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;t&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;h&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;e&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;i&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;m&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;a&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27; &#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="number">0x2e</span>, <span class="number">0x95</span>, <span class="number">0xd8</span>, <span class="number">0x76</span>,  <span class="comment">//\u952e \u76d8 键盘</span></span><br><span class="line">	<span class="string">&#x27;4&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;1&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="string">&#x27;3&#x27;</span>,<span class="number">0</span>,</span><br><span class="line">&#125;;    </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>修改后长度发生变化，长度由第一个字符描述决定。</p>
+<p>需要同时修改头文件长度配置信息</p>
+<p>如果是中文，需要把中文转化为ASCII码格式（<a target="_blank" rel="noopener" href="https://www.ip138.com/ascii/">ASCII在线转换</a>），写入其中</p>
+<p>例如：</p>
+<ul>
+<li><code>今晚打母驴</code>对应ASCII码：<code>\u4eca\u665a\u6253\u6bcd\u9a74</code></li>
+<li>汉字低位在前，添加<code>今</code>为：<code>0xca</code>, <code>0x4e</code></li>
+</ul>
+</blockquote>
+<p><strong>兼容库函数</strong></p>
+<p>由于提供的官方示例中，<code>stc.h</code> <code>STC8H.h</code> <code>config.h</code>，这些文件和我们需要用到的库函数，在变量定义或者是文件命名上，存在重名等冲突，需要进行修改。</p>
+<p>将 STC8H 删掉用我们自己的，config.h 中有用到的不能删，就改个名字，stc.h 中有重复定义的删掉就行；</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Soft_UART.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8G_H_Switch.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MAtrixKey.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stc.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usb.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usb_req_class.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;timer.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">URAT_Config</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    COMx_InitDefine COMx_InitStructure;					</span><br><span class="line">    COMx_InitStructure.UART_Mode = UART_8bit_BRTx;	</span><br><span class="line">    COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;			</span><br><span class="line">    COMx_InitStructure.UART_BaudRate  = <span class="number">115200ul</span>;			</span><br><span class="line">    COMx_InitStructure.UART_RxEnable  = ENABLE;				</span><br><span class="line">    COMx_InitStructure.BaudRateDouble = DISABLE;			</span><br><span class="line">    UART_Configuration(UART1, &amp;COMx_InitStructure);	</span><br><span class="line"></span><br><span class="line">  	NVIC_UART1_Init(ENABLE,Priority_1);	</span><br><span class="line">    UART1_SW(UART1_SW_P30_P31);		</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">kay_down</span><span class="params">(u8 row, u8 col)</span> &#123;</span><br><span class="line">    u8 dat[<span class="number">8</span>] = &#123;<span class="number">0</span>&#125;; </span><br><span class="line">    dat[<span class="number">2</span>] = <span class="number">0x14</span> <span class="comment">// Q</span></span><br><span class="line">    usb_class_in(dat);    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">kay_up</span><span class="params">(u8 row, u8 col)</span> &#123;</span><br><span class="line">    u8 dat[<span class="number">8</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    usb_class_in(dat);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    P_SW2 |= <span class="number">0x80</span>;  <span class="comment">//扩展寄存器(XFR)访问使能</span></span><br><span class="line"></span><br><span class="line">    EA = <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    usb_init();</span><br><span class="line">    URAT_Config();</span><br><span class="line">	MK_Init();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        MK_Scan(kay_down, kay_up);</span><br><span class="line">        delay_ms(<span class="number">20</span>);</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br><span class="line">===================================================</span><br><span class="line"><span class="type">char</span> code CONFIGDESC[<span class="number">41</span>] =</span><br><span class="line">&#123;</span><br><span class="line">    <span class="number">0x07</span>,                   <span class="comment">//bLength(7);</span></span><br><span class="line">    <span class="number">0x05</span>,                   <span class="comment">//bDescriptorType(Endpoint);</span></span><br><span class="line">    <span class="number">0x81</span>,                   <span class="comment">//bEndpointAddress(EndPoint1 as IN);</span></span><br><span class="line">    <span class="number">0x03</span>,                   <span class="comment">//bmAttributes(Interrupt);</span></span><br><span class="line">    <span class="number">0x08</span>,<span class="number">0x00</span>,              <span class="comment">//wMaxPacketSize(8);	// 设备向主机传输最大不能超过 8 个字节</span></span><br><span class="line">    <span class="number">0x0a</span>,                   <span class="comment">//bInterval(10ms);</span></span><br><span class="line"></span><br><span class="line">    <span class="number">0x07</span>,                   <span class="comment">//bLength(7);</span></span><br><span class="line">    <span class="number">0x05</span>,                   <span class="comment">//bDescriptorType(Endpoint);</span></span><br><span class="line">    <span class="number">0x01</span>,                   <span class="comment">//bEndpointAddress(EndPoint1 as OUT);</span></span><br><span class="line">    <span class="number">0x03</span>,                   <span class="comment">//bmAttributes(Interrupt);</span></span><br><span class="line">    <span class="number">0x01</span>,<span class="number">0x00</span>,              <span class="comment">//wMaxPacketSize(1); // 设备接收主机传输最大不能超过 1 个字节</span></span><br><span class="line">    <span class="number">0x0a</span>,                   <span class="comment">//bInterval(10ms);</span></span><br><span class="line">    </span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>一、<strong>既然 通信方式为中断传输 那为什么我在单片机中写代码时要将语句放入 while(1) 循环中呢？</strong></p>
+<p>虽然 HID 协议使用的是 <strong>中断传输</strong>，但在嵌入式系统中，通常还是需要将相关处理代码放在循环中。这是因为中断传输并不意味着单片机会自动处理所有的通信细节，尤其是在嵌入式开发中。具体原因如下：</p>
+<ol>
+<li><strong>中断传输与轮询机制的区别</strong></li>
+</ol>
+<ul>
+<li><strong>中断传输</strong> 是一种 <strong>USB 通信方式</strong>，它表示<strong>主机</strong>会定期轮询 HID 设备，询问设备是否有新的数据。这是主机端的行为，即在 <strong>USB 层面</strong>，主机会定时查询设备，确保数据能及时获取。</li>
+<li>然而，在嵌入式系统（如单片机）中，代码逻辑仍需要主动处理数据的接收、发送和状态检查，这通常通过循环来实现。</li>
+</ul>
+<blockquote>
+<p>在 USB 或 HID 协议中，中断传输指的是 <strong>主机周期性地轮询设备</strong>，检查设备是否有数据需要传输。</p>
+</blockquote>
+<ol start="2">
+<li><strong>单片机代码中的循环</strong></li>
+</ol>
+<ul>
+<li><strong>实时响应与轮询</strong>：单片机的代码中，放入循环的目的是为了轮询设备的状态。例如，单片机在等待新数据或判断是否有新的中断信号产生时，需要在循环中反复检查某些状态寄存器或标志位。这样，当有数据到达或状态变化时，代码可以及时做出反应。</li>
+<li><strong>中断并不是自动执行</strong>：中断传输并不意味着所有的数据传输都是自动完成的。中断传输指的是 USB 主机会定期轮询设备，但单片机仍然需要执行具体的处理代码，例如读写数据、处理中断信号等，这些都需要在主循环中完成。</li>
+</ul>
+<p>虽然 HID 协议使用中断传输方式，主机（如 PC）会定期轮询 HID 设备，但在嵌入式开发中，单片机的程序仍然需要通过循环来实现持续的任务调度、轮询状态和处理数据。循环确保代码可以实时检查设备的状态，及时响应中断请求。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">1.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.</span> <span class="toc-text">问题</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&text=HID协议"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&is_video=false&description=HID协议"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HID协议&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&title=HID协议"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&name=HID协议&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID%E5%8D%8F%E8%AE%AE/&t=HID协议"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

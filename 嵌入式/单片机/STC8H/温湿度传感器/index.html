@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shili.png">
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11yinjiao.png">
 <meta property="article:published_time" content="2024-09-18T00:47:00.000Z">
-<meta property="article:modified_time" content="2024-09-18T12:31:25.228Z">
+<meta property="article:modified_time" content="2024-09-19T00:28:32.431Z">
 <meta property="article:author" content="kay">
 <meta property="article:tag" content="STC8H">
 <meta name="twitter:card" content="summary">
@@ -231,19 +231,21 @@
 <p><strong>通信协议</strong></p>
 <p>DHT11 使用<strong>单线数字通信协议</strong>来与微控制器通信，这意味着它只需<strong>一个数据线即可传输温湿度数据</strong>。通信流程通常如下：</p>
 <ol>
-<li><p><strong>初始化</strong>：微控制器向传感器发送一个低电平启动信号（至少 18ms），然后释放数据线。</p>
+<li><p><strong>初始化</strong>：微控制器向传感器发送一个低电平启动信号（至少 18ms），然后释放数据线（至少 10us）。</p>
 </li>
-<li><p><strong>响应信号</strong>：DHT11 传感器发送一个响应信号，告诉微控制器它已经准备好数据。</p>
+<li><p><strong>响应信号</strong>：DHT11 传感器发送一个响应信号（响应低高电平，低电平至少 78us，高电平至少 80us），告诉微控制器它已经准备好数据。</p>
 </li>
-<li><p>数据传输</p>
-<p>：DHT11 以位（bit）的形式将温度和湿度数据传给微控制器。数据传输分为两个部分：</p>
+<li><p><strong>数据传输</strong>：DHT11 以位（bit）的形式将温度和湿度数据（共 40 位）传给微控制器。数据传输分为两个部分：</p>
+</li>
+</ol>
 <ul>
-<li><strong>湿度数据</strong>（16 位）：包含湿度的整数和小数部分。</li>
+<li><strong>湿度数据</strong>（16 位）：包含湿度的整数和小数部分。<ul>
 <li><strong>温度数据</strong>（16 位）：包含温度的整数和小数部分。</li>
 </ul>
 </li>
-<li><p><strong>校验位</strong>：最后传感器发送一个 8 位的校验码，用于确认数据是否传输正确。</p>
-</li>
+</ul>
+<ol start="4">
+<li><strong>校验位</strong>：最后传感器发送一个 8 位的校验码，用于确认数据是否传输正确。</li>
 </ol>
 <p><strong>DHT11 温湿度传感器的通信时序参数</strong></p>
 <p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/DHT11shixucanshu.png" alt="DHT11shixucanshu"></p>
