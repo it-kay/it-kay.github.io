@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="C 语言的编译器是将 C 源代码 转换为 机器可执行代码 的工具。编译器通过几个阶段的处理，把人类可读的高级编程语言代码（如 C 语言）转换为计算机可以直接理解和运行的机器代码。常见的 C 语言编译器有 GCC、Clang、MSVC 等。 一个 C 语言编译器包括：预处理器、编译器、汇编器、链接器等，几个子模块。 编译过程C 编译器的主要功能和工作流程：  预处理（Preprocessing）：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C编译和链接过程">
+<meta property="og:url" content="https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="C 语言的编译器是将 C 源代码 转换为 机器可执行代码 的工具。编译器通过几个阶段的处理，把人类可读的高级编程语言代码（如 C 语言）转换为计算机可以直接理解和运行的机器代码。常见的 C 语言编译器有 GCC、Clang、MSVC 等。 一个 C 语言编译器包括：预处理器、编译器、汇编器、链接器等，几个子模块。 编译过程C 编译器的主要功能和工作流程：  预处理（Preprocessing）：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Clianjieqi.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/lianjieguoc.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Cjintailianjie.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Cdongtailianjie.png">
+<meta property="article:published_time" content="2024-09-20T05:30:00.000Z">
+<meta property="article:modified_time" content="2024-09-20T11:35:06.732Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="C语言进阶">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Clianjieqi.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>C编译和链接过程</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/EEPROM%E8%AF%BB%E5%86%99/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&text=C编译和链接过程"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&is_video=false&description=C编译和链接过程"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C编译和链接过程&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&name=C编译和链接过程&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&t=C编译和链接过程"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">编译过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">链接过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.1.</span> <span class="toc-text">静态链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.2.</span> <span class="toc-text">动态链接</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        C编译和链接过程
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-20T05:30:00.000Z" class="dt-published" itemprop="datePublished">2024-09-20</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/" rel="tag">C语言进阶</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>C 语言的编译器是将 <strong>C 源代码</strong> 转换为 <strong>机器可执行代码</strong> 的工具。编译器通过几个阶段的处理，把人类可读的高级编程语言代码（如 C 语言）转换为计算机可以直接理解和运行的机器代码。常见的 C 语言编译器有 <strong>GCC</strong>、<strong>Clang</strong>、<strong>MSVC</strong> 等。</p>
+<p>一个 C 语言编译器包括：预处理器、编译器、汇编器、链接器等，几个子模块。</p>
+<h2 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h2><p><strong>C 编译器的主要功能和工作流程：</strong></p>
+<ol>
+<li><strong>预处理（Preprocessing）</strong>：</li>
+</ol>
+<ul>
+<li><p>处理所有的注释，以空格代替</p>
+</li>
+<li><p>将所有的 #define 删除，并且展开所有的宏定义</p>
+</li>
+<li><p>处理条件编译指令 #if、#ifdef、#elif、#else、#endif</p>
+</li>
+<li><p>处理 #include，展开被包含的文件</p>
+</li>
+<li><p>保留编译器需要使用的 #pragma 指令</p>
+<p>预处理指令示例：gcc -E file.c -o file.i</p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>编译（Compilation）</strong>：</li>
+</ol>
+<ul>
+<li><p>对预处理文件进行<strong>词法分析</strong>、<strong>语法分析</strong>和<strong>语义分析</strong></p>
+<ul>
+<li>词法分析：分析关键字、标识符、立即数等是否合法</li>
+<li>语法分析：分析表达式是否遵循语法规则</li>
+<li>语义分析：在语法分析的基础上进一步分析表达式是否合法</li>
+</ul>
+</li>
+<li><p>分析结束后进行<strong>代码优化生成相应的汇编代码文件</strong></p>
+<p>编译指令示例：gcc -S file.i -o file.s</p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>汇编（Assembly）</strong>：</li>
+</ol>
+<ul>
+<li><p>汇编器将汇编代码代码转为 <strong>机器指令</strong>（即目标代码，通常是 <code>.obj</code> 或 <code>.o</code> 文件）。</p>
+</li>
+<li><p>每条汇编语句几乎都对应一条机器指令</p>
+<p>汇编指令示例：gcc -c file.s -o file.o</p>
+</li>
+</ul>
+<ol start="4">
+<li><strong>链接（Linking）</strong>：</li>
+</ol>
+<ul>
+<li>链接器负责将不同的目标文件（包括库文件、外部依赖）合并到一起，生成最终的可执行文件（如 <code>.exe</code> 或 <code>.out</code> 文件）。</li>
+<li>链接器还会处理符号解析，确保函数和变量在整个程序中正确引用。</li>
+</ul>
+<p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Clianjieqi.png" alt="Clianjieqi"></p>
+<h2 id="链接过程"><a href="#链接过程" class="headerlink" title="链接过程"></a>链接过程</h2><p>连接器的主要作用是把各个模块之间相互引|用的部分处理好,使得各个模块之间能够正确的衔接。</p>
+<p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/lianjieguoc.png" alt="lianjieguoc"></p>
+<p><strong>链接器的两种工作模式</strong></p>
+<h3 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a><strong>静态链接</strong></h3><p>将所有的库代码和目标文件合并到最终的可执行文件中。</p>
+<p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Cjintailianjie.png" alt="Cjintailianjie"></p>
+<p>a.out 可以单独运行，不依赖外部库；运行时无需动态加载库，启动速度快。</p>
+<p><strong>Linux 下静态库的创建和使用</strong></p>
+<ul>
+<li>编译静态库源码：gcc -c lib.c -o lib.o</li>
+<li>生成静态库文件：ar -q lib.a lib.o<ul>
+<li>（ar 是个打包命令会将后面列出来的的所有文件打包进 lib.a 中）</li>
+</ul>
+</li>
+<li>使用静态库编译：gcc main.c lib.a -o main.out<ul>
+<li>此时生成的 main.out 程序可以单独运行，即使你将 main.c、lib.a、lib.c、lib.o这些源文件全部删掉也没有影响。</li>
+</ul>
+</li>
+</ul>
+<h3 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a><strong>动态链接</strong></h3><ul>
+<li>只在生成可执行文件时记录库的位置，在程序运行时由系统加载动态库（如 <code>.dll</code> 文件或 <code>.so</code> 文件）。</li>
+<li>可执行<strong>程序在运行时</strong>才动态加载库进行链接</li>
+<li>库的内容不会进行到可执行文件中</li>
+</ul>
+<p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Cdongtailianjie.png" alt="Cdongtailianjie"></p>
+<p>连接器在最后链接时候不会将 lib1.so、lib2.so 直接打包进 a.out，他只知道可执行程序在执行时需要查找的库在什么位置。</p>
+<p>stub1、stub2 就是 liib1.so、lib2.so 分别暴露出来告诉编译器他可以使用的内容只有 stub1、stub2；</p>
+<blockquote>
+<p>库的更新可能导致不兼容问题（即 “DLL Hell”）。</p>
+</blockquote>
+<p><strong>Linux 下动态链接的创建和使用</strong></p>
+<ul>
+<li>编译动态库源码：gcc -shared dlib.c -o dlib.so</li>
+<li>使用动态库编译：gcc main.c -ldl -o main.out</li>
+<li>关键系统调用<ul>
+<li>dlopen：打开动态库文件</li>
+<li>dlsym：查找动态库中的函数并返回调用地址</li>
+<li>dlclose：关闭动态库文件</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">编译过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">链接过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.1.</span> <span class="toc-text">静态链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.2.</span> <span class="toc-text">动态链接</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&text=C编译和链接过程"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&is_video=false&description=C编译和链接过程"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C编译和链接过程&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&title=C编译和链接过程"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&name=C编译和链接过程&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/&t=C编译和链接过程"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

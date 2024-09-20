@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="宏定义  #define 是预处理器处理的单元实体之一 #define 定义的宏可以出现在程序的任意位置 #define 定义之后的代码都可使用这个宏    #开头的表示他是预处理处理的单元实体之一  宏常量  #define 定义的宏常量可以直接使用 #define 定义的宏常量本质为字面量   字面量意味着他不占用任何的内存 #define 并不会占用内存，它只是在编译前做了一个文本替换，不涉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="宏">
+<meta property="og:url" content="https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="宏定义  #define 是预处理器处理的单元实体之一 #define 定义的宏可以出现在程序的任意位置 #define 定义之后的代码都可使用这个宏    #开头的表示他是预处理处理的单元实体之一  宏常量  #define 定义的宏常量可以直接使用 #define 定义的宏常量本质为字面量   字面量意味着他不占用任何的内存 #define 并不会占用内存，它只是在编译前做了一个文本替换，不涉">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20240920210642075.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Clianjieqi.png">
+<meta property="article:published_time" content="2024-09-20T11:31:00.000Z">
+<meta property="article:modified_time" content="2024-09-20T13:27:20.192Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="C语言进阶">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20240920210642075.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>宏</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/C%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5%E8%BF%87%E7%A8%8B/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&text=宏"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&is_video=false&description=宏"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=宏&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&name=宏&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&t=宏"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="toc-number">1.</span> <span class="toc-text">条件编译</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        宏
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-20T11:31:00.000Z" class="dt-published" itemprop="datePublished">2024-09-20</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/" rel="tag">C语言进阶</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>宏定义</strong></p>
+<ul>
+<li>#define 是<strong>预处理器</strong>处理的单元实体之一</li>
+<li>#define 定义的宏可以出现在程序的<strong>任意位置</strong></li>
+<li>#define 定义之后的代码都可使用这个宏</li>
+</ul>
+<blockquote>
+<p> #开头的表示他是预处理处理的单元实体之一</p>
+</blockquote>
+<p><strong>宏常量</strong></p>
+<ul>
+<li>#define 定义的宏常量可以直接使用</li>
+<li>#define 定义的宏常量本质为<strong>字面量</strong></li>
+</ul>
+<blockquote>
+<p>字面量意味着他不占用任何的内存</p>
+<p><strong><code>#define</code> 并不会占用内存</strong>，它只是在编译前做了一个文本替换，不涉及任何存储或运行时的内存分配。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ERROR -1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PATH1 <span class="string">&quot;D:\test\test.c&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PATH2 D:\test\test.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PATH3 D:\test\			<span class="comment">// 类似 D:testtest.c</span></span></span><br><span class="line">					test.c</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对于预处理器而言，这四个宏定义都是正确的，因为他不会进行语法检查;</p>
+<p>对于预处理来说虽然正确，但是替换后的代码是不符合 C 语言语法规范的，因此编译器肯定会报错的（PATH2、PATH3）</p>
+</blockquote>
+<p><strong>宏定义表达式</strong></p>
+<ul>
+<li>#define 表达式的使用<strong>类似</strong>函数调用</li>
+<li>#define 表达式可以<strong>比函数更强大</strong></li>
+<li>#define 表达式<strong>比函数更容易出错</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stcio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _SUM_(a, b) (a) + (b)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _MIN_(a, b) ((a), (b)? (a) : (b))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _DIM_(a) sizeof(a) / sizeof(*a)</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">    iint b = <span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> c[<span class="number">4</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> s1 = _SUM_(a, b);</span><br><span class="line">    <span class="type">int</span> s2 = _SUM_(a, b) * _SUM_(a, b);</span><br><span class="line">    <span class="type">int</span> m = _MIN_(a++, b);</span><br><span class="line">    <span class="type">int</span> d = _DIM_(c);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;s1 = %d\n&quot;</span>, s1); <span class="comment">// s1 = 3</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;s2 = %d\n&quot;</span>, s2); <span class="comment">// s2 = 5	(a) + (b) * (a) + (b)</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;m = %d\n&quot;</span>, m); <span class="comment">// m = 2	 ((a++) &lt; (b)? (a++) : (b));</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;d = %d\n&quot;</span>, d); <span class="comment">// d = 4</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p><strong>宏表达式与函数的对比</strong></p>
+<ul>
+<li><p>宏表达式被<strong>预处理器</strong>处理，编译器不知道宏表达式的存在（编译器阶段已经被预处理器替换掉了）</p>
+</li>
+<li><p>宏表达式用”实参“完全代替形参，<strong>不进行任何运算</strong></p>
+</li>
+<li><p>宏表达式**没有任何的”调用“开销</p>
+</li>
+<li><p>宏表达式中<strong>不能出现递归定义</strong></p>
+<p><strong>宏没有作用域的概念或者说限制，因为编译器根本不知道宏的存在</strong></p>
+</li>
+</ul>
+<p><strong>内置宏</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_FILE_: 被编译的文件名</span><br><span class="line">_LINE_: 当前行号</span><br><span class="line">_DATE_: 编译时的日期</span><br><span class="line">_TIME_: 编译时的时间</span><br><span class="line">_STDC_: 编译器是否遵循标准 C 规范</span><br></pre></td></tr></table></figure>
+
+<h4 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h4><p>同一份代码产生不同的产品</p>
+<ul>
+<li>条件编译的行为<strong>类似</strong>于 C 语言中的 if…else…</li>
+<li>条件编译是预编译指令命令，用于控制<strong>是否编译</strong>某段代码</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> C 1</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">if</span>(C == 1)</span></span><br><span class="line">    	<span class="built_in">printf</span>(<span class="string">&quot;This is first printf...\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    	<span class="built_in">printf</span>(<span class="string">&quot;This is second printf...\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>#if…#else… 是用来给预编译器执行的 </p>
+</blockquote>
+<p><strong>条件编译的本质</strong></p>
+<ul>
+<li><strong>预编译器</strong>根据<strong>条件编译指令</strong>有选择的<strong>删除代码</strong></li>
+<li>编译器<strong>不知道</strong>代码分支的存在</li>
+<li><strong>if…else…<strong>语句在</strong>运行期进行分支判断</strong></li>
+<li>条件编译指令在<strong>预编译期进行分支判断</strong></li>
+<li>可以通过<strong>命令行定义宏</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -Dmacro=value file.c <span class="comment">// -D 表示宏定义，等价于 #define macro value</span></span><br><span class="line">		   或</span><br><span class="line">gcc -Dmacro file.c  </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">ifdef</span> C	<span class="comment">// 检测后面这个宏是否存在，存在就执行后面的代码 This is first printf...</span></span></span><br><span class="line">    	<span class="built_in">printf</span>(<span class="string">&quot;This is first printf...\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    	<span class="built_in">printf</span>(<span class="string">&quot;This is second printf...\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>#include的本质</strong></p>
+<ul>
+<li>#include 的本质是将已经存在的文件内容嵌入到当前文件中</li>
+<li>#include 的间接包含，同样会产生嵌入文件内容的操作</li>
+</ul>
+<p><img src="C:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20240920210642075.png" alt="image-20240920210642075"> </p>
+<blockquote>
+<p>包含同样的 #include 可能会产生重复定义的问题，在编译期会导致报错</p>
+<p>使用 #ifdef 可以解决这样的问题</p>
+</blockquote>
+<p><img src="/public/image/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/Clianjieqi.png" alt="Clianjieqi"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="toc-number">1.</span> <span class="toc-text">条件编译</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&text=宏"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&is_video=false&description=宏"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=宏&body=Check out this article: https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&title=宏"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&name=宏&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/C/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/%E5%AE%8F/&t=宏"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
