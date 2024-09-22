@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HID_模拟鼠标">
+<meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-09-21T11:58:00.000Z">
+<meta property="article:modified_time" content="2024-09-21T13:16:50.038Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="STC8H">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HID_模拟鼠标</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E6%8C%89%E9%94%AE%E9%94%AE%E7%9B%98/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&text=HID_模拟鼠标"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&is_video=false&description=HID_模拟鼠标"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HID_模拟鼠标&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&name=HID_模拟鼠标&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&t=HID_模拟鼠标"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HID_模拟鼠标
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-21T11:58:00.000Z" class="dt-published" itemprop="datePublished">2024-09-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/STC8H/" rel="tag">STC8H</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 STC8H 的矩阵键盘模拟 鼠标的功能</span></span><br><span class="line"><span class="comment">// 按照我们自己的需求修改描述符配置</span></span><br><span class="line"><span class="comment">// usb_desc.c</span></span><br><span class="line"><span class="comment">// 定义 鼠标的 配置描述符</span></span><br><span class="line"><span class="comment">/* 我们加了一个 scroll 也就是鼠标滚轮的功能</span></span><br><span class="line"><span class="comment">Input Report:</span></span><br><span class="line"><span class="comment">0   Buttons (D0:LButton D1:RButton D2:MButton [D3:D7]:Pad)</span></span><br><span class="line"><span class="comment">1	X displacement (&gt;0:right; &lt;0:left)</span></span><br><span class="line"><span class="comment">2	Y displacement (&gt;0:down; &lt;0:up)</span></span><br><span class="line"><span class="comment">3 scroll</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// 此处我们需要修改的地方有：</span></span><br><span class="line"><span class="comment">// 1. 添加鼠标滚轮的描述符内容：0x09,0x38,Wheel;  鼠标滚轮   修改 1</span></span><br><span class="line"><span class="comment">// 2. 将原本报告的计数从 2 改为3 // 0x95,0x03,REPORT_COUNT(3);   修改2</span></span><br><span class="line"><span class="comment">// 3. 将整个报告描述符的总长度进行修改 HIDREPORTDESC[52]，0x05,0x01, (包括头文件中的内容)</span></span><br><span class="line"><span class="comment">// 4. 将配置描述符中发送的最大字节数从 3 改为 4</span></span><br><span class="line"><span class="comment">// 5. 将配置描述符中的协议长度改为 52 与报告描述符的总长度要一致</span></span><br><span class="line"><span class="comment">// 注意：当我们将鼠标滚轮的功能追加在第四个字节也就是末尾的时候，对应 HIDREPORTDESC </span></span><br><span class="line"><span class="comment">// 中的位置也要在 x、y，的下面，要保证发送的内容与报告描述符的内容对应起来；</span></span><br><span class="line"><span class="type">char</span> code HIDREPORTDESC[<span class="number">52</span>] =  <span class="comment">// 修改3 --- 头文件的长度</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="number">0x05</span>,<span class="number">0x01</span>,              <span class="comment">//USAGE_PAGE(Generic Desktop);</span></span><br><span class="line">    <span class="number">0x09</span>,<span class="number">0x02</span>,              <span class="comment">//USAGE(Mouse);</span></span><br><span class="line">    <span class="number">0xa1</span>,<span class="number">0x01</span>,              <span class="comment">//COLLECTION(Application);</span></span><br><span class="line">    <span class="number">0x09</span>,<span class="number">0x01</span>,              <span class="comment">//  USAGE(Pointer);</span></span><br><span class="line">    <span class="number">0xa1</span>,<span class="number">0x00</span>,              <span class="comment">//  COLLECTION(Physical);</span></span><br><span class="line">    <span class="number">0x05</span>,<span class="number">0x09</span>,              <span class="comment">//    USAGE_PAGE(Buttons);</span></span><br><span class="line">    <span class="number">0x19</span>,<span class="number">0x01</span>,              <span class="comment">//    USAGE_MINIMUM(1);</span></span><br><span class="line">    <span class="number">0x29</span>,<span class="number">0x03</span>,              <span class="comment">//    USAGE_MAXIMUM(3);</span></span><br><span class="line">    <span class="number">0x15</span>,<span class="number">0x00</span>,              <span class="comment">//    LOGICAL_MINIMUM(0);</span></span><br><span class="line">    <span class="number">0x25</span>,<span class="number">0x01</span>,              <span class="comment">//    LOGICAL_MAXIMUM(1);</span></span><br><span class="line">    <span class="number">0x75</span>,<span class="number">0x01</span>,              <span class="comment">//    REPORT_SIZE(1);</span></span><br><span class="line">    <span class="number">0x95</span>,<span class="number">0x03</span>,              <span class="comment">//    REPORT_COUNT(3);</span></span><br><span class="line">    <span class="number">0x81</span>,<span class="number">0x02</span>,              <span class="comment">//    INPUT(Data,Variable,Absolute);</span></span><br><span class="line">    <span class="number">0x75</span>,<span class="number">0x05</span>,              <span class="comment">//    REPORT_SIZE(5);</span></span><br><span class="line">    <span class="number">0x95</span>,<span class="number">0x01</span>,              <span class="comment">//    REPORT_COUNT(1);</span></span><br><span class="line">    <span class="number">0x81</span>,<span class="number">0x01</span>,              <span class="comment">//    INPUT(Constant);</span></span><br><span class="line">    <span class="number">0x05</span>,<span class="number">0x01</span>,              <span class="comment">//    USAGE_PAGE(Generic Desktop);</span></span><br><span class="line">    <span class="number">0x09</span>,<span class="number">0x30</span>,              <span class="comment">//    USAGE(X);  x方向移动</span></span><br><span class="line">    <span class="number">0x09</span>,<span class="number">0x31</span>,              <span class="comment">//    USAGE(Y);  y方向移动</span></span><br><span class="line">	<span class="number">0x09</span>,<span class="number">0x38</span>,              <span class="comment">//    Wheel;  鼠标滚轮   修改 1</span></span><br><span class="line">    <span class="number">0x15</span>,<span class="number">0x81</span>,              <span class="comment">//    LOGICAL_MINIMUM(-127);</span></span><br><span class="line">    <span class="number">0x25</span>,<span class="number">0x7f</span>,              <span class="comment">//    LOGICAL_MAXIMUM(127);</span></span><br><span class="line">    <span class="number">0x75</span>,<span class="number">0x08</span>,              <span class="comment">//    REPORT_SIZE(8);</span></span><br><span class="line">    <span class="number">0x95</span>,<span class="number">0x03</span>,              <span class="comment">//    REPORT_COUNT(3);   修改2</span></span><br><span class="line">    <span class="number">0x81</span>,<span class="number">0x06</span>,              <span class="comment">//    INPUT(Data, Variable, Relative);</span></span><br><span class="line">    <span class="number">0xc0</span>,                   <span class="comment">//  END_COLLECTION;</span></span><br><span class="line">    <span class="number">0xc0</span>,                   <span class="comment">//END_COLLECTION;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置描述符</span></span><br><span class="line"><span class="type">char</span> code CONFIGDESC[<span class="number">41</span>] = &#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// 遵循的协议版本 HID 1.01协议</span></span><br><span class="line">    <span class="number">0x09</span>,                   <span class="comment">//bLength(9);</span></span><br><span class="line">    <span class="number">0x21</span>,                   <span class="comment">//bDescriptorType(HID);</span></span><br><span class="line">    <span class="number">0x01</span>,<span class="number">0x01</span>,              <span class="comment">//bcdHID(1.01);</span></span><br><span class="line">    <span class="number">0x00</span>,                   <span class="comment">//bCountryCode(0);</span></span><br><span class="line">    <span class="number">0x01</span>,                   <span class="comment">//bNumDescriptors(1);</span></span><br><span class="line">    <span class="number">0x22</span>,                   <span class="comment">//bDescriptorType(HID Report);</span></span><br><span class="line">    <span class="number">0x34</span>,<span class="number">0x00</span>,              <span class="comment">//wDescriptorLength(52);</span></span><br><span class="line">    </span><br><span class="line">	<span class="comment">// 描述鼠标给PC发的数据信息</span></span><br><span class="line">    <span class="number">0x07</span>,                   <span class="comment">//bLength(7);</span></span><br><span class="line">    <span class="number">0x05</span>,                   <span class="comment">//bDescriptorType(Endpoint);</span></span><br><span class="line">    <span class="number">0x81</span>,                   <span class="comment">//bEndpointAddress(EndPoint1 as IN);</span></span><br><span class="line">    <span class="number">0x03</span>,                   <span class="comment">//bmAttributes(Interrupt);</span></span><br><span class="line">    <span class="number">0x04</span>,<span class="number">0x00</span>,              <span class="comment">//wMaxPacketSize(4);   修改4 鼠标1次会给PC发送4个字节</span></span><br><span class="line">    <span class="number">0x0a</span>,                   <span class="comment">//bInterval(10ms); </span></span><br><span class="line">&#125;;</span><br><span class="line">===============================================</span><br><span class="line"><span class="comment">// usb_req_class.c</span></span><br><span class="line"><span class="comment">// 修改处理函数</span></span><br><span class="line"><span class="type">void</span> usb_class_in(BYTE button[<span class="number">4</span>]) &#123;</span><br><span class="line">    BYTE i;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">if</span> (DeviceState != DEVSTATE_CONFIGURED)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!UsbInBusy )&#123;</span><br><span class="line">        IE2 &amp;= ~<span class="number">0x80</span>;   <span class="comment">//EUSB = 0;</span></span><br><span class="line">        UsbInBusy = <span class="number">1</span>;</span><br><span class="line">        usb_write_reg(INDEX, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;<span class="number">4</span>; i++)&#123;</span><br><span class="line">            usb_write_reg(FIFO1, button[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        usb_write_reg(INCSR1, INIPRDY);</span><br><span class="line">        IE2 |= <span class="number">0x80</span>;    <span class="comment">//EUSB = 1;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;    </span><br><span class="line">===============================================</span><br><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GPIO.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;UART.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;NVIC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Switch.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MatrixKey.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stc.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usb.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usb_req_class.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;timer.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> UART_Config(<span class="type">void</span>) &#123;</span><br><span class="line">	<span class="comment">// &gt;&gt;&gt; 记得添加 NVIC.c, UART.c, UART_Isr.c &lt;&lt;&lt;</span></span><br><span class="line">    COMx_InitDefine		COMx_InitStructure;					<span class="comment">//结构定义</span></span><br><span class="line">    COMx_InitStructure.UART_Mode      = UART_8bit_BRTx;	<span class="comment">//模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx</span></span><br><span class="line">    COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;			<span class="comment">//选择波特率发生器, BRT_Timer1, BRT_Timer2 (注意: 串口2固定使用BRT_Timer2)</span></span><br><span class="line">    COMx_InitStructure.UART_BaudRate  = <span class="number">115200ul</span>;			<span class="comment">//波特率, 一般 110 ~ 115200</span></span><br><span class="line">    COMx_InitStructure.UART_RxEnable  = ENABLE;				<span class="comment">//接收允许,   ENABLE或DISABLE</span></span><br><span class="line">    COMx_InitStructure.BaudRateDouble = DISABLE;			<span class="comment">//波特率加倍, ENABLE或DISABLE</span></span><br><span class="line">    UART_Configuration(UART1, &amp;COMx_InitStructure);		<span class="comment">//初始化串口1 UART1,UART2,UART3,UART4</span></span><br><span class="line"></span><br><span class="line">  	NVIC_UART1_Init(ENABLE,Priority_1);		<span class="comment">//中断使能, ENABLE/DISABLE; 优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3</span></span><br><span class="line">    UART1_SW(UART1_SW_P30_P31);		<span class="comment">// 引脚选择, UART1_SW_P30_P31,UART1_SW_P36_P37,UART1_SW_P16_P17,UART1_SW_P43_P44</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">0、L_Button、M_Button、R_Button</span></span><br><span class="line"><span class="comment">																	    </span></span><br><span class="line"><span class="comment">0	  0			-y		 -s</span></span><br><span class="line"><span class="comment">																	    </span></span><br><span class="line"><span class="comment">0	  -x		0		 +x</span></span><br><span class="line"><span class="comment">																	    </span></span><br><span class="line"><span class="comment">0	  0			+y		 +s</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// 按下按键...</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">key_down</span><span class="params">(u8 row, u8 col)</span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//1. 准备好4个字节长度的数组，初值都是 0</span></span><br><span class="line">	u8 dat[<span class="number">4</span>] = &#123;<span class="number">0</span>&#125;;	</span><br><span class="line">    </span><br><span class="line">	<span class="comment">//2. 判定按下的哪个键位，组装数据	</span></span><br><span class="line">	<span class="comment">//2.1 判定按键</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">0</span> &amp;&amp; col ==<span class="number">1</span>) dat[<span class="number">0</span>] |= <span class="number">1</span>&lt;&lt;<span class="number">0</span>; <span class="comment">// 左键</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">0</span> &amp;&amp; col ==<span class="number">3</span>) dat[<span class="number">0</span>] |= <span class="number">1</span>&lt;&lt;<span class="number">1</span>; <span class="comment">// 右键</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">0</span> &amp;&amp; col ==<span class="number">2</span>) dat[<span class="number">0</span>] |= <span class="number">1</span>&lt;&lt;<span class="number">2</span>; <span class="comment">// 中键</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//2.2 判定x方向</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">2</span> &amp;&amp; col ==<span class="number">1</span>) dat[<span class="number">1</span>] = <span class="number">-10</span>;  <span class="comment">// 向左移动</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">2</span> &amp;&amp; col ==<span class="number">3</span>) dat[<span class="number">1</span>] = <span class="number">10</span>;   <span class="comment">// 向右移动</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//2.3 判定y方向</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">1</span> &amp;&amp; col ==<span class="number">2</span>) dat[<span class="number">2</span>] = <span class="number">-10</span>;  <span class="comment">// -y 向上移动</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">3</span> &amp;&amp; col ==<span class="number">2</span>) dat[<span class="number">2</span>] = <span class="number">10</span>;   <span class="comment">// +y 向下移动</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//2.4 判定滚轮</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">1</span> &amp;&amp; col ==<span class="number">3</span>) dat[<span class="number">3</span>] = <span class="number">-10</span>;  <span class="comment">// -s 向下滚动</span></span><br><span class="line">	<span class="keyword">if</span>(row ==<span class="number">3</span> &amp;&amp; col ==<span class="number">3</span>) dat[<span class="number">3</span>] = <span class="number">10</span>;   <span class="comment">// +s 向上滚动</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//3. 发数据</span></span><br><span class="line">	usb_class_in(dat);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//printf(&quot;dat[0]=%d\n&quot;, (int)dat[0]);</span></span><br><span class="line">	<span class="comment">//printf(&quot;dat[1]=%d\n&quot;, (int)dat[1]);</span></span><br><span class="line">	<span class="comment">//printf(&quot;dat[2]=%d\n&quot;, (int)dat[2]);</span></span><br><span class="line">	<span class="comment">//printf(&quot;dat[3]=%d\n&quot;, (int)dat[3]);	</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">key_up</span><span class="params">(u8 row, u8 col)</span> &#123;</span><br><span class="line">	u8 dat[<span class="number">4</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;up..\n&quot;</span>);</span><br><span class="line">	</span><br><span class="line">	usb_class_in(dat);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	P_SW2 |= <span class="number">0x80</span>;  <span class="comment">//扩展寄存器(XFR)访问使能</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// usb初始化</span></span><br><span class="line">    usb_init();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//初始化矩阵键盘</span></span><br><span class="line">	MK_Init();</span><br><span class="line">    </span><br><span class="line">    EA = <span class="number">1</span>;</span><br><span class="line">	UART_Config();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">		MK_Scan( key_down, key_up );        </span><br><span class="line">        delay_ms(<span class="number">20</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&text=HID_模拟鼠标"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&is_video=false&description=HID_模拟鼠标"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HID_模拟鼠标&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&title=HID_模拟鼠标"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&name=HID_模拟鼠标&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/&t=HID_模拟鼠标"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

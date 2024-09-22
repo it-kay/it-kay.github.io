@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="SPI（串行外设接口）是一种广泛应用的同步串行通信协议，通常用于微控制器与外部设备之间的高速数据传输。它采用主从架构，通过主设备生成时钟信号并控制数据流动，通过四条主要信号线（MOSI、MISO、SCLK和SS）实现全双工通信。数据传输通过时钟的上升或下降沿进行，且支持可配置的时钟极性（CPOL）和相位（CPHA），以适应不同设备的要求。尽管SPI的传输速度较高，且实现相对简单，但其缺点在于需要较">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SPI_OLED显示">
+<meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="SPI（串行外设接口）是一种广泛应用的同步串行通信协议，通常用于微控制器与外部设备之间的高速数据传输。它采用主从架构，通过主设备生成时钟信号并控制数据流动，通过四条主要信号线（MOSI、MISO、SCLK和SS）实现全双工通信。数据传输通过时钟的上升或下降沿进行，且支持可配置的时钟极性（CPOL）和相位（CPHA），以适应不同设备的要求。尽管SPI的传输速度较高，且实现相对简单，但其缺点在于需要较">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPItongxinliucheng.jpg">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPIOLED.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPIyinjiaoshuom.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPIyuanlitu.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPISTC8Hyinjiaotu.png">
+<meta property="article:published_time" content="2024-09-21T13:42:00.000Z">
+<meta property="article:modified_time" content="2024-09-22T13:45:59.619Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="STC8H">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPItongxinliucheng.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>SPI_OLED显示</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/HID_%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&text=SPI_OLED显示"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&is_video=false&description=SPI_OLED显示"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SPI_OLED显示&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&name=SPI_OLED显示&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&t=SPI_OLED显示"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OLED%E6%98%BE%E7%A4%BA%E5%B1%8F"><span class="toc-number">1.</span> <span class="toc-text">OLED显示屏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">2.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.1.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">问题</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        SPI_OLED显示
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-21T13:42:00.000Z" class="dt-published" itemprop="datePublished">2024-09-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/STC8H/" rel="tag">STC8H</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>SPI（串行外设接口）是一种广泛应用的<strong>同步串行通信协议</strong>，通常用于微控制器与外部设备之间的高速数据传输。它采用<strong>主从架构</strong>，通过<strong>主设备生成时钟信号</strong>并控制数据流动，通过四条主要信号线<strong>（MOSI、MISO、SCLK和SS）</strong>实现<strong>全双工通信</strong>。数据传输通过时钟的<strong>上升或下降沿</strong>进行，且支持可配置的时钟极性（CPOL）和相位（CPHA），以适应不同设备的要求。尽管SPI的传输速度较高，且实现相对简单，但其缺点在于需要较多的引脚和短距离传输的限制，适合用于传感器、存储器、显示屏及其他外设的接口。整体来说，SPI因其速度和灵活性在嵌入式系统中得到了广泛应用。</p>
+<blockquote>
+<p>同步串行通信协议: 发送设备和接收设备在<strong>同一时刻</strong>依据<strong>同一个时钟信号</strong>进行数据的采样和传输。</p>
+<p>MOSI: 主设备输出，从设备输入（接收）</p>
+<p>MISO: 主设备输入（接收），从设备输出</p>
+<p>SCLK: 主设备生成的时钟信号</p>
+<p>SS(NSS): 选择从设备的的信号（当每次传输完成后，主设备拉高 SS 信号，结束通信）</p>
+</blockquote>
+<p><strong>SPI 协议通信过程</strong></p>
+<ol>
+<li><p><strong>主设备选择从设备</strong>：通过将对应从设备的 <strong>SS</strong> 线拉低，选中某个从设备进行通信。</p>
+</li>
+<li><p><strong>时钟同步</strong>：主设备生成 <strong>SCLK</strong>，并在时钟上升沿或下降沿驱动数据。</p>
+</li>
+<li><p><strong>数据传输</strong>：</p>
+</li>
+</ol>
+<ul>
+<li>在时钟脉冲的作用下，主设备通过 <strong>MOSI</strong> 线发送数据，同时从设备通过 <strong>MISO</strong> 线发送数据。</li>
+<li>数据在时钟的上升沿或下降沿采样，具体依赖于时钟极性和相位设置。</li>
+</ul>
+<ol start="4">
+<li><strong>完成通信</strong>：数据传输结束后，主设备将 <strong>SS</strong> 线拉高，终止对从设备的选择。</li>
+</ol>
+<p><strong>通信过程图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPItongxinliucheng.jpg" alt="SPItongxinliucheng"></p>
+<blockquote>
+</blockquote>
+<h2 id="OLED显示屏"><a href="#OLED显示屏" class="headerlink" title="OLED显示屏"></a>OLED显示屏</h2><p>本次示例屏采用的是中景园的 0.96 寸 OLED 显示屏  SSD1306 驱动带字库</p>
+<p><strong>如图所示</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPIOLED.png" alt="SPIOLED"></p>
+<p><strong>引脚说明</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPIyinjiaoshuom.png" alt="SPIyinjiaoshuom"></p>
+<blockquote>
+<p><strong>GND</strong>：逻辑电路的接地端。必须连接到地。</p>
+<p><strong>VCC</strong>：OLED 的电源输入端。必须连接到电源。</p>
+<p><strong>CLK &#x2F; SCL</strong>：串行时钟输入端。</p>
+<p><strong>MOSI &#x2F; SDA</strong>：串行数据输入端。</p>
+<p><strong>DC</strong>：数据&#x2F;命令控制引脚。当引脚拉高时，SDA输入作为显示数据处理；当引脚拉低时，SDA输入传递到命令寄存器。</p>
+<p><strong>CS1</strong>：OLED 芯片选择引脚；低电平使能，高电平禁止。</p>
+<p><strong>FSO</strong>：字库芯片的数据输出引脚。</p>
+<p><strong>CS2</strong>：字库芯片选择引脚；低电平使能，高电平禁止。</p>
+</blockquote>
+<p><strong>原理图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPIyuanlitu.png" alt="SPIyuanlitu"></p>
+<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><p><strong>引脚图</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/SPISTC8Hyinjiaotu.png" alt="SPISTC8Hyinjiaotu"></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例里的函数讲解</span></span><br><span class="line"><span class="comment">//向SSD1306写入一个字节。</span></span><br><span class="line"><span class="comment">//mode:数据/命令标志 0,表示命令;1,表示数据;</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_WR_Byte</span><span class="params">(u8 dat,u8 cmd)</span> &#123;	</span><br><span class="line">	u8 i;	</span><br><span class="line">    <span class="comment">// 判断是命令（0）还是数据（1），将 DC 置 0/1</span></span><br><span class="line">	<span class="keyword">if</span>(cmd) &#123; </span><br><span class="line">	  OLED_DC_Set(); <span class="comment">// DC: 1</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">	  OLED_DC_Clr(); <span class="comment">// DC: 0	</span></span><br><span class="line">	&#125;	  </span><br><span class="line">    <span class="comment">// CS1 置 0，选择 OLED 芯片（SSD1306）</span></span><br><span class="line">    <span class="comment">// 表示要向 SSD1306 中写数据了</span></span><br><span class="line">	OLED_CS_Clr(); </span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++) &#123; <span class="comment">// 写一个字节	8 位		  </span></span><br><span class="line">		OLED_SCL_Clr(); <span class="comment">// 将 SCL(时钟) 置 0</span></span><br><span class="line">		<span class="keyword">if</span>(dat&amp;<span class="number">0x80</span>) &#123; <span class="comment">// 从高位开始，依次判断 0 / 1</span></span><br><span class="line">		   OLED_SDA_Set(); <span class="comment">// 1 就将 SDA  置 1</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">		   OLED_SDA_Clr(); <span class="comment">// 0 就将 SDA 置 0</span></span><br><span class="line">		&#125;</span><br><span class="line">		OLED_SCL_Set(); <span class="comment">// 将 SCL 值 1，也就是上升沿</span></span><br><span class="line">		dat&lt;&lt;=<span class="number">1</span>;   </span><br><span class="line">	&#125;				 		  </span><br><span class="line">	OLED_CS_Set(); <span class="comment">// 将 CS 置 1（不选择 OLED）</span></span><br><span class="line">	OLED_DC_Set(); <span class="comment">// 拉高作为数据  </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从相关地址中：(计算出汉字在字库中的地址，然后将地址写入，然后从写入的地址中读出数据)</span></span><br><span class="line"><span class="comment">//（addrHigh：地址高字节,addrMid：地址中字节,addrLow：地址低字节）</span></span><br><span class="line"><span class="comment">// 中连续读出 DataLen 个字节的数据到 pbuff 的地址</span></span><br><span class="line"><span class="comment">// 连续读取</span></span><br><span class="line"><span class="comment">// 由于担心8位单片机有乘法溢出问题，所以分三部取地址</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_get_data_from_ROM</span><span class="params">(u8 addrHigh,u8 addrMid,u8 addrLow,u8 *pbuff,u8 DataLen)</span> &#123;</span><br><span class="line">	u8 i;</span><br><span class="line">	OLED_ROM_CS_Clr();</span><br><span class="line">    <span class="comment">// 0x03 通常是“读取数据”的命令</span></span><br><span class="line">    <span class="comment">// 表示准备从指定的地址开始读取数据。</span></span><br><span class="line">	Send_Command_to_ROM(<span class="number">0x03</span>);</span><br><span class="line">    <span class="comment">//送指令到晶联讯字库IC</span></span><br><span class="line">	Send_Command_to_ROM(addrHigh);</span><br><span class="line">	Send_Command_to_ROM(addrMid);</span><br><span class="line">	Send_Command_to_ROM(addrLow);</span><br><span class="line">    <span class="comment">// 从字库 IC 中读取出来 </span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;DataLen;i++) &#123;</span><br><span class="line">		*(pbuff+i)=Get_data_from_ROM();</span><br><span class="line">  &#125;</span><br><span class="line">	OLED_ROM_CS_Set();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从晶联讯字库IC中取汉字或字符数据（1个字节）</span></span><br><span class="line">u8 <span class="title function_">Get_data_from_ROM</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	u8 i,read=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++) &#123;</span><br><span class="line">		OLED_SCL_Clr();</span><br><span class="line">		read&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">        <span class="comment">// OLED_READ_FS0: 字库芯片的数据输出引脚。</span></span><br><span class="line">		<span class="keyword">if</span>(OLED_READ_FS0) &#123; </span><br><span class="line">			read++;</span><br><span class="line">    &#125;</span><br><span class="line">		OLED_SCL_Set();</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">return</span> read;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>函数先根据你要展示的内容，去字库芯片中查找他的位置，然从指定位置中读出这些字，然后展示在 OLED 上</p>
+</blockquote>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一、<strong>SPI 和 UART 的区别</strong></p>
+<p>二、<strong>write 的代码也就是在控制数据点的高低，也没有显示的写入 OLED 的代码呀，为什么 OLED 可以保存并显示内容呢</strong></p>
+<p>在 <code>OLED_WR_Byte()</code> 函数中，虽然没有显式写入 SSD1306 内存的代码，但实际的数据传输是通过 <strong>SPI 或 I2C</strong> 接口的硬件控制实现的。</p>
+<p><strong>具体的写入过程</strong></p>
+<ol>
+<li><p><strong>数据传输过程</strong>：<br>每个字节通过 SDA 引脚按位传输。<code>OLED_SDA_Set()</code> 和 <code>OLED_SDA_Clr()</code> 控制数据线的电平状态（高或低），代表传输的每一位。每次时钟 <code>OLED_SCL_Set()</code> 上升沿时，SSD1306 会读取数据引脚上的电平，形成一个位数据。</p>
+</li>
+<li><p><strong>命令或数据的区分</strong>：<br><code>OLED_DC_Set()</code> 和 <code>OLED_DC_Clr()</code> 用于区分当前传输的是<strong>数据</strong>还是<strong>命令</strong>。高电平表示数据，低电平表示命令。这决定了 SSD1306 如何处理接收到的信息。</p>
+</li>
+<li><p>**芯片选择 (CS)**：<br><code>OLED_CS_Clr()</code> 拉低 CS 信号，告诉 SSD1306 开始通信。传输完成后，<code>OLED_CS_Set()</code> 结束通信。SSD1306 会根据传输的内容将数据存储到相应的显存地址中，并在下一个刷新周期内更新显示内容。</p>
+</li>
+</ol>
+<p>三、<strong>时钟极性*CKP&#x2F;Clock Polarity）</strong></p>
+<p>四、<strong>时钟相位</strong></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/290620901">SPI协议详解（图文并茂+超详细） - 知乎 (zhihu.com)</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OLED%E6%98%BE%E7%A4%BA%E5%B1%8F"><span class="toc-number">1.</span> <span class="toc-text">OLED显示屏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">2.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.1.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">问题</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&text=SPI_OLED显示"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&is_video=false&description=SPI_OLED显示"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SPI_OLED显示&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&title=SPI_OLED显示"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&name=SPI_OLED显示&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/SPI_OLED%E6%98%BE%E7%A4%BA/&t=SPI_OLED显示"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
