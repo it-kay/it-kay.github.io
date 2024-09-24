@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="RTX51 是 KEIL 公司开发的针对 8051 系列单片机的多任务实时操作系统（RTOS）。它提供了多任务处理能力，允许程序以并行方式执行，适用于对时间要求严格的嵌入式应用。RTX51 具有简单的 API 和任务调度机制，使开发者能够更方便地管理任务和资源，确保系统的响应性和稳定性。RTX51 系统提供了任务管理、任务调度、任务通讯、定时器、信号量、邮箱等实时操作系统的基本功能，并与 Keil">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RTX51系统">
+<meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="流年不知心底事">
+<meta property="og:description" content="RTX51 是 KEIL 公司开发的针对 8051 系列单片机的多任务实时操作系统（RTOS）。它提供了多任务处理能力，允许程序以并行方式执行，适用于对时间要求严格的嵌入式应用。RTX51 具有简单的 API 和任务调度机制，使开发者能够更方便地管理任务和资源，确保系统的响应性和稳定性。RTX51 系统提供了任务管理、任务调度、任务通讯、定时器、信号量、邮箱等实时操作系统的基本功能，并与 Keil">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51bin.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51IDE.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51renwu.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51Bug1.png">
+<meta property="article:published_time" content="2024-09-02T00:41:00.000Z">
+<meta property="article:modified_time" content="2024-09-24T09:43:04.626Z">
+<meta property="article:author" content="kay">
+<meta property="article:tag" content="RTOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51bin.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>RTX51系统</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/%E9%80%BB%E8%BE%91%E5%88%86%E6%9E%90%E4%BB%AA/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/C/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84%E4%B8%8E%E5%AD%97%E7%AC%A6%E4%B8%B2/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&text=RTX51系统"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&is_video=false&description=RTX51系统"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=RTX51系统&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&name=RTX51系统&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&t=RTX51系统"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">1.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RTX51-Tiny-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text">RTX51 Tiny 环境搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RTX51-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.2.</span> <span class="toc-text">RTX51 注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">问题</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        RTX51系统
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">kay</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-02T00:41:00.000Z" class="dt-published" itemprop="datePublished">2024-09-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/RTOS/" rel="tag">RTOS</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>RTX51 是 KEIL 公司开发的针对 8051 系列单片机的多任务实时操作系统（RTOS）。它提供了<strong>多任务处理</strong>能力，允许程序以<strong>并行</strong>方式执行，适用于对时间要求严格的嵌入式应用。RTX51 具有简单的 API 和任务调度机制，使开发者能够更方便地管理任务和资源，确保系统的响应性和稳定性。RTX51 系统提供了任务管理、任务调度、任务通讯、定时器、信号量、邮箱等实时操作系统的基本功能，并与 Keil 公司的 C51 编译器紧密集成，从而方便开发人员进行开发和调试。</p>
+<blockquote>
+<p>RTX51 的多任务处理能力指的是系统能够同时管理和执行多个任务或进程的能力。多个任务看似同时运行，实际上是通过快速切换来实现的。这种切换由操作系统的调度器控制。</p>
+</blockquote>
+<p><strong>多核和多 CPU</strong></p>
+<ul>
+<li><p><strong>单核与多核</strong>：</p>
+<ul>
+<li><p><strong>单核</strong>：系统只有一个处理核心，所有任务都由这一核心处理。虽然能够完成基本的计算任务，但在同时执行多个任务时效率较低。</p>
+</li>
+<li><p><strong>多核</strong>：系统有多个处理核心（如双核、四核等），每个核心可以独立执行任务。这种架构可以提高并行处理能力，允许多个任务同时进行，从而提升整体性能。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>单 CPU 与多 CPU</strong>：</p>
+<ul>
+<li><p><strong>单 CPU</strong>：系统只配备一个中央处理单元（CPU），类似于单核，但可以是一个复杂的多核处理器。</p>
+</li>
+<li><p><strong>多 CPU</strong>：系统配备多个 CPU，每个 CPU 可以独立处理任务，通常用于需要极高性能和处理能力的服务器</p>
+</li>
+<li><p>或高性能计算机。多 CPU 系统通过并行处理可以显著提高计算能力。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>RTX51 包含两个版本：</strong></p>
+<p>RTX51 Tiny</p>
+<ul>
+<li>RTX51 Tiny是一个非常小型的实时操作系统，具有基本的任务调度功能，包括任务优先级和时间片轮转等RTX51 Tiny适用于基于51系列单片机的应用程序，特别是对于小型和简单的应用程序，因为它不需要太多的RAM和ROM资源。</li>
+<li>相对于 RTX51 Full 不具备如下功能：<ul>
+<li>由循环多任务处理和信号实现任务切换</li>
+<li>不支持优先任务切换</li>
+<li>不包含信息子程序</li>
+<li>无存储器库分配子程序</li>
+</ul>
+</li>
+</ul>
+<p>RTX51 Full</p>
+<ul>
+<li>RTX51 Full则是一个功能更为强大的实时操作系统，它不仅支持基本的任务调度功能，还提供了更多的RTOS特性，例如信号量、邮箱、消息队列、事件标志和互斥量等，使得它更加适合于需要更高级RTOS特性的应用程序。</li>
+</ul>
+<p>RTX51 Tiny是一个轻量级的RTOS，适用于简单的应用程序，而RTX51 Full则提供了更多的RTOS特性，适用于更为复杂的应用程序。</p>
+<h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><h3 id="RTX51-Tiny-环境搭建"><a href="#RTX51-Tiny-环境搭建" class="headerlink" title="RTX51 Tiny 环境搭建"></a>RTX51 Tiny 环境搭建</h3><ol>
+<li>新建一个项目</li>
+<li>打开keil安装目录，来到<code>C51\RtxTiny2\SourceCode</code>目录，拷贝<code>Conf_tny.A51</code>和<code>RTX51TNY.LIB</code>到项目中。</li>
+</ol>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51bin.png" alt="RTX51bin"></p>
+<ol start="3">
+<li>打开配置，来到<code>Target</code>中，将<code>Operating system</code>修改为<code>RTX-51 Tny</code></li>
+</ol>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51IDE.png" alt="RTX51IDE"></p>
+<ol start="4">
+<li>新建好<code>main.c</code>, 代码如下</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;RTX51TNY.H&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;STC8H.H&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// P5.3 闪烁</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">sys_init</span><span class="params">()</span> &#123;</span><br><span class="line">	P5M1 &amp;= ~<span class="number">0x08</span>; P5M0 &amp;= ~<span class="number">0x08</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里函数名可随意, 建议不要使用start, 会和I2C.h里的Start冲突</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">main_start</span><span class="params">()</span> _task_ 0 &#123;</span><br><span class="line">	sys_init();</span><br><span class="line">	<span class="comment">// 创建任务 1</span></span><br><span class="line">	os_create_task(<span class="number">1</span>);</span><br><span class="line">	<span class="comment">// 结束任务 0</span></span><br><span class="line">	os_delete_task(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task_1</span><span class="params">()</span> _task_ 1 &#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		P53 = <span class="number">1</span>;</span><br><span class="line">		os_wait1(K_TMO);</span><br><span class="line">		</span><br><span class="line">		P53 = <span class="number">0</span>;</span><br><span class="line">		os_wait1(K_TMO);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>不再有main函数</li>
+<li>代码入口为标记为 <code>_task_ 0</code>的函数。</li>
+<li><code>_task_</code>标记的函数，表示这个是独立的任务，多个task可以同时执行。</li>
+</ul>
+<h3 id="RTX51-注意事项"><a href="#RTX51-注意事项" class="headerlink" title="RTX51 注意事项"></a>RTX51 注意事项</h3><p>一、<strong>RTX51 对于系统硬件的要求</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51renwu.png" alt="RTX51renwu"></p>
+<p>二、<strong>RTX51 任务的状态及定义</strong></p>
+<p>RTX51 区分 2 类任务: <strong>快速任务</strong>和<strong>标准任务</strong>。快速任务有很快的响应速度，每个快速任务使用 8051 一个单独的寄存器组，并且有自己的堆栈区域。RTX51 支持最大同时有 3 个快速任务。标准任务需要多一点的时间来进行任务切换，因此使用的内部 RAM 相对快速任务要少，所有的标准任务共用 1 个寄存器组和堆栈。当任务切换的时候，当前任务的寄存器状态和堆栈内容转移到外部存储器中。</p>
+<p>在 RTX51 Full 中，可以通过特定的 API 或函数来创建任务，并在创建时指定任务的类型（快速或标准）。<strong>RTX51 Tiny 则不支持快速任务。</strong></p>
+<p>RTX51 FULL 支持任务最多达 64 个，但一般 RTX51 TINY 支持最大 16 个标准任务。</p>
+<p>三、<strong>RTX51 自带延迟与 delay_ms() 延时的区别</strong></p>
+<p>在 RTX51 Tiny 中 共有三个等待延时函数分别是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">os_wait</span>            <span class="params">(<span class="type">unsigned</span> <span class="type">char</span> typ, </span></span><br><span class="line"><span class="params">                                         <span class="type">unsigned</span> <span class="type">char</span> ticks,</span></span><br><span class="line"><span class="params">                                         <span class="type">unsigned</span> <span class="type">int</span> dummy)</span>;</span><br><span class="line"><span class="keyword">extern</span> <span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">os_wait1</span>           <span class="params">(<span class="type">unsigned</span> <span class="type">char</span> typ)</span>;</span><br><span class="line"><span class="keyword">extern</span> <span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">os_wait2</span>           <span class="params">(<span class="type">unsigned</span> <span class="type">char</span> typ,</span></span><br><span class="line"><span class="params">                                         <span class="type">unsigned</span> <span class="type">char</span> ticks)</span>;</span><br><span class="line"><span class="comment">// 参数如下：</span></span><br><span class="line"><span class="comment">/* constants for os_wait function：也就是等待函数的 typ */</span> </span><br><span class="line"><span class="meta">#<span class="keyword">define</span> K_SIG 0x01 <span class="comment">/* 等待一个信号。*/</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> K_TMO 0x02 <span class="comment">/* 等待由 ticks 指定的超时时间。*/</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> K_IVL 0x80 <span class="comment">/* 等待由 ticks 指定的时间间隔。*/</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">参数中：K_TMO、K_IVL 看解释十分相似，但其实区别很大：</span></span><br><span class="line"><span class="comment">当使用 K_TMO 时，任务从调用 os_wait 函数的当前时刻开始计时，等待指定的时间（以系统ticks 为单位）后恢复为就绪状态。这个时间段不包括任务在等待之前和之后执行的时间。</span></span><br><span class="line"><span class="comment">当使用 K_IVL 时，任务从上一次执行结束（或上一次调用 os_wait 并返回）的时刻开始计时，等待指定的时间（以系统ticks为单位）后再次执行。这个时间段包括任务自身的执行时间。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>os_wait</strong></p>
+<p>暂停当前任务，等待一个或多个事件；例如一个时间间隔、超时或来自其他任务或中断的信号。typ 参数指定要等待的事件或事件组合，可以是上述参数中的常量之一：</p>
+<p>typ 可以通过竖线（|）字符进行逻辑或操作。例如，K_TMO | K_SIG 表示任务等待超时或信号。</p>
+<ul>
+<li>**<code>typ</code>**：这是一个指定等待类型的参数。RTX51 中可能定义了多种等待类型，如等待事件、消息、信号量等。具体的类型值取决于 RTX51 的具体实现和文档。</li>
+<li>**<code>ticks</code>**：这是等待的时间长度，以操作系统的“tick”为单位。一个 tick 的长度取决于 RTX51 的配置，通常与系统的时钟频率有关。</li>
+<li>**<code>dummy</code>**：这个参数在大多数实现中可能并不真正使用，而是为了保持函数签名的兼容性或预留未来的扩展。在一些版本中，这个参数可能已经被移除或替换为更有用的参数。</li>
+</ul>
+<p><strong>os_wait1</strong></p>
+<p>暂停当前任务并等待事件发生。os_wait1 函数是 os_wait 函数的一个子集，只支持 K_SIG 这个值，表示等待一个信号。</p>
+<p><strong>os_wait2</strong></p>
+<p>同 os_wait 基本一致</p>
+<blockquote>
+<p>当 K_SIG 和 K_IVL 组合使用时，必须使用 <code>os_reset_interval</code> 函数来消除定时器延迟问题。</p>
+</blockquote>
+<p><strong>以 os_wait2 为例 与 delay_ms() 区别在：</strong></p>
+<p>在 RTOS 中，如果 delay_ms() 被用于多个任务，它可能会导致任务调度的不公平或不可预测性，因为<strong>任务在等待期间会阻塞其他任务的执行</strong>。</p>
+<p>如果多个任务都使用 delay_ms() 等待 100ms，那么每个任务都会独立地进入延时状态，并阻塞其他任务的执行（除非RTOS有特别的机制来处理这种情况）。</p>
+<p>举个例子：</p>
+<ol>
+<li><p>假设我有 三个任务分别为 func1、func2、func3，三个任务都设置 delay_ms 分别为 150ms、100ms、50ms，那么当这三个任务执行时，他们真正的等待时间就会变成 150 x 3 &#x3D; 450ms、300ms、150ms，因为他们</p>
+</li>
+<li><p>假设我有 三个任务分别为 func1、func2、func3三个任务，其中 func1 设置 delay_ms，其他都设置 K_TMO 分别为 150ms、100ms、50ms，那么当这三个任务执行时，他们真正的等待时间就会变成 150 x 2 &#x3D; 300ms、200ms、100ms，因为他们</p>
+</li>
+</ol>
+<p>四、<strong>K_TMO 与 K_IVL 的区别</strong></p>
+<p>当使用 K_TMO 时，任务从调用 os_wait 函数的当前时刻开始计时，等待指定的时间（以系统ticks 为单位）后恢复为就绪状态。这个时间段不包括任务在等待之前和之后执行的时间。<br>当使用 K_IVL 时，任务从上一次执行结束（或上一次调用 os_wait 并返回）的时刻开始计时，等待指定的时间（以系统ticks为单位）后再次执行。这个时间段包括任务自身的执行时间。</p>
+<p><strong>K_SIG 信号等待</strong></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一、报错：<strong>WARNING L7: MODULE NAME NOT UNIQUE MODULE:  .\Objects\Conf_tny.obj (?RTX51_TINY_KERNAL)</strong></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/OS/RTX51/RTX51Bug1.png" alt="RTX51Bug1"></p>
+<p>将 Conf_tny.A51 放在 RTX51TNY.LIB 前面即可</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">博主</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#STC8H"><span class="toc-number">1.</span> <span class="toc-text">STC8H</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RTX51-Tiny-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text">RTX51 Tiny 环境搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RTX51-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.2.</span> <span class="toc-text">RTX51 注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">问题</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&text=RTX51系统"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&is_video=false&description=RTX51系统"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=RTX51系统&body=Check out this article: https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&title=RTX51系统"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&name=RTX51系统&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/OS/RTOS/RTX51/RTX51%E7%B3%BB%E7%BB%9F/&t=RTX51系统"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    kay
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">博主</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
