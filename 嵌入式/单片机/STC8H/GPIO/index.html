@@ -13,16 +13,16 @@
 <meta property="og:site_name" content="流年不知心底事">
 <meta property="og:description" content="GPIO（General Purpose Input&#x2F;Output）是“通用输入输出”的缩写，它是微控制器（MCU）或单片机（MCU）、处理器或其他数字电子设备上用来处理各种信号的基本接口。是一种能够配置为不同模式的引脚或端口，用于与外部世界进行交互。能够配置为输入模式或输出模式，以实现不同的功能。 GPIO 的主要特性可配置性：  输入模式：当 GPIO 引脚被配置为输入时，微控制器可">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194258245.png">
-<meta property="og:image" content="c:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194417805.png">
-<meta property="og:image" content="c:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194455710.png">
-<meta property="og:image" content="c:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194441170.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOzhunshuangxiang.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOtuiwanshuchu.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOkailou.png">
+<meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOgaozu.png">
 <meta property="article:published_time" content="2024-09-15T11:53:00.000Z">
-<meta property="article:modified_time" content="2024-10-07T14:08:09.932Z">
+<meta property="article:modified_time" content="2024-10-08T13:20:15.604Z">
 <meta property="article:author" content="kay">
 <meta property="article:tag" content="STC8H">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194258245.png">
+<meta name="twitter:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOzhunshuangxiang.png">
     
     
       
@@ -219,19 +219,19 @@
 </ul>
 <h2 id="STC8H"><a href="#STC8H" class="headerlink" title="STC8H"></a>STC8H</h2><p>在 <strong>STC8H</strong> 系列单片机中，GPIO（通用输入输出）引脚具有四种主要模式，分别是<strong>准双向口模式</strong>、<strong>推挽输出模式</strong>、<strong>开漏输出模式</strong>和<strong>高阻输入模式</strong>。</p>
 <h3 id="准双向模式"><a href="#准双向模式" class="headerlink" title="准双向模式"></a><strong>准双向模式</strong></h3><p>默认状态下引脚处于高电平状态，且引脚内部连接了一个弱上拉电阻，既可以作为输入，也可以作为输出，不需要额外设置方向寄存器。</p>
-<p><img src="C:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194258245.png" alt="image-20241007194258245"></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOzhunshuangxiang.png" alt="GPIOzhunshuangxiang"></p>
 <h3 id="推挽输出模式"><a href="#推挽输出模式" class="headerlink" title="推挽输出模式"></a><strong>推挽输出模式</strong></h3><p>强推挽输出配置的下拉结构与开漏模式以及准双向口的下拉结构相同，但当锁存器为1时提供持续<br>的强上拉。推挽模式- -般用于需要更大驱动电流的情况。</p>
 <p>强推挽引脚配置如下图所示:</p>
-<p><img src="C:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194417805.png" alt="image-20241007194417805"></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOtuiwanshuchu.png" alt="GPIOtuiwanshuchu"></p>
 <h3 id="开漏输出模式"><a href="#开漏输出模式" class="headerlink" title="开漏输出模式"></a><strong>开漏输出模式</strong></h3><p>【开漏工作模式】，对外设置输出为 1，等同于 【高阻输入】</p>
 <p>【开漏工作模式】,【打开内部上拉电阻 | 或外部加上拉电阻】，简单等同于 【准双向口】</p>
 <p>开漏模式既可读外部状态也可对外输出(高电平或低电平)。如要正确读外部状态或需要对外输出高电平，需外加上拉电阻。</p>
-<p>当端口锁存器为0时，开漏模式关闭所有上拉品体管。当作为一个逻辑输出高电平时，这种配置方式必须有外部上拉，一般通过电阻外接到 Vcc。如果外部有上拉电阻，开漏的 O 口还可读外部状态，即此时被配置为开漏模式的 IO 口还可作为输入IO 口。这种方式的下拉与准双向口相同。</p>
+<p>当端口锁存器为0时，开漏模式关闭所有上拉晶体管。当作为一个逻辑输出高电平时，这种配置方式必须有外部上拉，一般通过电阻外接到 Vcc。如果外部有上拉电阻，开漏的 O 口还可读外部状态，即此时被配置为开漏模式的 IO 口还可作为输入IO 口。这种方式的下拉与准双向口相同。</p>
 <p>开漏端口带有一个施密特触发输入以及一个干扰抑制电路。</p>
 <p>输出端口配置如下图所示:</p>
-<p><img src="C:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194455710.png" alt="image-20241007194455710"></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOkailou.png" alt="GPIOkailou"></p>
 <h3 id="高阻输入模式"><a href="#高阻输入模式" class="headerlink" title="高阻输入模式"></a><strong>高阻输入模式</strong></h3><p> 电流既不能流入也不能流出。通常由三态缓冲器等电路元件实现。</p>
-<p><img src="C:\Users\kay\AppData\Roaming\Typora\typora-user-images\image-20241007194441170.png" alt="image-20241007194441170"></p>
+<p><img src="/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/GPIOgaozu.png" alt="GPIOgaozu"></p>
 <p><strong>电气特性：</strong></p>
 <p>1、高电阻值：高阻态的管脚<strong>电阻极高</strong>，这使得通过该管脚的电流非常小，<strong>接近于零</strong>。这样的特性使得该管脚在电路中的电流驱动能力极弱，对电路中的电流分布影响极小。<br>2、电平不确定性：处于高阻态的管脚，其<strong>电平状态不确定</strong>。如果用万用表测量，测量结果可能是高电平，也可能是低电平，具体取决于该<strong>管脚后面所连接的电路元件</strong>。</p>
 <p>内阻非常大，管脚输入电流有轻微波动都能识别到，电压等于电阻乘以电流。如果设为高阻态，当管脚连接的外设驱动能力非常弱，也不会误读电平状态。</p>
