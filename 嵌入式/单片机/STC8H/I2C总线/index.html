@@ -6,17 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="I2C（Inter-Integrated Circuit）是一种用于短距离通信的半双工同步串行通信协议，通常用于在电子设备中连接微控制器、传感器、显示器、EEPROM、ADC&#x2F;DAC 等外围器件。它由飞利浦公司在1982年发明，目的是简化不同集成电路之间的通信需求。 I2C协议采用了双线设计，使得多个设备可以通过**同一条总线(地址线)**互相通信，具有简单、灵活和高效的特点，广泛应用于">
+    <meta name="description" content="I2C（Inter-Integrated Circuit）是一种用于短距离通信的半双工同步串行通信协议，通常用于在电子设备中连接微控制器、传感器、显示器、EEPROM、ADC&#x2F;DAC 等外围器件。它由飞利浦公司在1982年发明，目的是简化不同集成电路之间的通信需求。 I2C协议采用了双线设计，使得多个设备可以通过同一条总线（数据线）互相通信，具有简单、灵活和高效的特点，广泛应用于嵌入式系">
 <meta property="og:type" content="article">
 <meta property="og:title" content="I2C总线">
 <meta property="og:url" content="https://www.tooupper.org/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E5%8D%95%E7%89%87%E6%9C%BA/STC8H/I2C%E6%80%BB%E7%BA%BF/index.html">
 <meta property="og:site_name" content="流年不知心底事">
-<meta property="og:description" content="I2C（Inter-Integrated Circuit）是一种用于短距离通信的半双工同步串行通信协议，通常用于在电子设备中连接微控制器、传感器、显示器、EEPROM、ADC&#x2F;DAC 等外围器件。它由飞利浦公司在1982年发明，目的是简化不同集成电路之间的通信需求。 I2C协议采用了双线设计，使得多个设备可以通过**同一条总线(地址线)**互相通信，具有简单、灵活和高效的特点，广泛应用于">
+<meta property="og:description" content="I2C（Inter-Integrated Circuit）是一种用于短距离通信的半双工同步串行通信协议，通常用于在电子设备中连接微控制器、传感器、显示器、EEPROM、ADC&#x2F;DAC 等外围器件。它由飞利浦公司在1982年发明，目的是简化不同集成电路之间的通信需求。 I2C协议采用了双线设计，使得多个设备可以通过同一条总线（数据线）互相通信，具有简单、灵活和高效的特点，广泛应用于嵌入式系">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/I2Czhuchong.png">
 <meta property="og:image" content="https://www.tooupper.org/public/image/%E5%B5%8C%E5%85%A5%E5%BC%8F/MCU/STC8H/I2Cyinjiao.png">
 <meta property="article:published_time" content="2024-09-11T09:43:00.000Z">
-<meta property="article:modified_time" content="2024-10-08T14:00:25.276Z">
+<meta property="article:modified_time" content="2024-10-10T01:00:34.539Z">
 <meta property="article:author" content="kay">
 <meta property="article:tag" content="STC8H">
 <meta name="twitter:card" content="summary">
@@ -183,7 +183,7 @@
 
   <div class="content e-content" itemprop="articleBody">
     <p><strong>I2C（Inter-Integrated Circuit）是一种用于短距离通信</strong>的<strong>半双工同步串行</strong>通信<strong>协议</strong>，通常用于在电子设备中连接微控制器、传感器、显示器、EEPROM、ADC&#x2F;DAC 等外围器件。它由飞利浦公司在1982年发明，目的是简化不同集成电路之间的通信需求。</p>
-<p>I2C协议采用了<strong>双线</strong>设计，使得多个设备可以通过**同一条总线(地址线)**互相通信，具有简单、灵活和高效的特点，广泛应用于嵌入式系统中。</p>
+<p>I2C协议采用了<strong>双线</strong>设计，使得多个设备可以通过<strong>同一条总线（数据线）</strong>互相通信，具有简单、灵活和高效的特点，广泛应用于嵌入式系统中。</p>
 <p><strong>半双工：</strong>半双工通信是指在同一时间内，数据可以在两个方向上传输，但不能同时进行。换句话说，通信设备可以在发送和接收之间切换，但在任何给定的时刻只能进行一种操作。即使在同一总线上，主设备不能同时向从设备发送数据并接收数据。</p>
 <p><strong>同步：</strong>同步通信是指数据的传输是通过一个共同的时钟信号进行协调的。所有参与通信的设备都依赖于同一时钟信号来发送和接收数据。</p>
 <p><strong>串行通信：</strong>串行通信是指数据以逐位（bit）的形式进行传输，而不是一次传输多个数据位。</p>
@@ -304,7 +304,7 @@
 </li>
 <li><p><strong>再次发送起始命令</strong>：在准备读取数据之前，主设备重新生成 I2C 的<strong>起始条件</strong>，通知总线上所有设备通信重新开始。这是因为从设备现在需要进入读取模式。</p>
 </li>
-<li><p><strong>发送设备地址+读命令</strong>：主设备发送从设备地址，这次地址的最低位为1，表示要进行读取操作。<code>dev_addr | 1</code> 通过将写位设置为1，表示主设备希望从从设备读取数据。</p>
+<li><p><strong>发送设备地址+读命令</strong>：主设备发送从设备地址，这次地址的最低位为1，表示要进行读取操作。dev_addr | 1 通过将写位设置为 1，表示主设备希望从从设备读取数据。</p>
 </li>
 <li><p><strong>等待从设备应答</strong>：发送完从设备地址后的读命令，主设备再次等待从设备返回一个 ACK 信号，确认从设备已经准备好开始数据传输。</p>
 </li>
